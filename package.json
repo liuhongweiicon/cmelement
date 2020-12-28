@@ -1,6 +1,6 @@
 {
   "name": "cmelement",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "cmelement vue plugin",
   "private": false,
   "main": "dist/cmelement.js",
@@ -58,5 +58,10 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
     "webpack-xlsx-loader": "^1.0.0"
-  }
+  },
+  "files": [
+    "cmelement.js",
+    "README.md",
+    "package.json"
+  ]
 }

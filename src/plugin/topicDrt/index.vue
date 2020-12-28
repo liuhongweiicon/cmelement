@@ -69,13 +69,13 @@ export default {
 }
 @media screen and (min-width: 1024px) {
     .topicDrt {
-        font-size: 14px;
-        line-height: 23px;
-        white-space: pre-wrap;
-        word-break: break-word;
-        padding: 15px 24px 0;
-        display: flex;
-        align-items: baseline;
+        font-size: 14px !important;
+        line-height: 23px !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        padding: 15px 24px 0 !important;
+        display: flex !important;
+        align-items: baseline !important;
         /deep/ span {
             font-size: 14px !important;
             font-weight: 400 !important;

@@ -12,17 +12,17 @@
         <template v-for="(item, inx) in paperDetails.bigQuestions">
           <div
             class="swiper-slide"
-            v-for="(item2, index2) in item.smallQuestions"
-            :key="index2"
+            v-for="item2 in item.smallQuestions"
+            :key="item2.smallId"
           >
             <div class="swiper-slideAnswer">
-              <div class="big-name" v-if="!index2 || paperState == 1">
+              <div class="big-name" v-if="!smallId || paperState == 1">
                 {{ ArabelToCN(inx + 1) }}、{{ item.bigTitle }}（共{{
                   item.smallQuestions.length
                 }}题；共{{ item.bigScore }}分）
               </div>
               <div
-                :key="index2"
+                :key="smallId"
                 class="swiper-slide_content"
                 :class="item.type != 6 ? 'slide_content_slide' : ''"
               >
@@ -31,7 +31,7 @@
                   @onceChoice="onceChoice"
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
-                  :orderNum="index2 + 1"
+                  :orderNum="smallId + 1"
                 ></base-type-stem>
 
                 <compound-type-stem
@@ -41,7 +41,7 @@
                   @twoChoice="twoChoice"
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"
-                  :orderNum="index2 + 1"
+                  :orderNum="smallId + 1"
                 >
                 </compound-type-stem>
               </div>
@@ -146,6 +146,7 @@ export default {
             loop: false,
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true, //修改swiper的父元素时，自动初始化swiper
+            grabCursor : true,
             onSlideChangeEnd: function(swiper) {
               let index = _this.nowquesIndex - 1;
               _this.nextTime = new Date().getTime();
@@ -316,13 +317,12 @@ export default {
                 userAnswer: "", //用户答案
               };
               obj.isComplexQuestion = "1";
-              let nowComponentQuestion =
-                nowSmallQuestion.componentQuestionModels[y];
-              obj.complexQuestionCode = nowComponentQuestion.id;
-              obj.questionType = nowComponentQuestion.type;
-              obj.questionCode = nowSmallQuestion.id;
-              obj.questionScore = nowComponentQuestion.score;
-              obj.questionSn = nowComponentQuestion.questionNo;
+              let nowComponentQuestion = nowSmallQuestion.componentQuestionModels[y];
+              obj.complexQuestionCode = nowComponentQuestion.smallId;
+              obj.questionType = nowComponentQuestion.componentType;
+              obj.questionCode = nowSmallQuestion.componentId;
+              obj.questionScore = nowComponentQuestion.componentScore;
+              obj.questionSn = nowComponentQuestion.componentSort;
               obj.rightAnswer = nowComponentQuestion.answer;
 
               if (nowComponentQuestion.type == "4") {
@@ -358,9 +358,9 @@ export default {
             };
             obj.isComplexQuestion = "0";
             obj.questionType = nowSmallQuestion.smallType;
-            obj.questionCode = nowSmallQuestion.id;
-            obj.questionScore = nowSmallQuestion.score;
-            obj.questionSn = nowSmallQuestion.questionNo;
+            obj.questionCode = nowSmallQuestion.smallId;
+            obj.questionScore = nowSmallQuestion.smallScore;
+            obj.questionSn = nowSmallQuestion.smallSort;
             obj.rightAnswer = nowSmallQuestion.answer;
 
             if (nowSmallQuestion.smallType == "4") {
