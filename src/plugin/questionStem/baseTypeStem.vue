@@ -310,11 +310,10 @@ export default {
      */
     setClass() {
       return function(item) {
+        console.log(Number(this.paperState));
         switch(Number(this.paperState)) {
           case 0:
-            return {
-              active: {},
-            }
+            return '';
             break;
           case 1:
             return {
@@ -464,7 +463,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 /*外层容器*/ 
 .baseTypeStem {
     

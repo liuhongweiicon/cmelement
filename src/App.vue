@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="1" @slideChangeEnd="slideChangeEndHnadler"></cm-all-stem>
+        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="2" @slideChangeEnd="slideChangeEndHnadler"></cm-all-stem>
         <!-- <div @click="getAnswer">作答卡</div>
         <div @click="submit">提交</div> -->
     </div>
