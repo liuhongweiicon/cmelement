@@ -1,6 +1,8 @@
 
 
 import './static/css/reset.css';
+import './js/swiper/index.css'; // swiper样式
+import './js/swiper/swiper'; // swiperJS
 
 
 import  * as vuePrototype   from './js/index'; // 工具库

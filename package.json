@@ -58,10 +58,10 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
     "webpack-xlsx-loader": "^1.0.0"
-  }
-  // "files": [
-  //   "cmelement.js",
-  //   "README.md",
-  //   "package.json"
-  // ]
+  },
+  "files": [
+    "cmelement.js",
+    "README.md",
+    "package.json"
+  ]
 }
