@@ -12,17 +12,16 @@
         <template v-for="(item, inx) in paperDetails.bigQuestions">
           <div
             class="swiper-slide"
-            v-for="item2 in item.smallQuestions"
+            v-for="(item2, index2) in item.smallQuestions"
             :key="item2.smallId"
           >
             <div class="swiper-slideAnswer">
-              <div class="big-name" v-if="!smallId || paperState == 1">
+              <div class="big-name" v-if="!index2 || paperState == 1">
                 {{ ArabelToCN(inx + 1) }}、{{ item.bigTitle }}（共{{
                   item.smallQuestions.length
                 }}题；共{{ item.bigScore }}分）
               </div>
               <div
-                :key="smallId"
                 class="swiper-slide_content"
                 :class="item.type != 6 ? 'slide_content_slide' : ''"
               >
@@ -31,7 +30,7 @@
                   @onceChoice="onceChoice"
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
-                  :orderNum="smallId + 1"
+                  :orderNum="index2 + 1"
                 ></base-type-stem>
 
                 <compound-type-stem
@@ -41,7 +40,7 @@
                   @twoChoice="twoChoice"
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"
-                  :orderNum="smallId + 1"
+                  :orderNum="index2 + 1"
                 >
                 </compound-type-stem>
               </div>

@@ -310,7 +310,6 @@ export default {
      */
     setClass() {
       return function(item) {
-        console.log(Number(this.paperState));
         switch(Number(this.paperState)) {
           case 0:
             return '';
