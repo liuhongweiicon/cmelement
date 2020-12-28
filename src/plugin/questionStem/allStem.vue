@@ -542,6 +542,11 @@ export default {
 
 <style lang="scss" scoped>
 .allStem {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  z-index: 1;
+  touch-action: none;
   .swiper-container {
     .swiper-slide {
       .swiper-slideAnswer {
@@ -554,11 +559,6 @@ export default {
 }
 /*作答试题样式*/
 .paper {
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-  z-index: 1;
-  touch-action: none;
   .swiper-container {
     width: 100%;
     height: 100%;

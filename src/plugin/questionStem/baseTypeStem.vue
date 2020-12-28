@@ -817,7 +817,7 @@ export default {
           margin: 0;
           min-width: 30%;
           width: initial;
-          height: 40px;
+          min-height: 40px;
           &:hover {
             cursor: pointer;
           }
