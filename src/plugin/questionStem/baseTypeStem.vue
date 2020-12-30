@@ -154,7 +154,7 @@
             <answer-sheet
               :questionType="5"
               :paperState="paperState"
-              :questionDetailsInfo="questionDetailsInfo"
+              :questionDetails="questionDetailsInfo"
               @onceChoice="onceChoice"
             ></answer-sheet>
 

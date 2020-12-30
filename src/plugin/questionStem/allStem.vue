@@ -1,8 +1,55 @@
 <template>
   <div
-    class="allStem"
+    class="cm-allStem"
+    @click.stop="answerCardOpen = false"
     :class="{ paper: paperState == 1, preview: paperState != 1 }"
   >
+    <!-- 作答时head -->
+    <slot name="head">
+      <!-- PC端头部样式 -->
+      <div class="cm-allStem-head">
+        <div class="cm-allStem-head-title">{{paperDetails.paperName}}</div>
+          <div class="cm-allStem-head-time">
+            <i class="iconfont">&#xe618;</i>
+            <span>{{timeHtml}}</span>
+          </div>
+          <div class="cm-allStem-head-card" @click.stop="answerCardHandler">
+            {{`展开答题卡(${nowquesIndex}/${totalTopic})`}}
+            
+            <!-- 答题卡组件 -->
+            <answer-card 
+              v-if="answerCardOpen" 
+              :paperDetails="paperDetails.bigQuestions" 
+              @switch="switchHandler"
+              @submit="getSubmitCon"></answer-card>
+          </div>
+      </div>
+
+      <!-- 移动端头部样式 -->
+      <div class="cm-allStem-mhead" :class="{'cm-allStem-mheadOpen': answerCardOpen}">
+        <div class="allStem-mhead-top">
+          
+          <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen">
+            <i class="iconfont">&#xe605;</i>
+          </div>
+          <div class="mhead-top-name">{{paperDetails.paperName}}</div>
+          <div class="mhead-top-btn" v-if="paperState == 1" @click.stop="answerCardHandler">{{answerCardOpen ? '答题卡[提交]' : '答题卡[返回]'}}</div>
+        </div>
+
+        <div class="allStem-mhead-bot">
+          <div class="mhead-bot-time">{{`考试时间：${timeHtml}`}}</div>
+          <div class="mhead-bot-order">{{paperState == 1 ? `${nowquesIndex}/${totalTopic}` : `总分：${paperDetails.totalScore}分`}}</div>
+        </div>
+        
+          <!-- 答题卡组件 -->
+          <answer-card 
+            v-if="answerCardOpen" 
+            :paperDetails="paperDetails.bigQuestions" 
+            @switch="switchHandler"
+            @submit="getSubmitCon"></answer-card>
+      </div>
+    </slot>
+
     <div
       class="swiper-container small answerpaperList"
       style="touch-action: none;"
@@ -49,6 +96,15 @@
         </template>
       </div>
     </div>
+
+    <!-- 作答时footer -->
+    <slot name="footer">
+      <div class="cm-allStem-footer">
+        <div class="cm-allStem-footer-item" v-if="nowquesIndex - 1" @click="slidePrevHandler">上一题</div>
+        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd ? '提交' : '下一题'}}</div>
+      </div>
+    </slot>
+
   </div>
 </template>
 
@@ -57,6 +113,8 @@ import baseTypeStem from "./baseTypeStem"; // 基础题型组件
 import compoundTypeStem from "./compoundTypeStem"; // 复合题型组件
 import tipsPage from "../tipsPage/index"; // 暂无数据提示页面
 import answerSheet from "../answerPanel/index"; // 作答面板
+
+import answerCard from "../answerCard/index"; // 作答卡组件
 export default {
   name: "cm-all-stem",
   components: {
@@ -64,6 +122,7 @@ export default {
     compoundTypeStem,
     tipsPage,
     answerSheet,
+    answerCard
   },
   props: {
     // 试卷状态，0 预览  1 做答中 2 作答完成
@@ -78,6 +137,11 @@ export default {
         return {};
       },
     },
+    // 试卷作答或预览倒计时
+    timeHtml: {
+      type: String,
+      default: '0分0秒',
+    }
   },
   watch: {
     /**
@@ -128,6 +192,10 @@ export default {
       nextTime: null, // 离开作答题时间
       nowTime: null, // 进入作答题时间
       nowquesIndex: 1, // 当前题目下标
+      totalTopic: 0, // 题总数
+
+      answerCardOpen: false, //是否打开答题卡， => true 打开
+      isEnd: false, // 是否是最后一题， => true 最后一题
     };
   },
   created() {},
@@ -145,9 +213,9 @@ export default {
             loop: false,
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true, //修改swiper的父元素时，自动初始化swiper
-            grabCursor : true,
             onSlideChangeEnd: function(swiper) {
               let index = _this.nowquesIndex - 1;
+              _this.isEnd = swiper.isEnd; // 是否是最后一题
               _this.nextTime = new Date().getTime();
               if (_this.submitCon.questionList[index].isComplexQuestion == 0) {
                 _this.submitCon.questionList[
@@ -168,16 +236,21 @@ export default {
     },
 
     /**
+     * 点击返回
+     */
+    goBack() {
+      this.$emit('goBack');
+    },
+
+    /**
      * 基础题型,作答答案处理
      */
     onceChoice(item, question) {
-      // this.paperDetails.bigQuestions.smallQuestions[nowquesIndex - 1].
-      // debugger
       item.userAnswer = this.updataSetsubmitCon(item, question);
       // 更新提交内容值
       for (let i = 0; i < this.submitCon.questionList.length; i++) {
         let nowSubmitCon = this.submitCon.questionList[i];
-        if (nowSubmitCon.questionCode == item.id) {
+        if (nowSubmitCon.questionCode == item.smallId) {
           this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(item, question);
         };
       }
@@ -190,10 +263,12 @@ export default {
       // 更新提交内容值
       for (let i = 0; i < this.submitCon.questionList.length; i++) {
         let nowSubmitCon = this.submitCon.questionList[i];
-        if (nowSubmitCon.complexQuestionCode == item.id) {
+        if (nowSubmitCon.questionCode == item.componentId) {
           this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(item, question);
         }
       }
+
+      console.log(this.submitCon.questionList);
     },
 
     /**
@@ -282,8 +357,11 @@ export default {
      */
     setsubmitCon(data) {
       const _this = this;
+      data.bigQuestions.forEach(item => {
+        this.totalTopic += item.smallQuestions.length;
+      });
       //学年
-      _this.submitCon.gradeCode = data.gradecode;
+      _this.submitCon.gradeCode = data.gradeCode;
       //试卷code
       _this.submitCon.paperId = data.paperId;
       //试卷name
@@ -294,6 +372,7 @@ export default {
       _this.submitCon.subjectCode = data.subjectCode;
 
       for (let i = 0; i < data.bigQuestions.length; i++) {
+        
         for (let j = 0; j < data.bigQuestions[i].smallQuestions.length; j++) {
           let nowSmallQuestion = data.bigQuestions[i].smallQuestions[j];
           //复合题
@@ -319,7 +398,7 @@ export default {
               let nowComponentQuestion = nowSmallQuestion.componentQuestionModels[y];
               obj.complexQuestionCode = nowComponentQuestion.smallId;
               obj.questionType = nowComponentQuestion.componentType;
-              obj.questionCode = nowSmallQuestion.componentId;
+              obj.questionCode = nowComponentQuestion.componentId;
               obj.questionScore = nowComponentQuestion.componentScore;
               obj.questionSn = nowComponentQuestion.componentSort;
               obj.rightAnswer = nowComponentQuestion.answer;
@@ -387,152 +466,114 @@ export default {
 
     
     /**
+     * 点击上一题
+     */
+    slidePrevHandler() {
+      this.mySwiper.slidePrev(true, 300);
+    },
+
+    /**
+     * 点击下一题或提交
+     */
+    slideNextHandler() {
+      this.mySwiper.slideNext(true, 300);
+      if (this.isEnd) {
+        this.getSubmitCon();
+      }
+    },
+    
+    /**
      * 答题卡做题情况
      */
-    getAnswerSituation() {
-      var _this = this;
-      for (var i = 0; i < _this.paperDetails.bigQuestions.length; i++) {
-        for (
-          var j = 0;
-          j < _this.paperDetails.bigQuestions[i].smallQuestions.length;
-          j++
-        ) {
-          var nowSmallQuestion = _this.paperDetails.bigQuestions[i].smallQuestions[j];
-
-          if (nowSmallQuestion.smallType != "6") {
-            if (nowSmallQuestion.smallType == "4") {
-              for (var x = 0; x < _this.submitCon.questionList.length; x++) {
-                if (
-                  nowSmallQuestion.id ==
-                  _this.submitCon.questionList[x].questionCode
-                ) {
-                  let isFour = _this.submitCon.questionList[x].userAnswer;
-                  let t = JSON.parse(isFour).every(val => {
-                    //判断填空题是否一道没做
-                    return !!val;
-                  });
-
-                  if (t == "" || !t) {
-                    _this.paperDetails.bigQuestions[i].smallQuestions[
-                      j
-                    ].hasAnswer = false;
-                  } else {
-                    var fourAnswer = true;
-                    for (
-                      var b = 0;
-                      b <
-                      JSON.parse(_this.submitCon.questionList[x].userAnswer)
-                        .length;
-                      b++
-                    ) {
-                      if (
-                        JSON.parse(_this.submitCon.questionList[x].userAnswer)[
-                          b
-                        ].answerValue == ""
-                      ) {
-                        fourAnswer = false;
-                      }
-                    }
-                    _this.paperDetails.bigQuestions[i].smallQuestions[
-                      j
-                    ].hasAnswer = fourAnswer;
-                  }
+    answerCardHandler() {
+      if (this.answerCardOpen) {
+        this.answerCardOpen = false;
+        return;
+      }
+      this.paperDetails.bigQuestions.forEach(item => {
+          // 记录没道大题下小题的作答题数量
+          item.anserNum = 0;
+          if (item.bigType != 6) { // 非复合题
+              item.smallQuestions.forEach(ele => {
+                this.handlerPaper(ele, item);
+                if (ele.hasAnswer) {
+                  item.anserNum++;
                 }
-              }
-            } else {
-              for (var x = 0; x < _this.submitCon.questionList.length; x++) {
-                if (
-                  nowSmallQuestion.id ==
-                  _this.submitCon.questionList[x].questionCode
-                ) {
-                  if (_this.submitCon.questionList[x].userAnswer != "") {
-                    _this.paperDetails.bigQuestions[i].smallQuestions[
-                      j
-                    ].hasAnswer = true;
-                  } else {
-                    _this.paperDetails.bigQuestions[i].smallQuestions[
-                      j
-                    ].hasAnswer = false;
-                  }
+              });
+          } else { // 复合题
+            item.smallQuestions.forEach(ele => {
+              ele.hasAnswer = false;
+              let hasAnswer = true;
+              ele.componentQuestionModels.forEach((nape) => {
+                const ii = this.handlerPaper(nape, item, ele);
+                if (!ii) {
+                  hasAnswer = false;
                 }
+              });
+              if (hasAnswer) {
+                ele.hasAnswer = true;
+                item.anserNum++;
               }
-            }
+            });
+          }
+      });
+
+
+      this.answerCardOpen = true;
+      return this.paperDetails;
+    },
+
+    /**
+     * 处理答题卡做题情况数据
+     */
+    handlerPaper(ele,item, parent) {
+      let parentHasAnswer = true; // 复合题下分支题是否全部作答标识
+      this.submitCon.questionList.forEach(ele2 => {
+        const type = ele.componentType || ele.smallType;
+        const smallId = ele.componentId || ele.smallId;
+
+        if (ele2.questionCode == smallId && type != 4) { // 非填空题
+          ele.hasAnswer = parentHasAnswer = ele2.userAnswer != '' ? true : false; // 记录该题是否作答
+        }
+
+        if (ele2.questionCode == smallId && type == 4) { // 填空题
+
+          let isFour = ele2.userAnswer;
+          let t = JSON.parse(isFour).every(val => {return !!val;});  //判断填空题是否一道没做
+
+          // 记录该题是否作答
+          if (t == "" || !t) { 
+            ele.hasAnswer = parentHasAnswer = false; 
           } else {
-            for (
-              var c = 0;
-              c < nowSmallQuestion.componentQuestionModels.length;
-              c++
-            ) {
-              if (
-                nowSmallQuestion.componentQuestionModels[c].type == "4"
-              ) {
-                var hasAnswer = true;
-                for (var y = 0; y < _this.submitCon.questionList.length; y++) {
-                  if (
-                    nowSmallQuestion.componentQuestionModels[c].componentId ==
-                    _this.submitCon.questionList[y].questionCode
-                  ) {
-                    let isFour = _this.submitCon.questionList[y].userAnswer;
-                    let t = JSON.parse(isFour).some(val => {
-                      //判断填空题是否一道没做
-                      return !!val;
-                    });
-                    if (t == "" || !t) {
-                      _this.paperDetails.bigQuestions[i].smallQuestions[
-                        j
-                      ].hasAnswer = false;
-                    } else {
-                      var fourAnswer = true;
-                      for (
-                        var b = 0;
-                        b <
-                        JSON.parse(_this.submitCon.questionList[y].userAnswer)
-                          .length;
-                        b++
-                      ) {
-                        if (
-                          JSON.parse(
-                            _this.submitCon.questionList[y].userAnswer
-                          )[b].answerValue == ""
-                        ) {
-                          fourAnswer = false;
-                        }
-                      }
-                      _this.paperDetails.bigQuestions[i].smallQuestions[
-                        j
-                      ].hasAnswer = fourAnswer;
-                    }
-                  }
-                }
-              } else {
-                var hasAnswer = true;
-                for (var y = 0; y < _this.submitCon.questionList.length; y++) {
-                  if (
-                    nowSmallQuestion.componentQuestionModels[c].id ==
-                    _this.submitCon.questionList[y].complexQuestionCode
-                  ) {
-                    if (_this.submitCon.questionList[y].userAnswer == "") {
-                      hasAnswer = false;
-                    }
-                    _this.paperDetails.bigQuestions[i].smallQuestions[
-                      j
-                    ].hasAnswer = !_this.submitCon.questionList[y].userAnswer ? false : true;
-                    // return
-                    // debugger
-                  }
-                }
+            let fourAnswer = true;
+            JSON.parse(ele2.userAnswer).forEach(ele3 => {
+              if (ele3.answerValue == '') {
+                fourAnswer = parentHasAnswer = false;
               }
-            }
+            });
+            ele.hasAnswer = fourAnswer;
           }
         }
+      });
+
+      return parentHasAnswer;
+    },
+
+    /**
+     * 根据题号切换到该题
+     */
+    switchHandler(index) {
+      if (document.body.offsetWidth < 1024) {
+        this.answerCardOpen = false;
       }
-      return _this.paperDetails;
+      this.mySwiper.slideTo(index, 300, true);
     },
 
     /**
      * 获取提交内容
      */
     getSubmitCon() {
+      this.$emit('submit', this.submitCon);
       return this.submitCon;
     },
   },
@@ -540,21 +581,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.allStem {
+.cm-allStem {
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
   z-index: 1;
   touch-action: none;
+  display: flex;
+  flex-direction: column;
   .swiper-container {
+    flex: 1;
     .swiper-slide {
       .swiper-slideAnswer {
         .big-name {
-          padding: 0.24rem;
+          padding: 0.24rem 0;
         }
       }
     }
   }
+  .cm-allStem-footer {
+    display: none;
+  }
+  .cm-allStem-head {
+    display: none;
+  }
+  .cm-allStem-mhead {
+    display: none;
+  }
+  
 }
 /*作答试题样式*/
 .paper {
@@ -583,7 +637,7 @@ export default {
           }
         }
         .big-name {
-          font-size: .24rem;
+          font-size: .24rem 0;
           color: #999999;
         }
       }
@@ -599,22 +653,118 @@ export default {
   .answerpaperList {
     .swiper-wrapper {
       flex-direction: column;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .swiper-slide {
+        height: initial;
+        &:last-child {
+          padding-bottom: 20px;
+        }
+      }
     }
   }
 }
 
 @media screen and (min-width: 1024px) {
 
-  .allStem {
+  .cm-allStem {
     .swiper-container {
       .swiper-slide {
         .swiper-slideAnswer {
           .big-name {
-            padding: 14px;
+            padding: 14px 0;
             font-size: 16px;
             color: #3C3C3C;
             font-weight: bold;
           }
+        }
+      }
+    }
+    
+    .cm-allStem-footer {
+      height: 56px;
+      margin: auto;
+      border-top: 1px solid #E8E8E8;
+      display: flex;    
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      .cm-allStem-footer-item {
+        width: 100px;
+        height: 28px;
+        line-height: 28px;
+        background: #FFFFFF;
+        border: 1px solid #E8E8E8;
+        border-radius: 14px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #5E5E5E;
+        user-select: none;
+        &:last-child {
+          margin-left: 30px;
+        }
+        &:hover {
+          cursor: pointer;
+          background: #F2F8FF;
+          border: 1px solid #237DEC;
+          color: #237DEC;
+        }
+      }
+    }
+    .cm-allStem-head {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      border-bottom: 1px solid #E8E8E8;
+      height: 56px;
+      margin: auto;
+      position: relative;
+      width: 100%;
+      .cm-allStem-head-title {
+        width: 610px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 16px;
+        font-weight: 400;
+        color: #3C3C3C;
+      }
+      .cm-allStem-head-time {
+        
+        font-size: 14px;
+        font-weight: 400;
+        color: #5E5E5E;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .iconfont {
+          height: 14px;
+          width: 14px;
+          margin-right: 5px;
+        }
+      }
+      .cm-allStem-head-card {
+        height: 36px;
+        padding: 0 20px;
+        line-height: 36px;
+        text-align: center;
+        background: #F2F8FF;
+        border-radius: 18px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #237DEC;
+        margin-left: 30px;
+        user-select: none;
+        position: relative;
+        &:hover {
+          cursor: pointer;
+
         }
       }
     }
@@ -628,6 +778,64 @@ export default {
   /** 预览样式 */
   .preview {
 
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .cm-allStem {
+    .cm-allStem-mhead {
+      display: block;
+      position: relative;
+      .allStem-mhead-top {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        .head-time-icon {
+          position: absolute;
+          left: 0;
+          width: 50px;
+          height: 100%;
+          display: flex;
+          align-items: center;
+        }
+        .mhead-top-name {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #3C3C3C;
+            font-size: 16px;
+        }
+        .mhead-top-btn {
+          position: absolute;
+          right: 0;
+          padding: 4px;
+          border-radius: 50px;
+          border: 1px solid var(--color1);
+          background: var(--color2);
+          color: var(--color1);
+          font-size: 14px;
+        }
+      }
+      .allStem-mhead-bot {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 14px;
+          color: #5E5E5E;
+          height: 40px;
+          background: #f7f7f7f7;
+      }
+      .cm-answerCard {
+        height: calc(100% - 90px);
+      }
+    }
+    .cm-allStem-mheadOpen {
+      height: 100%;
+    }
   }
 }
 </style>

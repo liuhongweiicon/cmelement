@@ -11,7 +11,7 @@
         :style="{ height: heightNum + 'rem' }"
       >
         <textarea
-          @blur="onceChoice(questionDetails, textCon)"
+          @blur="onceChoice"
 		  placeholder="请输入答案"
           v-model="textCon"
         ></textarea>
@@ -32,7 +32,8 @@
 			</div>
 			<div class="bottom-gestalt" :style="{ height: heightNum + 'rem' }" @touchmove.stop>
 				<div>
-					<div class="swiper-container top-index">
+					<div class="swiper-container top-index"
+						:class="'top-index' + orderNum">
 						<div class="swiper-wrapper" >
 							<div
 								class="swiper-slide"
@@ -49,17 +50,18 @@
 					
 					<div
 						class="bottom-topic"
+						:class="'bottom-topic' + orderNum"
 						:style="{ height: heightNum - 1.28 + 'rem' }"
 						>
 						<div
 							v-for="(item6, index6) in (screenWidth ? componentQuestion : [componentQuestion[nowIndex]])"
-							:key="index6"
+							:key="item6.componentId"
 						>
 							<base-type-stem
 								@onceChoice="twoChoice"
 								:questionDetails="paperDataHandler(item6)"
 								:paperState="paperState"
-								:orderNum="nowIndex + 1"
+								:orderNum="screenWidth ? index6 + 1 : nowIndex + 1"
 							></base-type-stem>
 						</div>
 					</div>
@@ -107,6 +109,14 @@ export default {
 			type: String | Number,
 			default: 0,
 		},
+
+		/**
+		 * 试题序号
+		 */
+		orderNum: {
+			type: String | Number,
+			default: '0',
+		}
 	},
 	components: {
 		baseTypeStem,
@@ -124,17 +134,13 @@ export default {
 	},
 	watch: {
 		gestaltShow(val) {
+			const _this = this;
 			if (val && this.questionType == 6) {
-				
-				setTimeout(() => {
-					this.swiperInfo = new Swiper(".top-index", {
-						slidesPerView: "auto",
-						loop: false,
-						observer: true, //修改swiper自己或子元素时，自动初始化swiper
-						observeParents: true, //修改swiper的父元素时，自动初始化swiper
-					});
-
-				}, 500);
+				_this.swiperInfo = new Swiper(".top-index" + this.orderNum, {
+					slidesPerView: "auto",
+					loop: false,
+				});
+				console.log(_this.swiperInfo);
 			}
 		}
 	},
@@ -153,6 +159,7 @@ export default {
 		},
 		//复合题中点击下方小题
 		getnowIndex(item, index) {
+			document.querySelector('.bottom-topic' + this.orderNum).scrollTop = 0;
 			if (index >= 3) {
 				this.swiperInfo.slideNext();
 			}
@@ -186,8 +193,9 @@ export default {
 			}
 		},
 		//主观题提交
-		onceChoice(questionDetails, textCon) {
-			this.$emit("onceChoice", questionDetails, textCon);
+		onceChoice() {
+			
+			this.$emit("onceChoice", this.questionDetails, this.textCon);
 		},
 		//复合题提交
 		twoChoice(optionitem, emitoption) {
@@ -268,7 +276,8 @@ export default {
       .top-index {
         width: 100%;
         overflow: hidden;
-        margin: 0.38rem 0;
+        border-bottom: 1px solid #d4d4d4;
+    	padding: .2rem 0;
         ul {
           display: flex;
         }

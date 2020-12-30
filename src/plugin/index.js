@@ -1,6 +1,7 @@
 
 
 import './static/css/reset.css';
+import './static/css/iconfont.css';
 import './js/swiper/index.css'; // swiper样式
 import './js/swiper/swiper'; // swiperJS
 
@@ -13,6 +14,7 @@ import cmCompoundTypeStem from './questionStem/compoundTypeStem'; // 复合题�
 import cmAllStem from './questionStem/allStem'; // 试卷组件
 import cmTipspage from './tipsPage/index.vue'; // 无数据提示页
 import cmTopicDrt from './topicDrt/index.vue'; // 题干
+import cmAnswerCard from './answerCard/index.vue'; // 答题卡
 
 let cmelement = {};
 
@@ -28,6 +30,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmAllStem.name, cmAllStem);
     Vue.component(cmTipspage.name, cmTipspage);
     Vue.component(cmTopicDrt.name, cmTopicDrt);
+    Vue.component(cmAnswerCard.name, cmAnswerCard);
 };
 
 export default cmelement;

@@ -25,6 +25,7 @@
             <div v-if="paperState == 1 && compoundDetails.type == 6 " class="compoundTypeStem-answerSheet">
                 <answer-sheet
                     questionType="6"
+                    :orderNum="orderNum"
                     @beginGestalt="beginGestalt"
                     @getnowIndex="getnowIndex" 
                     @twoChoice="twoChoice" 

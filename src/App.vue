@@ -1,8 +1,11 @@
 <template>
     <div id="app">
-        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="1" @slideChangeEnd="slideChangeEndHnadler"></cm-all-stem>
-        <!-- <div @click="getAnswer">作答卡</div>
-        <div @click="submit">提交</div> -->
+        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="1" timeHtml="0分0秒" @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler"></cm-all-stem>
+
+        <!-- <div @click="getAnswer">作答卡</div> -->
+
+        <!-- <cm-answer-card></cm-answer-card> -->
+        <!-- <div @click="submit">提交</div> -->
     </div>
 </template>
 
@@ -46,8 +49,14 @@ export default {
          * 获取作答情况
          */
         getAnswer() {
-            this.paperDetails = this.$refs.allStem.getAnswerSituation();
+           console.log(this.$refs.allStem.getAnswerSituation());
         },
+        /**
+         * 提交作答
+         */
+        submitHandler(item) {
+        },
+        
         /**
          * 提交作答
          */
