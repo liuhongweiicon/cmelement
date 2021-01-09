@@ -13,7 +13,7 @@
             <i class="iconfont">&#xe618;</i>
             <span>{{timeHtml}}</span>
           </div>
-          <div class="cm-allStem-head-card" @click.stop="answerCardHandler">
+          <div class="cm-allStem-head-card" @click.stop="answerCardHandler" v-if="paperState == 1">
             {{`展开答题卡(${nowquesIndex}/${totalTopic})`}}
             
             <!-- 答题卡组件 -->
@@ -33,7 +33,7 @@
             <i class="iconfont">&#xe605;</i>
           </div>
           <div class="mhead-top-name">{{paperDetails.paperName}}</div>
-          <div class="mhead-top-btn" v-if="paperState == 1" @click.stop="answerCardHandler">{{answerCardOpen ? '答题卡[提交]' : '答题卡[返回]'}}</div>
+          <div class="mhead-top-btn" v-if="paperState == 1" @click.stop="answerCardHandler">{{answerCardOpen ? '答题卡[返回]' : '答题卡[提交]'}}</div>
         </div>
 
         <div class="allStem-mhead-bot">
@@ -99,12 +99,11 @@
 
     <!-- 作答时footer -->
     <slot name="footer">
-      <div class="cm-allStem-footer">
+      <div class="cm-allStem-footer" v-if="paperState == 1">
         <div class="cm-allStem-footer-item" v-if="nowquesIndex - 1" @click="slidePrevHandler">上一题</div>
-        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd ? '提交' : '下一题'}}</div>
+        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd || !submitCon.questionList.length ? '提交' : '下一题'}}</div>
       </div>
     </slot>
-
   </div>
 </template>
 
@@ -176,17 +175,8 @@ export default {
 
       submitCon: {
         //提交内容
-        appKey: "",
-        gradeCode: "", //学年
-        paperId: "", //试卷code ,
-        paperName: "", //试卷name
-        paperScore: 21, //试卷分数
-        subjectCode: "3", //学科code
-        userId: null, //用户id
-        userName: null, //用户name
-        mobile: "", //用户手机号
+        paperId: "", //试卷code 
         questionList: [], //试题作答数组
-        useTime: 0, //答题总时间
       },
 
       nextTime: null, // 离开作答题时间
@@ -268,7 +258,6 @@ export default {
         }
       }
 
-      console.log(this.submitCon.questionList);
     },
 
     /**
@@ -360,16 +349,8 @@ export default {
       data.bigQuestions.forEach(item => {
         this.totalTopic += item.smallQuestions.length;
       });
-      //学年
-      _this.submitCon.gradeCode = data.gradeCode;
       //试卷code
       _this.submitCon.paperId = data.paperId;
-      //试卷name
-      _this.submitCon.paperName = data.paperName;
-      //试卷分数
-      _this.submitCon.paperScore = data.totalScore;
-      //学科code
-      _this.submitCon.subjectCode = data.subjectCode;
 
       for (let i = 0; i < data.bigQuestions.length; i++) {
         
@@ -594,7 +575,7 @@ export default {
     .swiper-slide {
       .swiper-slideAnswer {
         .big-name {
-          padding: 0.24rem 0;
+          padding: 12px 0;
         }
       }
     }
@@ -626,24 +607,24 @@ export default {
         height: 100%;
         .swiper-slide_content {
           flex: 1;
-          height: 1px;
+          height: 0;
         }
         .slide_content_slide {
           // overflow-y: auto;
           // -webkit-overflow-scrolling: touch;
-          // padding-bottom: .2rem;
+          // padding-bottom: 10px;
           &::-webkit-scrollbar {
             display: none;
           }
         }
         .big-name {
-          font-size: .24rem 0;
+          font-size: 12px 0;
           color: #999999;
         }
       }
     }
     .cony {
-      padding: 0 0.5rem;
+      padding: 0 25px;
     }
   }
 }
@@ -734,6 +715,7 @@ export default {
         font-size: 16px;
         font-weight: 400;
         color: #3C3C3C;
+          text-align: center;
       }
       .cm-allStem-head-time {
         
@@ -808,6 +790,7 @@ export default {
             white-space: nowrap;
             color: #3C3C3C;
             font-size: 16px;
+            text-align: center;
         }
         .mhead-top-btn {
           position: absolute;

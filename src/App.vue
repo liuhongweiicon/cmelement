@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="1" timeHtml="0分0秒" @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler"></cm-all-stem>
+        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="2" timeHtml="0分0秒" @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
 
         <!-- <div @click="getAnswer">作答卡</div> -->
 
@@ -56,12 +56,18 @@ export default {
          */
         submitHandler(item) {
         },
-        
+
         /**
          * 提交作答
          */
         submit() {
             const jj = this.$refs.allStem.getSubmitCon();
+        },
+        /**
+         * 点击回退
+         */
+        goBackHandler() {
+            
         },
     }
 }

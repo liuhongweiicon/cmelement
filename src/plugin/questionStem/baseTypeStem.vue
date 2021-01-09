@@ -49,7 +49,7 @@
             v-for="(answertem, index) in questionDetailsInfo.answer"
             :key="index"
           >
-            <div class="blank">
+            <div class="blank" :class="{'compound-blank': !questionDetailsInfo.componentId}">
               <span class="index">{{ index + 1 }}</span>
               <span class="line"></span>
               <div class="cont">
@@ -342,13 +342,14 @@ export default {
     questionDetails: {
       handler(val) {
         this.questionDetailsInfo = JSON.parse(JSON.stringify(val));
-        this.dataHandler(this.questionDetailsInfo);
+        // this.dataHandler(this.questionDetailsInfo);
       },
       immediate: true,
       deep: true,
     },
   },
   mounted() {
+    this.dataHandler(this.questionDetailsInfo);
   },
   methods: {
     onceChoice: function(optionitem, index) {
@@ -435,6 +436,7 @@ export default {
         if (typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
+            console.log(obj, 'obj')
             if (_this.paperState == 2) {
               var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : '';
             }
@@ -454,6 +456,7 @@ export default {
               this.$set(this.questionDetailsInfo, "userAnswer", useranswerArr);
             }
             this.$set(this.questionDetailsInfo, "answer", obj);
+            console.log(this.questionDetailsInfo, 'this.questionDetailsInfo')
           }
         }
       }
@@ -473,27 +476,27 @@ export default {
       display: none;
     }
     .baseTypeStem_key {
-      padding-bottom: .2rem;
+      padding-bottom: 10px;
       /*选择*/
       .op {
         display: flex;
-        padding: .3rem .3rem 0;
+        padding: 15px 15px 0;
         .op-item {
           box-sizing: border-box;
-          padding: .26rem;
+          padding: 13px;
           border: 1px solid #cccccc;
-          border-radius: 0.2rem;
+          border-radius: 10px;
           display: flex;
           width: 100%;
           align-items: center;
           .key, .value {
-            font-size: .26rem;
-            line-height: 0.4rem;
+            font-size: 13px;
+            line-height: 20px;
             white-space: pre-wrap;
             word-break: break-word;
             &>span {
               word-wrap: break-word;
-              line-height: 0.48rem;
+              line-height: 24px;
               img{
                 width:100% !important;
                 display: block;
@@ -509,10 +512,9 @@ export default {
           
           .line {
             display: inline-block;
-            // width: 2px;
             border-right: 1px solid #CCCCCC;
-            height: .3rem;
-            margin: 0 .28rem 0 .25rem;
+            height: 15px;
+            margin: 0 14px 0 12.5px;
           }
 
         }
@@ -546,9 +548,9 @@ export default {
       .blanks{
         .blank{
           border: 1px solid #ccc;
-          font-size: 0.26rem;
-          border-radius: 0.2rem;
-          margin: 0.32rem 0.24rem 0;
+          font-size: 13px;
+          border-radius: 10px;
+          margin: 16px 12px 0;
           position: relative;
           z-index: 1;
           display: flex;
@@ -556,19 +558,19 @@ export default {
           /*填空key值*/
           .index{
             z-index: 1;
-            font-size: .26rem;
+            font-size: 13px;
             color: #3C3C3C;
-            padding-left: .27rem;
+            padding-left: 13.5px;
           }
           .line {
             display: inline-block;
             border-right: 1px solid #CCCCCC;
-            height: .3rem;
-            margin: 0 .28rem 0 .25rem;
+            height: 15px;
+            margin: 0 14px 0 12.5px;
           }
           /*input外层容器*/
           .cont{
-            padding:  .2rem .2rem .2rem 0;
+            padding:  10px 10px 10px 0;
             box-sizing: border-box;
             width: 100%;
             z-index: 1;
@@ -579,7 +581,7 @@ export default {
             // overflow: hidden;
             width: 100%;
             height: 100%;
-            font-size: 0.28rem;
+            font-size: 14px;
             background-color: transparent;
             overflow: hidden;  // 防止换行出现滚动条闪动
             box-sizing: border-box;
@@ -590,7 +592,7 @@ export default {
             }
             &::-webkit-input-placeholder {
               color: #BBBBBB;
-              font-size: .26rem;
+              font-size: 13px;
             }
           }
           /*正确*/
@@ -615,19 +617,19 @@ export default {
       /*判断题*/
       .judge {
         
-        margin: 0.26rem 0.24rem 0;
+        margin: 13px 12px 0;
         font-family: "微软雅黑";
         &>div {
           border: 1px solid #ccc;
-          font-size: 0.32rem;
-          border-radius: 0.2rem;
+          font-size: 16px;
+          border-radius: 10px;
           width: 100%;
-          height: 0.88rem;
-          line-height: 0.88rem;
+          height: 44px;
+          line-height: 44px;
           text-align: left;
-          // margin-bottom: 0.3rem;
-          margin-top: .3rem;
-          padding-left: .4rem;
+          // margin-bottom: 15px;
+          margin-top: 15px;
+          padding-left: 20px;
           box-sizing: border-box;
           /*点击情况*/
           &.active {
@@ -655,29 +657,29 @@ export default {
           justify-content: space-between;
           /*左侧index值*/
           .left-index {
-            margin-top: 0.56rem;
-            font-size: 0.3rem;
+            margin-top: 28px;
+            font-size: 15px;
           }
           /*右侧选项值*/
           .right-options {
-            width: 6.18rem;
+            width: 309px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             & >div {
-              width: 2.98rem;
-              height: 0.84rem;
-              line-height: 0.84rem;
+              width: 149px;
+              height: 42px;
+              line-height: 42px;
               border: 1px solid #cccccc;
-              border-radius: 0.1rem;
-              margin-top: 0.24rem;
+              border-radius: 5px;
+              margin-top: 12px;
               .key {
-                font-size: 0.26rem;
-                padding-right: 0.2rem;
-                padding-left: 0.3rem;
+                font-size: 13px;
+                padding-right: 10px;
+                padding-left: 15px;
               }
               .value {
-                font-size: 0.28rem;
+                font-size: 14px;
               }
             }
             /*正确情况*/
@@ -696,15 +698,15 @@ export default {
 
       /*书面表达*/
       .written {
-        /*line-height: 0.48rem;*/
-        font-size: 0.28rem;
+        /*line-height: 24px;*/
+        font-size: 14px;
         .answer-wrap {
           border: 1px solid #d9d9d9;
-          margin: 0.24rem 0.24rem 0;
-          padding: 0.24rem;
+          margin: 12px 12px 0;
+          padding: 12px;
           word-break: break-word;
-          line-height: 0.4rem;
-          border-radius: 0.08rem;
+          line-height: 20px;
+          border-radius: 4px;
         }
         /*正确情况*/
         .ok {
@@ -723,11 +725,11 @@ export default {
     
     /*答案 解析*/
     .result{
-      padding: 0.22rem 0.24rem 0;
+      padding: 11px 12px 0;
       font-family: "微软雅黑";
       .name,.value{
-        font-size: 0.3rem;
-        line-height: 0.48rem;
+        font-size: 15px;
+        line-height: 24px;
       }
       &.analysis{
         
@@ -739,14 +741,14 @@ export default {
             
             color: #808080;
             /deep/ span {
-              font-size: 0.3rem!important;
+              font-size: 15px!important;
               font-weight: 400 !important;
-              line-height: 0.48rem!important;
+              line-height: 24px!important;
               font-family: "微软雅黑"!important;
               color: #808080 !important;
             }
             span:first-child {
-              margin-right: .2rem;
+              margin-right: 10px;
             }
             span:last-child {
               flex: 1;
@@ -763,9 +765,9 @@ export default {
           flex: 1;
           color: #7ac858;
           /deep/ span {
-            font-size: 0.3rem!important;
+            font-size: 15px!important;
             font-weight: 400 !important;
-            line-height: 0.48rem!important;
+            line-height: 24px!important;
             font-family: "微软雅黑"!important;
           }
         }
@@ -774,6 +776,11 @@ export default {
     /*填空题答案*/
     .blanks-answer {
       display: flex;
+    }
+    .topicDrt {
+      /deep/p {
+        margin: 0;
+      }
     }
 }
 .baseTypeStem_voice {
@@ -860,7 +867,6 @@ export default {
           border-radius: 5px;
           margin: 20px 24px 0;
           font-size: 20px;
-          width: 50%;
           .index {
             display: flex;
             justify-content: center;
@@ -883,6 +889,9 @@ export default {
               }
             }
           }
+        }
+        .compound-blank {
+          width: 50%;
         }
       }
 

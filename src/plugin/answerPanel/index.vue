@@ -8,7 +8,7 @@
       <div
         class="bottom-written"
         v-show="writtentoggle"
-        :style="{ height: heightNum + 'rem' }"
+        :style="{ height: heightNum + 'px' }"
       >
         <textarea
           @blur="onceChoice"
@@ -30,15 +30,15 @@
 			<div class="top-img" draggable="true" @touchmove="move" @click="toggle">
 				<img src="../static/img/sheet_bg.png" />
 			</div>
-			<div class="bottom-gestalt" :style="{ height: heightNum + 'rem' }" @touchmove.stop>
-				<div>
+			<div class="bottom-gestalt" :style="{ height: heightNum + 'px' }" @touchmove.stop>
+				<div class="bottom-gestalt-wrap">
 					<div class="swiper-container top-index"
 						:class="'top-index' + orderNum">
 						<div class="swiper-wrapper" >
 							<div
 								class="swiper-slide"
 								:class="[{ topactive: nowIndex == index5 }]"
-								style="width: 1.32rem;"
+								style="width: 66px;"
 								@click="getnowIndex(item5, index5)"
 								v-for="(item5, index5) in componentQuestion"
 								:key="index5"
@@ -51,13 +51,14 @@
 					<div
 						class="bottom-topic"
 						:class="'bottom-topic' + orderNum"
-						:style="{ height: heightNum - 1.28 + 'rem' }"
+						:style="{ height: heightNum - 1 + 'px' }"
 						>
 						<div
-							v-for="(item6, index6) in (screenWidth ? componentQuestion : [componentQuestion[nowIndex]])"
+							v-for="(item6, index6) in componentQuestion"
 							:key="item6.componentId"
 						>
 							<base-type-stem
+								v-show="index6 == nowIndex"
 								@onceChoice="twoChoice"
 								:questionDetails="paperDataHandler(item6)"
 								:paperState="paperState"
@@ -123,7 +124,7 @@ export default {
 	},
 	data() {
 		return {
-			heightNum: "5.86",
+			heightNum: "293",
 			writtentoggle: true, // 主观题答题面板是否显示， => true 显示
 			nowIndex: 0, //当前题目下标
 			textCon: "", //主观题内容
@@ -140,7 +141,6 @@ export default {
 					slidesPerView: "auto",
 					loop: false,
 				});
-				console.log(_this.swiperInfo);
 			}
 		}
 	},
@@ -168,20 +168,14 @@ export default {
 		},
 		//调整高度
 		move(e) {
-			// 1rem 等于多少px
-			var renNum =
-			(document.documentElement.getBoundingClientRect().width * 100) / 750;
-			//高度
-			var screenHeight = document.documentElement.getBoundingClientRect()
-			.height;
-			//高度rem数
-			var screenRem = screenHeight / renNum;
-			this.heightNum = screenRem - e.changedTouches[0].clientY / renNum;
-			if (this.heightNum >= screenRem - 3.33) {
-				this.heightNum = screenRem - 3.33;
+			var screenHeight = document.documentElement.getBoundingClientRect().height;
+
+			this.heightNum = screenHeight - e.changedTouches[0].clientY;
+			if (this.heightNum >= screenHeight - 190) {
+				this.heightNum = screenHeight - 190;
 			}
-			if (this.heightNum <= 4) {
-				this.heightNum = 4;
+			if (this.heightNum <= 200) {
+				this.heightNum = 200;
 			}
 		},
 		//点击答题板上方图标显示隐藏
@@ -189,7 +183,7 @@ export default {
 			if (this.questionType == 5) {
 				this.writtentoggle = !this.writtentoggle;
 			} else {
-				this.heightNum == 0 ? (this.heightNum = 5.86) : (this.heightNum = 0);
+				this.heightNum == 0 ? (this.heightNum = 293) : (this.heightNum = 0);
 			}
 		},
 		//主观题提交
@@ -213,19 +207,19 @@ export default {
     .start {
 		
 		background: #FFFFFF;
-		box-shadow: 0px -.04rem .38rem 0px rgba(198, 198, 198, 0.29);
-		border-radius: .2rem .2rem 0px 0px;
-		height: 1.08rem;
-		line-height: 1.08rem;
+		box-shadow: 0rem -2px 19px 0rem rgba(198, 198, 198, 0.29);
+		border-radius: 10px 10px 0rem 0rem;
+		height: 54px;
+		line-height: 54px;
 		text-align: center;
 		span {
 			display: inline-block;
 			background-color: var(--color1);
-			width: 5.56rem;
-			height: .8rem;
-			line-height: .8rem;
+			width: 278px;
+			height: 40px;
+			line-height: 40px;
 			text-align: center;
-			border-radius: .4rem;
+			border-radius: 20px;
 			color: #FFFFFF;
 		}
 		
@@ -234,11 +228,11 @@ export default {
     /*上方图片*/
     .top-img {
       width: 100%;
-      height: 0.3rem;
+      height: 15px;
       text-align: center;
       img {
-        width: 0.8rem;
-        height: 0.3rem;
+        width: 40px;
+        height: 15px;
       }
     }
     /*下方内容*/
@@ -246,70 +240,77 @@ export default {
     .bottom-written {
       background: white;
 	  
-	  box-shadow: 0px -.04rem .38rem 0px rgba(198, 198, 198, 0.29);
-	  border-radius: .2rem;
-	  padding: 0.32rem .32rem;
+	  box-shadow: 0rem -2px 19px 0rem rgba(198, 198, 198, 0.29);
+	  border-radius: 10px;
+	  padding: 16px 16px;
       textarea {
         width: 100%;
         height: 100%;
         resize: none;
 		border: 1px solid #d9d9d9;
-		padding: 0.2rem;
-		font-size: 0.3rem;
-		border-radius: .2rem;
+		padding: 10px;
+		font-size: 15px;
+		border-radius: 10px;
 		box-sizing: border-box;
 		&::-webkit-input-placeholder {
-			font-size: 0.30rem;
+			font-size: 15px;
 			color: #BBBBBB;
 		}
       }
     }
     /*完形填空*/
     .bottom-gestalt {
-      height: 5.86rem;
-      box-shadow: 0 -0.03rem 0 0 #eeeeee;
-      background: white;
-      overflow: hidden;
-		box-shadow: 0px -.04rem .38rem 0px rgba(198, 198, 198, 0.29);
-		border-radius: .20rem .20rem 0px 0px;
-      /*上方题目index*/
-      .top-index {
-        width: 100%;
-        overflow: hidden;
-        border-bottom: 1px solid #d4d4d4;
-    	padding: .2rem 0;
-        ul {
-          display: flex;
-        }
-        .swiper-wrapper {
-          .swiper-slide {
-            line-height: 0.56rem;
-            text-align: center;
-            margin-right: 0.24rem;
-            display: inline-block;
-            border-radius: 0.08rem;
-            border: 1px solid #b3b3b3;
-			color: #b3b3b3;
-			border-radius: .2rem;
-		  }
-		  .swiper-slide:first-child {
-			  margin-left: .24rem;
-		  }
-          .topactive {
-            border: 1px solid var(--color1) !important;
-            // box-shadow: 0 0 0.06rem 1px var(--color1) inset;
-            color: var(--color1) !important;
-          }
-        }
-      }
-
-      /*下方题目内容*/
-      .bottom-topic {
-		overflow: auto;
-		&::-webkit-scrollbar {
-			display: none;
+		height: 293px;
+		box-shadow: 0 -1.5px 0 0 #eeeeee;
+		background: white;
+		overflow: hidden;
+		box-shadow: 0rem -2px 19px 0rem rgba(198, 198, 198, 0.29);
+		border-radius: 10px 10px 0rem 0rem;
+		.bottom-gestalt-wrap {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
 		}
-      }
+		/*上方题目index*/
+		.top-index {
+		width: 100%;
+		overflow: hidden;
+		border-bottom: 1px solid #d4d4d4;
+		padding: 10px 0;
+		ul {
+			display: flex;
+		}
+		.swiper-wrapper {
+			.swiper-slide {
+			line-height: 28px;
+			text-align: center;
+			margin-right: 12px;
+			display: inline-block;
+			border-radius: 4px;
+			border: 1px solid #b3b3b3;
+			color: #b3b3b3;
+			border-radius: 10px;
+			}
+			.swiper-slide:first-child {
+				margin-left: 12px;
+			}
+			.topactive {
+			border: 1px solid var(--color1) !important;
+			// box-shadow: 0 0 3px 0.02rem var(--color1) inset;
+			color: var(--color1) !important;
+			}
+		}
+		}
+
+		/*下方题目内容*/
+		.bottom-topic {
+			overflow: auto;
+			flex: 1;
+			height: 0;
+			&::-webkit-scrollbar {
+				display: none;
+			}
+		}
     }
   }
 }
@@ -386,6 +387,8 @@ export default {
 						height: 100%;
 						.bottom-topic {
 							height: 100% !important;
+							padding-bottom: 20px;
+							box-sizing: border-box;
 							&::-webkit-scrollbar {
 								display: block;
 								width: 4px; 

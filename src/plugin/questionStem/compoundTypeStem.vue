@@ -75,7 +75,7 @@
         data() {
             return {
                 stemPB:"0",  // 题干距离底部的padding值（复合题）
-                getHeight: 'calc(100vh - 4.325rem)', // 符合小题答题板高度
+                getHeight: 'calc(100vh - 216.25px)', // 符合小题答题板高度
                 // analysis: '',//解析
             }
         },
@@ -104,21 +104,16 @@
 
 <style scoped lang="scss">
 .compoundTypeStem {
-    // margin-bottom: 0.6rem;
     height: 100%;
     display: flex;
     flex-direction: column;
 
     .topicDrt {
-        padding: 0 .2rem;
-        // display: flex;
-        font-size: .28rem;
-        line-height: .4rem;
+        font-size: 14px;
+        line-height: 20px;
         white-space: pre-wrap;
-        // margin-top: .24rem;
-        // touch-action: none;
         flex: 1;
-        height: 1px;
+        height: 0;
         overflow-x: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -130,7 +125,7 @@
         &>span {
             word-wrap: normal;
             word-break: break-word;
-            line-height: .48rem;
+            line-height: 24px;
         }
     }
 

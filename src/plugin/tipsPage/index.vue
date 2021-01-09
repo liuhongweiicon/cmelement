@@ -36,14 +36,14 @@ export default {
 .tipsPage {
     display: flex;
     align-items: center;
-    padding-top: 2.89rem;
+    padding-top: 144.5px;
     box-sizing: border-box;
     flex-direction: column;
     height: 100%;
     .tipsPage-text {
-        font-size: .32rem;
+        font-size: 16px;
         color: #3C3C3C;
-        line-height: .36rem
+        line-height: 18px
     }
 }
 </style>

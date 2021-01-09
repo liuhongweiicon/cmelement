@@ -34,29 +34,29 @@ export default {
 
 <style lang="scss" scoped>
 .topicDrt {
-    font-size: .3rem;
-    line-height: 0.4rem;
+    font-size: 15px;
+    line-height: 20px;
     white-space: pre-wrap;
     word-break: break-word;
-    padding: 0.15rem 0.24rem 0;
+    padding: 7.5px 12px 0;
     display: flex;
     align-items: baseline;
     color: #3C3C3C;
      /deep/ span {
-        font-size: .3rem !important;
+        font-size: 15px !important;
         font-weight: 400 !important;
-        line-height: 0.48rem !important;
+        line-height: 24px !important;
         color: #3C3C3C!important;
     }
      /deep/p {
-        font-size: .3rem !important;
+        font-size: 15px !important;
         font-weight: 400 !important; 
-        line-height: 0.48rem !important;
+        line-height: 24px !important;
         color: #3C3C3C!important;
     }
     &>span {
         word-wrap: break-word;
-        line-height: 0.48rem;
+        line-height: 24px;
         img{
             width:100%!important;
             display: block;
