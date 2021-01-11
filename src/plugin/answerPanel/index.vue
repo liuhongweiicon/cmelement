@@ -15,7 +15,6 @@
 		  placeholder="请输入答案"
           v-model="textCon"
         ></textarea>
-        <!--<p>向左滑动屏幕进入答题卡</p>-->
       </div>
     </div>
     <div class="answerSheet " v-if="questionType == 6">
@@ -58,7 +57,7 @@
 							:key="item6.componentId"
 						>
 							<base-type-stem
-								v-show="index6 == nowIndex"
+								v-show="index6 == nowIndex || screenWidth"
 								@onceChoice="twoChoice"
 								:questionDetails="paperDataHandler(item6)"
 								:paperState="paperState"

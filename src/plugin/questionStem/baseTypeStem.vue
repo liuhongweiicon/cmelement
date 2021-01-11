@@ -342,7 +342,7 @@ export default {
     questionDetails: {
       handler(val) {
         this.questionDetailsInfo = JSON.parse(JSON.stringify(val));
-        // this.dataHandler(this.questionDetailsInfo);
+        this.dataHandler(JSON.parse(JSON.stringify(val)));
       },
       immediate: true,
       deep: true,
@@ -456,7 +456,6 @@ export default {
               this.$set(this.questionDetailsInfo, "userAnswer", useranswerArr);
             }
             this.$set(this.questionDetailsInfo, "answer", obj);
-            console.log(this.questionDetailsInfo, 'this.questionDetailsInfo')
           }
         }
       }

@@ -5,11 +5,11 @@
     :class="{ paper: paperState == 1, preview: paperState != 1 }"
   >
     <!-- 作答时head -->
-    <slot name="head">
+    <slot name="head" v-if="headerShow">
       <!-- PC端头部样式 -->
       <div class="cm-allStem-head">
         <div class="cm-allStem-head-title">{{paperDetails.paperName}}</div>
-          <div class="cm-allStem-head-time">
+          <div class="cm-allStem-head-time" >
             <i class="iconfont">&#xe618;</i>
             <span>{{timeHtml}}</span>
           </div>
@@ -101,7 +101,7 @@
     <slot name="footer">
       <div class="cm-allStem-footer" v-if="paperState == 1">
         <div class="cm-allStem-footer-item" v-if="nowquesIndex - 1" @click="slidePrevHandler">上一题</div>
-        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd || !submitCon.questionList.length ? '提交' : '下一题'}}</div>
+        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd || submitCon.questionList.length < 2 ? '提交' : '下一题'}}</div>
       </div>
     </slot>
   </div>
@@ -140,6 +140,11 @@ export default {
     timeHtml: {
       type: String,
       default: '0分0秒',
+    },
+    // 是否隐藏head, ,默认显示
+    headerShow: {
+      type: Boolean,
+      default: true,
     }
   },
   watch: {
