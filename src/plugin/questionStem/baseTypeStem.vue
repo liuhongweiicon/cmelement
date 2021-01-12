@@ -347,9 +347,16 @@ export default {
       immediate: true,
       deep: true,
     },
+
+    /**
+     * 监听转台改变
+     */
+    paperState() {
+      this.dataHandler(this.questionDetailsInfo);
+    }
   },
   mounted() {
-    this.dataHandler(this.questionDetailsInfo);
+    // this.dataHandler(this.questionDetailsInfo);
   },
   methods: {
     onceChoice: function(optionitem, index) {
