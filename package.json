@@ -14,7 +14,9 @@
   },
   "author": "'author' <'18612882503@126.com'>",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1"
+  },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.0.0",

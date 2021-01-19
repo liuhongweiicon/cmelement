@@ -16,6 +16,8 @@ import cmTipspage from './tipsPage/index.vue'; // 无数据提示页
 import cmTopicDrt from './topicDrt/index.vue'; // 题干
 import cmAnswerCard from './answerCard/index.vue'; // 答题卡
 
+import cmLiveRoom from './liveRoom/index.vue'; // 直播间
+
 let cmelement = {};
 
 cmelement.install = (Vue, options) => {
@@ -31,6 +33,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmTipspage.name, cmTipspage);
     Vue.component(cmTopicDrt.name, cmTopicDrt);
     Vue.component(cmAnswerCard.name, cmAnswerCard);
+    Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 
 export default cmelement;
