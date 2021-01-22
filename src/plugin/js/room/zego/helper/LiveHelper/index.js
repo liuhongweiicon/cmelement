@@ -1,3 +1,5 @@
 import { LiveHelper } from './base'
 
-export class WebLiveHelper extends LiveHelper {}
+class WebLiveHelper extends LiveHelper {}
+
+export default WebLiveHelper

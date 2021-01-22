@@ -1,4 +1,4 @@
-import { ROLE_STUDENT } from './constants'
+
 
 const isElectron = _isElectron()
 
@@ -103,7 +103,7 @@ const setLoginInfo = data => {
     userName,
     isMe: true
   }
-  const loginInfo = { roomId, userId: uid, userName, role: role || ROLE_STUDENT, env, user, classScene }
+  const loginInfo = { roomId, userId: uid, userName, role: role, env, user, classScene }
   storage.set('loginInfo', loginInfo)
   return loginInfo
 }

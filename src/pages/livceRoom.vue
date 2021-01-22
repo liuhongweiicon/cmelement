@@ -1,8 +1,24 @@
 <template>
     <div class="liveRoom">
-        <cm-live-room></cm-live-room>
+        <cm-live-room :constants="params" :request="request"></cm-live-room>
     </div>
 </template>
+
+<script>
+import constants from './constants'; // 直播间常量参数
+import $http from '../utils/http'; 
+export default {
+    data() {
+        return {
+            params: constants,
+            request: $http,
+        }
+    },
+    created() {
+        
+    }
+}
+</script>
 
 <style lang="less" scoped>
 .liveRoom {

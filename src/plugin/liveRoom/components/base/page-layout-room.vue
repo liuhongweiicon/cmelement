@@ -22,14 +22,16 @@
 </template>
 
 <script>
-import RoomWhiteboardArea from '@/components/room/room-whiteboard-area'
-import RoomVideoList from '@/components/room/room-video-list'
-import ZegoWhiteboardArea from '@/components/zego/zego-whiteboard-area'
-import RoomControllerWhiteboard from '@/components/room/room-controller-whiteboard'
-import RoomControllerFeature from '@/components/room/room-controller-feature'
+import RoomWhiteboardArea from '../room/room-whiteboard-area'
+import RoomVideoList from '../room/room-video-list'
+import ZegoWhiteboardArea from '../zego/zego-whiteboard-area'
+import RoomControllerWhiteboard from '../room/room-controller-whiteboard'
+import RoomControllerFeature from '../room/room-controller-feature'
 import { storage } from '@/utils/tool'
 import { roomStore } from '@/service/biz/room'
 import zegoClient from '@/service/zego/zegoClient'
+
+import BUS from '../../../js/room/utils/bus/index'
 
 export default {
   name: 'PageLayoutRoom',
@@ -57,6 +59,7 @@ export default {
     // 监听共享流更新
     shareList(val) {
       if (val) {
+        // 学生端通过流ID获取远端流
         this.shareHandler(val);
       } else {
         this.screenSharingEndedHandler();
@@ -69,7 +72,7 @@ export default {
     
 
     // 监听开启共享屏幕
-    this.$bus.$on('createStreamHandler', this.pullVideo);
+    BUS.$on('createStreamHandler', this.pullVideo);
   },
   methods: {
     
@@ -80,7 +83,6 @@ export default {
     playerStateUpdate() {
       const _this = this;
       this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {
-        console.log(result, 'playerStateUpdateplayerStateUpdateplayerStateUpdate')
         _this.share = true;
           
       });
@@ -108,7 +110,7 @@ export default {
     
     
     /**
-     * @desc 拉流
+     * @desc 教师端本地展示共享页面
      * @returns {Promise<void>}
      */
     async pullVideo(streamID) {
@@ -123,6 +125,10 @@ export default {
         this.playerStateUpdate(); 
       }
     },
+
+    /**
+     * 学生端通过流ID获取远端流
+     */
     async shareHandler(item) {
       this.streamID = item.streamID;
       const dom = document.querySelector('.main-mid');
@@ -135,6 +141,8 @@ export default {
 }
 </script>
 <style lang="scss">
+
+@import '../../../static/css/room/_mixin.scss';
 .page-view-room {
   display: flex;
   height: 100%;

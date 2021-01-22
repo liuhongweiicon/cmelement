@@ -443,7 +443,6 @@ export default {
         if (typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
-            console.log(obj, 'obj')
             if (_this.paperState == 2) {
               var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : '';
             }

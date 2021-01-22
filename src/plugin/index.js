@@ -4,6 +4,12 @@ import './static/css/reset.css';
 import './static/css/iconfont.css';
 import './js/swiper/index.css'; // swiper样式
 import './js/swiper/swiper'; // swiperJS
+import './static/css/room/reset.scss';
+import { Message } from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+
+
 
 
 import  * as vuePrototype   from './js/index'; // 工具库
@@ -20,11 +26,25 @@ import cmLiveRoom from './liveRoom/index.vue'; // 直播间
 
 let cmelement = {};
 
+
+
 cmelement.install = (Vue, options) => {
     // 注册全局方法
     for (let key in vuePrototype) {
         Vue.prototype[key] = vuePrototype[key];
     }
+
+    Vue.prototype.$message = Message
+    Vue.prototype.showToast = function(msg = '', duration = 3000) {
+      Message.closeAll()
+      this.$message({
+        dangerouslyUseHTMLString: true,
+        message: msg,
+        customClass: 'common-toast',
+        duration
+      })
+    }
+
    
     Vue.component(cmAnswerPanel.name, cmAnswerPanel);
     Vue.component(cmBaseTypeStem.name, cmBaseTypeStem);

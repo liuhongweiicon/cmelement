@@ -1,5 +1,4 @@
 
-// import eventEmitter from '../eventEmitter'
 
 export class LiveHelper {
   _client = null
@@ -9,7 +8,6 @@ export class LiveHelper {
     this.room_id = null
     this.roomUserList = []
     this.localStream = null
-    // this.EventEmitter = new eventEmitter()
     this.stream_publish_state = 'NO_PUBLISH' // NO_PUBLISH-未推流状态｜PUBLISH_REQUESTING-正在请求推流状态｜PUBLISHING-正在推流状态
     this.isCreatingStream = false
     // this.proxy()
@@ -51,7 +49,6 @@ export class LiveHelper {
   express(methodName = '', ...args) {
     const proxyFunc = this.getProxyFunc()
     if (proxyFunc.some(func => func === methodName)) {
-      console.warn('express methods: ', methodName, ', args:', args)
       return this[methodName](...args)
     } else {
       console.warn('不存在该方法, methodName=', methodName)
@@ -59,19 +56,17 @@ export class LiveHelper {
   }
 
   async loginRoom(roomID = '', config = {}) {
-    const { isLogin } = this.context.getState('isLogin')
-    if (isLogin) {
-      console.warn('has login!!!')
-    }
+
     const { token1 } = this.context.state.tokenInfo
-    config = { userUpdate: true, maxMemberCount: 10, ...config }
+    config = { userUpdate: true, maxMemberCount: this.context.Config.maxMemberCount, ...config }
     const { userID, userName } = this.context.state.user
+   
     let res
     try {
       const args = [roomID, token1, { userID, userName }, config]
-      console.log('loginRoom', { args })
-      res = await this._client.loginRoom(...args)
-      console.log({ res })
+     
+      res = await this._client.loginRoom(...args);
+     
       if (res) {
         console.warn('loginRoom is success!!')
         this.afterLoginRoom(roomID)
@@ -120,8 +115,6 @@ export class LiveHelper {
   async checkAnRun(checkScreen) {
     try {
         const result = await this._client.checkSystemRequirements();
-
-
         if (!result.webRTC) {
             alert('浏览器不支持webRTC协议传输流!!');
             return false;
@@ -146,6 +139,8 @@ export class LiveHelper {
     this.removeElementVideo(element)
     if (!$video) {
       $video = document.createElement('video')
+      $video.style.width = '100%'
+      $video.style.height = '100%'
       $video.setAttribute('autoplay', true)
       $video.setAttribute('muted', true)
       $video.setAttribute('id', streamID)
@@ -161,6 +156,9 @@ export class LiveHelper {
     this.removeElementVideo(element)
     if (!$video) {
       $video = document.createElement('video')
+      
+      $video.style.width = '100%'
+      $video.style.height = '100%'
       $video.setAttribute('autoplay', true)
       $video.setAttribute('muted', true)
       $video.setAttribute('id', streamID)
@@ -189,7 +187,6 @@ export class LiveHelper {
   }
 
   mutePublishStreamVideo(mute) {
-    console.warn('mutePublishStreamVideo', this.localStream, mute)
     return this._client.mutePublishStreamVideo(this.localStream, mute)
   }
 

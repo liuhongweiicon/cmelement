@@ -1,5 +1,7 @@
 import { ZegoClient } from './base'
-import config from '../config/web'
+
+import {ZegoExpressEngine} from '../../SDK/ZegoExpressWhiteboardWeb';
+import {ZegoExpressDocs} from '../../SDK/ZegoExpressDocsWeb';
 
 class WebZegoClient extends ZegoClient {
   /**
@@ -7,15 +9,14 @@ class WebZegoClient extends ZegoClient {
    * @param {user} 用户信息
    */
   async initSDK(user) {
-    debugger
+    
     if (this._client) return
     console.warn('init web sdk start')
     const { userID } = user
     const { env = 'home' } = this.state
     const { appID, logURL, server, isTestEnv, docsviewAppID } = await this.Config.getParams(env)
-    console.warn('-----env Config-----',{ appID, logURL, server, isTestEnv, docsviewAppID } )
-    const zg = new window.ZegoExpressEngine(appID, server)
-    const zgDocsClient = new window.ZegoExpressDocs({
+    const zg = new ZegoExpressEngine(appID, server)
+    const zgDocsClient = new ZegoExpressDocs({
       appID: docsviewAppID,
       token: this.state.tokenInfo.token2,
       userID,
@@ -41,4 +42,4 @@ class WebZegoClient extends ZegoClient {
   }
 }
 
-export default new WebZegoClient(config)
+export default new WebZegoClient()

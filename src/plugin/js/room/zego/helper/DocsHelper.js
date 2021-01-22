@@ -1,5 +1,5 @@
 
-export class DocsHelper {
+class DocsHelper {
   _client = null;
   _zgDocsView = null;
   constructor({ context,client }) {
@@ -19,7 +19,6 @@ export class DocsHelper {
   docs(methodName = "", ...args) {
     const proxyFunc = this.getProxyFunc();
     if (proxyFunc.some((func) => func === methodName)) {
-      console.warn("方法被转发, methods: ", methodName, ", args:", args);
       return this[methodName](...args);
     } else {
       console.warn("不存在该方法, methodName=", methodName);
@@ -107,3 +106,5 @@ export class DocsHelper {
   //   return this._zgDocsView.getPPTNotes(page);
   // }
 }
+
+export default DocsHelper

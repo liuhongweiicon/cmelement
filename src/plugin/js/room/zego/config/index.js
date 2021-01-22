@@ -1,5 +1,3 @@
-import { ZEGOENV, APPID, DOCS_TEST, serverSecret } from '../../utils/constants'
-import { createUserId } from '../../utils/tool'
 
 /**
  * go class配置梳理:
@@ -12,26 +10,34 @@ import { createUserId } from '../../utils/tool'
  * 5. 海外环境的docview取的是home的appid配置
  */
 
-export class Config {
-  constructor() {
-    this.serverEnv = ZEGOENV.wb
+ class Config {
+  constructor(constant) {
+    this.constant = constant; // 自定义的常量
+    this.tokenUrl = constant.getTokenUrl // 获取登陆token请求地址
     // 设置连接环境是否是测试环境,true为测试环境，false为正式环境
-    this.isTestEnv = true
-    this.homeAppID = APPID.home // 国内环境appID
-    this.overseasAppID = APPID.overseas // 海外环境appID
-    this.serverSecret = serverSecret // ServerSecret App 唯一凭证密钥
-    this.userID = createUserId() + ''
+    this.isTestEnv = constant.ENVTYPE // 是否是测试环境, => true 测试环境 => 正式环境
+    this.homeAppID = constant.APPID.home // 国内环境appID
+    this.overseasAppID = constant.APPID.overseas // 海外环境appID
+
+    this.homesServer = constant.SERVER.home // 国内环境服务器地址
+    this.overseasServer = constant.SERVER.overseas // 海外环境服务器地址
+    this.maxMemberCount = constant.maxMemberCount; // 房间最大连接数
+    this.serverSecret = constant.serverSecret // ServerSecret App 唯一凭证密钥
+    this.userID = constant.USER_INFO.userID
+    // 国内环境配置
     this.home = this.createConfig(
       this.homeAppID,
-      'wss://webliveroom-test.zego.im/ws',
+      this.homesServer,
       '',
       this.userID,
       [],
       this.serverSecret,
     )
+
+    // 海外环境配置
     this.overseas = this.createConfig(
       this.overseasAppID,
-      'wss://webliveroom-test.zego.im/ws',
+      this.overseasServer,
       '',
       this.userID,
       [],
@@ -48,24 +54,24 @@ export class Config {
       userID,
       fileList,
       serverSecret,
-      isTestEnv: this.isTestEnv
+      isTestEnv: this.isTestEnv,
+      tokenUrl: this.tokenUrl,
+      maxMemberCount: this.maxMemberCount,
     }
   }
 
   async getParams(env = 'home') {
     const obj = {}
     if (this.isTestEnv) {
-      obj.fileList = DOCS_TEST
+      obj.fileList = this.constant.DOCS_TEST
     }
-    if (env === 'home' && this.serverEnv) {
-      obj.server = `wss://webliveroom-${this.serverEnv}.zego.im/ws`;
-    } else if (env === 'overseas') {
+
+    if (env === 'overseas') {
       obj.docsviewAppID = this.home.appID
-      if (this.serverEnv) {
-        obj.server = 'wss://webliveroom-hk-test.zegocloud.com/ws';
-      }
     }
     Object.assign(this[env], obj)
     return this[env]
   }
 }
+
+export default Config

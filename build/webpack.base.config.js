@@ -30,7 +30,7 @@ const config = {
         'vue-router': 'VueRouter',
         'Vuex': 'Vuex',
         'axios': 'axios',
-        'element-ui': 'ElementUI',
+        // 'element-ui': 'ElementUI',
     },
     // 定义入口文件
     output: {
@@ -73,7 +73,7 @@ const config = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                test: /\.(png|jpe?g|gif)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,// 文件大小小于10000则编译成base64格式代码
@@ -117,6 +117,10 @@ const config = {
             {
                 test: /\.scss$/,
                 loader: "style-loader!css-loader!sass-loader",
+            },
+            {
+                test: /\.svg$/,
+                loader: "raw-loader",
             },
         ]
     },

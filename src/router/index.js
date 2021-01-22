@@ -24,6 +24,13 @@ var router =  new VueRouter({
         component: resolve => require(['../pages/livceRoom.vue'], resolve),
         meta: { title: "进入直播间" }
 
+      },
+      // 学生端进入直播间等待页面
+      {
+        path: '/sliveRoom',
+        component: resolve => require(['../pages/sliveRoom.vue'], resolve),
+        meta: { title: "进入直播间" }
+
       }
     ]
 });

@@ -1,7 +1,8 @@
 // import { storage } from '@/utils/tool'
-import { LiveHelper } from '../helper/LiveHelper/index'
-import { WhiteboardHelper } from '../helper/WhiteboardHelper'
-import { DocsHelper } from '../helper/DocsHelper'
+import LiveHelper from '../helper/LiveHelper/index'
+import WhiteboardHelper from '../helper/WhiteboardHelper'
+import DocsHelper from '../helper/DocsHelper'
+import Config from '../config/index'
 
 export class ZegoClient {
   _client = null
@@ -15,14 +16,12 @@ export class ZegoClient {
   isElectron = false
   Config = null
 
-  constructor(Config) {
-    this.Config = Config
+  constructor() {
     this.state = {
       room_id: null,
       env: 'home',
       user: {},
       tokenInfo: {},
-      isLogin: false,
       isInit: false
     }
   }
@@ -34,13 +33,16 @@ export class ZegoClient {
    * @param { Object | null } user
    * @returns {Promise<WhiteboardHelper|LiveHelper|DocsHelper>}
    */
-  async init(client, env = 'home', user = null) {debugger
+  async init(client, env = 'home', constant = {}) {
+    // 设置常量
+    if (!this.Config) {
+      this.Config = new Config(constant)
+    }
     this.initConfig && (await this.initConfig(env))
 
-    // user = (storage.get('loginInfo') || {}).user || user
 
     if (!this._client) {
-      await this.initSDK(user)
+      await this.initSDK(constant.USER_INFO)
     }
     // livingroom
     if (client === 'live') {
@@ -77,7 +79,6 @@ export class ZegoClient {
   }
 
   async initConfig(env) {
-    // env = env || storage.get('loginInfo')?.env
     if (!this.state.tokenInfo.token1) {
       await this.createZegoContext(env)
     }
@@ -87,7 +88,8 @@ export class ZegoClient {
   }
 
   // 正式环境请调用自己的后台接口，token 生成方法请参考 ZEGO 开发者中心
-  getToken = (appID, userID) => {
+  getToken = (appID, userID, tokenUrl) => {
+    const url = `${tokenUrl}?app_id=${appID}&id_name=${userID}`
     return new Promise((resolve, reject) => {
       const xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = e => {
@@ -101,7 +103,7 @@ export class ZegoClient {
       };
       xmlhttp.open(
         "GET",
-        `https://wsliveroom-alpha.zego.im:8282/token?app_id=${appID}&id_name=${userID}`,
+        url,
         true
       );
       xmlhttp.send(null);
@@ -109,14 +111,12 @@ export class ZegoClient {
   }
 
   async createZegoContext(roomEnv) {
-    const { appID, userID, isTestEnv, docsviewAppID } = await this.Config.getParams(roomEnv)
-    console.warn('createZegoContext appID,roomEnv', appID, roomEnv)
-    const token1 = await this.getToken(appID, userID)
+    const { appID, userID, isTestEnv, docsviewAppID, tokenUrl } = await this.Config.getParams(roomEnv)
+    const token1 = await this.getToken(appID, userID, tokenUrl)
     let token2 = token1
     if (docsviewAppID != appID && !isTestEnv) {
-      token2 = await this.getToken(docsviewAppID, userID)
+      token2 = await this.getToken(docsviewAppID, userID, tokenUrl)
     }
-    console.warn('tokenInfo:', token1, token2)
     this.setState({
       env: roomEnv,
       tokenInfo: { token1, token2 }
@@ -128,7 +128,6 @@ export class ZegoClient {
    * @param {user} 用户信息
    */
   async initSDK(user) {
-    console.log(user)
   }
 
   lockProperty() {

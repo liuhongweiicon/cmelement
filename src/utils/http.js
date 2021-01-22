@@ -48,6 +48,9 @@ $.interceptors.response.use((response) => {
     if (response.config.showLoading) {
         tryHideFullScreenLoading();
     }
+    if (response.config.url.indexOf('goclass') > -1) {
+        return response.data;
+    }
     if (response.data.httpCode) {
         if (response.data.httpCode !== '200' && response.data.httpCode !== '40007') { // 40007 手机号已绑定需要单独处理错误
             // Message.error(response.data.message ? response.data.message : '请求错误,请重试');

@@ -2,32 +2,36 @@
  * @Description: 提供音视频sdk相关实例的组件，通过provide提供该能力，如需使用该音视频相关方法的组件可通过inject注入
 -->
 <template>
-  <div class="zego-live-room" v-if="!!client && isLogin">
-    <slot></slot>
-    <room-dialog-loading v-if="loading" />
-    <room-dialog-error ref="errorDialog" />
+  <div class="zego-live">
+    <div class="zego-live-room" v-if="!!client && isLogin">
+      <slot></slot>
+      <room-dialog-loading v-if="loading" />
+      <room-dialog-error ref="errorDialog" />
+    </div>
+
   </div>
 </template>
 
 <script>
-// import zegoClient from '@/service/zego/zegoClient'
-// import { storage } from '@/utils/tool'
-// import ErrorHandle from '@/utils/error'
-// import RoomDialogLoading from '@/components/room/room-dialog-loading'
-// import RoomDialogError from '@/components/room/room-dialog-error'
-// import { postRoomHttp, roomStore, setGoclassEnv } from '@/service/biz/room'
+import zegoClient from '../../../js/room/zego/zegoClient/index'
+
+import RoomDialogLoading from '../room/room-dialog-loading'
+import RoomDialogError from '../room/room-dialog-error'
+
+import $HTTP from '../../../js/room/service/index'; // 请求实例
 
 export default {
   name: 'ZegoLiveRoom',
   components: {
-    // RoomDialogLoading,
-    // RoomDialogError
+    RoomDialogLoading,
+    RoomDialogError
   },
+  inject: ['thisParent'],
   data() {
     return {
       roomId: '',
       userName: '',
-      env: '',
+      env: '', // 运行环境,是否是测试环境, => home 国内环境  => overseas 正式环境
       client: null, // sdk实例
       shareClient: null, // 共享屏幕实例
       captureClient: null, // 屏幕采集实例
@@ -50,100 +54,54 @@ export default {
       sendLoadingTimer: null, //发送消息loading
       sendLoadingInterval: 5, //发送消息loading‘
       shareList: null, // 共享流监听
+
+      $http: null, // 请求实例
     }
   },
+  
   provide() {
     return {
       zegoLiveRoom: this
     }
   },
   created() {
-    // const env = this.$route.query.env || storage.get('loginInfo')?.env
-    // setGoclassEnv(env)
+    // 运行环境,是否是测试环境, => home 国内环境  => overseas 正式环境
+    this.env = this.thisParent.liveRoomParams.AREA_ENV;
+    this.roomId = this.thisParent.liveRoomParams.USER_INFO.roomId;
+    this.userName = this.thisParent.liveRoomParams.USER_INFO.userName;
+
+    this.$http = new $HTTP(this.thisParent.request, this.thisParent.liveRoomParams);
+    
   },
   async mounted() {
-    // const loading = this.$loading()
-    // try {
-    //   // 调用顺序：loginRoomBiz -> initClient -> initLiveRoom -> loginRoom | 后台业务登录房间 -> 初始化sdk -> 监听回调方法 -> 登录房间
-    //   await this.loginRoomBiz()
-    //   await this.initClient()
-    //   await this.initLiveRoom() // 回调方法
-    //   await this.loginRoom()
-    // } finally {
-    //   this.$nextTick(() => {
-    //     loading.close()
-    //   })
-    // }
+      // 调用顺序：initClient -> initLiveRoom -> loginRoom | 初始化sdk -> 监听回调方法 -> 登录房间
+      await this.initClient()
+      await this.initLiveRoom() // 回调方法
+      await this.loginRoom()
   },
   methods: {
-    /**
-     * @desc: 后台业务 - 登录房间
-     */
-    async loginRoomBiz() {
-      const { roomId, userId, userName, role, env, classScene } = storage.get('loginInfo')
-      this.roomId = roomId
-      this.userName = userName
-      this.env = env
-      //从登录页面跳转过来
-      if (this.$route.meta.from) {
-        // 用户自身加入房间，往房间消息push一条系统提示
-        let data = {
-          userID: userId,
-          messageCategory: 2,
-          messageContent: ['加入课堂'],
-          messageState: 1,
-          nick_name: userName
-        }
-        this.setRoomMessage(1, data)
-        return
-      }
-      // 非登录页面跳转，直接刷新页面时需要执行业务登录接口
-      const loginParams = {
-        uid: userId,
-        room_id: roomId,
-        nick_name: userName,
-        role: role || 2,
-        room_type: classScene
-      }
-      try {
-        await postRoomHttp('login_room', loginParams)
-      } catch (e) {
-        // 已有老师 或者 人数已满
-        const code = e && e.ret && e.ret.code
-        if (code == 10001 || code == 10002) {
-          this.$route.meta.reload = true
-          this.$router.replace('/login')
-          return Promise.reject()
-        }
-      }
-    },
     /**
      * @desc: 初始化sdk
      */
     async initClient() {
-      this.client = await zegoClient.init('live', this.env)
+
+      this.client = await zegoClient.init('live', this.env, this.thisParent.liveRoomParams)
       this.shareClient = await zegoClient.init('screenSharing', this.env)
     },
     /**
      * @desc: sdk - 登录房间
      */
     async loginRoom() {
-      const res = await this.client.express('loginRoom', this.roomId)
+
+      const res = await this.client.express('loginRoom', this.thisParent.liveRoomParams.USER_INFO.roomId);
+
       if (res.error) {
-        if (res.code) {
-          ErrorHandle.showErrorCodeMsg(res.code, () => {
-            const timer = setTimeout(() => {
-              clearTimeout(timer)
-              this.$route.meta.reload = true
-              this.$router.replace('/login')
-            }, 3000)
-          })
-          return
-        }
-        res.msg && this.showToast(res.msg)
+        this.$message.error(res.msg);
+        return
       }
       this.isLogin = true
       const { user } = zegoClient.getState('user')
+      
       this.$set(this, 'user', user)
       this.userList.push(user)
     },
@@ -153,77 +111,68 @@ export default {
      */
     async initLiveRoom() {
       // 监听房间流更新
+      const _this = this;
       this.client.on('roomStreamUpdate', (roomID, updateType, streamList) => {
 
         const shareStreamList = JSON.parse(JSON.stringify(streamList));
-
+        
         let tempStreamList = []
         streamList = streamList.filter(v => !!v.streamID && v.streamID.indexOf("share") == -1);
 
 
         if (updateType === 'ADD') {
           // 共享流更新
-          this.shareList = shareStreamList.filter(v => !!v.streamID && v.streamID.indexOf("share") > -1)[0];
+          _this.shareList = shareStreamList.filter(v => !!v.streamID && v.streamID.indexOf("share") > -1)[0];
 
-          console.warn('roomStreamUpdate ADD streamList', streamList)
           streamList.map(x => (x.isVideoOpen = x.isVideoOpen || false))
-          tempStreamList = [...this.streamList, ...streamList]
+          tempStreamList = [..._this.streamList, ...streamList]
         }
         if (updateType === 'DELETE') {
           // 共享流更新
-          this.shareList = null;
+          _this.shareList = null;
 
-          console.warn('roomStreamUpdate DELETE streamList', streamList)
-          tempStreamList = this.streamList.filter(x => x.streamID !== streamList[0].streamID)
+          tempStreamList = _this.streamList.filter(x => x.streamID !== streamList[0].streamID)
         }
-        console.warn('tempStreamList', tempStreamList)
-        this.$set(
-          this,
+        _this.$set(
+          _this,
           'streamList',
           tempStreamList.filter(v => !!v.streamID)
         )
 
-        roomStore.getJoinLiveList()
+        _this.$http.getJoinLiveList()
       })
       // 监听房间用户变化
-      this.client.on('roomUserUpdate', (roomID, updateType, userList) => {
-        console.warn("this.client.on('roomUserUpdate'", { roomID, updateType, userList })
+      _this.client.on('roomUserUpdate', (roomID, updateType, userList) => {
         if (updateType === 'ADD' && userList && userList.length) {
           // 去重
-          console.warn(userList, 'ADD userList')
-          console.warn(this.userList, 'this.userList')
           userList.forEach(user => {
             const index = this.userList.findIndex(x => x.userID === user.userID)
             index === -1 && this.userList.push(user)
           })
         }
         if (updateType === 'DELETE' && userList && userList.length) {
-          console.warn(userList, 'DELETE userList')
           const index = this.userList.findIndex(x => x.userID === userList[0].userID)
           index !== -1 && this.userList.splice(index, 1)
         }
-        roomStore.getAttendeeList()
-        roomStore.getJoinLiveList()
+        this.$http.getAttendeeList()
+        this.$http.getJoinLiveList()
       })
       // 监听摄像头状态
-      this.client.on('remoteCameraStatusUpdate', (streamID, status) => {
-        console.warn('remoteCameraStatusUpdate', streamID, status)
+      _this.client.on('remoteCameraStatusUpdate', (streamID, status) => {
         const streamIndex = this.streamList.findIndex(item => streamID.endsWith(item.streamID))
         streamIndex !== -1 &&
           this.$set(this.streamList[streamIndex], 'isVideoOpen', status === 'OPEN')
       })
-      this.client.on('publisherStateUpdate', result => {
-        console.warn('publisherStateUpdate', result)
-        console.warn('publishStreamId', this.publishStreamId)
+      
+      _this.client.on('publisherStateUpdate', result => {
         if (result.state === 'PUBLISHING') {
           // redo
         }
       })
       // 监听房间状态
       this.client.on('roomStateUpdate', (roomID, state) => {
-        console.warn('roomStateUpdate', state)
         this.roomState = state
-        if (!this.client.isLogin) return // 对应loginState
+
         switch (state) {
           // 连接中
           case 'CONNECTING':
@@ -253,7 +202,6 @@ export default {
       })
       // 监听IM消息接收（弹幕消息）
       this.client.on('IMRecvBarrageMessage', (roomID, chatData) => {
-        console.warn("this.client.on('IMRecvBarrageMessage'", { roomID, chatData })
         let data = {
           userID: chatData[0].fromUser.userID,
           messageCategory: 1,
@@ -367,8 +315,6 @@ export default {
      */
     async handleDeviceStateChange(flag, isVideoOpen, isAudioOpen) {
       const [isSendVideoStream, isSendAudioStream] = [!isVideoOpen, !isAudioOpen]
-      console.warn({ localStream: this.client.localStream })
-      console.warn('flag, isVideoOpen, isAudioOpen',flag, isVideoOpen, isAudioOpen)
       // 摄像头/麦克风 二者之一的状态是开 则推送一条流
       if (isVideoOpen || isAudioOpen) {
         if (!this.client.localStream) {
@@ -475,7 +421,6 @@ export default {
           this.disconnectedHandle()
         } else {
           this.loadingInterval--
-          console.log(this.loadingInterval)
         }
       }, 1000)
     },
@@ -487,7 +432,7 @@ export default {
       this.initLoadingTimerHandle()
       this.$refs.errorDialog.show = true
       this.handleDestroyStream()
-      roomStore.close()
+      this.$http.close()
     },
 
     // 初始化loading定时器
@@ -509,8 +454,8 @@ export default {
      */
     setRoomMessage(type, data, targetMessageID, res) {
       let lastMessage = this.messages[this.messages.length - 1]
-      // let lastUserID = this.messages[this.messages.length - 1] ?.userID
-      // let lastMessageCategory = this.messages[this.messages.length - 1]?.messageCategory
+      let lastUserID = this.messages[this.messages.length - 1] ? this.messages[this.messages.length - 1].userID : ''
+      let lastMessageCategory = this.messages[this.messages.length - 1] ? this.messages[this.messages.length - 1].messageCategory : ''
       if (type === 1) {
         // 判断信息数组里面最新到一条信息是否是系统信息并且是否是同一个用户发送的，如果不是系统信息且是同一个用户发送则是该用户连续发送消息。
         if (lastMessage && data.userID == lastUserID && lastMessageCategory !== 2) {
@@ -594,8 +539,18 @@ export default {
 }
 </script>
 <style lang="scss">
-.zego-live-room {
+@import '../../../static/css/room/_mixin.scss';
+.zego-live {
   height: 100%;
-  width: 100%;
+  .zego-live-room {
+    height: 100%;
+    width: 100%;
+  }
+  .zego-live-enter {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>

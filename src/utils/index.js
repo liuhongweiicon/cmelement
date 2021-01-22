@@ -188,7 +188,6 @@ var strToUrl = (str) => {
   //如果已经是html格式  直接返回
   if (/<img\b[^>]*>|<audio\b[^>]*>/.test(str)) return str;
   let string = "";
-  // debugger
   string = str.replace(/[\r\n]{1,}/g, "");
   string = string.replace(/[\r\n]*$/g, "");
   string = string.replace(/[\r\n]/g, "<br>");
@@ -214,7 +213,6 @@ var strUrlChange = (str) => {
   if (str.indexOf("<img") > -1) return str;
 
   let string = "";
-  // debugger
   string = str.replace(/[\r\n]{1,}/g, "");
   string = string.replace(/&nbsp;/g, " ");
   string = string.replace(/[\r\n]*$/g, "");

@@ -28,15 +28,23 @@ const STATE_OPEN = 2
  */
 
 const ROOM_TYPE = sessionStorage.getItem('zego_room_type') || 1
+
+//AppID 
 const APPID = {
-  home: ROOM_TYPE == 1 ? 4057099555 : 0,
-  overseas: ROOM_TYPE == 1 ? 4057099555 : 0
+  home: 4057099555,
+  overseas: 4057099555
 }
+
+//服务器地址
+const SERVER = {
+  home: 'wss://webliveroom.zego.im/ws', //国内服务器地址
+  overseas: 'wss://webliveroom-hk.zegocloud.com/ws' //海外服务器地址
+}
+
 
 // 用于后台服务请求接口的鉴权校验
 const serverSecret = 'd9ecd57052284ebcc997cadd323824ca';
 
-console.log('zegoenv', ROOM_TYPE, APPID, ZEGOENV)
 
 /**
  * 文件id通过文件共享SDK上传后返回，现测试环境与appID无关联。即多个appID上传文件到同一个服务器共享。
@@ -59,4 +67,17 @@ const DOCS_TEST = [
   { id: "-gu5ZUA7TlrRbA-E", name: "d.bmp" }
 ]
 
-export { APPID, serverSecret, ZEGOENV, ROLE_TEACHER, ROLE_STUDENT, STATE_CLOSE, STATE_OPEN, DOCS_TEST }
+// 是否是测试环境, => true 测试环境 => 正式环境
+const ENVTYPE = false;
+
+
+const getTokenUrl = 'https://wsliveroom-alpha.zego.im:8282/token'
+
+const USER_INFO = {
+  userID: '9090909090909',
+  userName: '张三',
+  roomId: '89898989'
+}
+
+
+export default { APPID, SERVER, serverSecret, ZEGOENV, ROLE_TEACHER, ROLE_STUDENT, STATE_CLOSE, STATE_OPEN, DOCS_TEST, ENVTYPE, getTokenUrl, USER_INFO }
