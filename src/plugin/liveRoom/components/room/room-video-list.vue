@@ -6,7 +6,7 @@
     <ul class="video-preview-list">
       <room-video-item :stream="teacherStream" />
       <div v-if="classScene !==2 ">
-        <room-video-item v-for="stream in stuStreamList" :key="stream.streamID" :stream="stream" />
+        <room-video-item v-for="stream in stuStreamList" :key="stream.streamID" :stream="stream" class="preview-list-item"/>
       </div>
     </ul>
   </div>
@@ -14,7 +14,6 @@
 
 <script>
 import RoomVideoItem from './room-video-item'
-import BUS from '../../../js/room/utils/bus/index'
 export default {
   name: 'RoomVideoList',
   components: {
@@ -25,7 +24,7 @@ export default {
       memberList    : [],                    // 连麦成员列表
       teacherStream : null,    // 老师流, 老师默认占一个麦位，创建一条默认无数据流
       stuStreamList : [],                     // 学生流列表
-      classScene: 2
+      classScene: this.thisParent.liveRoomParams.classScene || 1, // 1 => 小班课 2 => 大班课
     }
   },
   inject: ['zegoLiveRoom', 'thisParent'],
@@ -147,6 +146,11 @@ export default {
   &::-webkit-scrollbar-thumb {
     background-color: rgba(177, 180, 188, 0.5);
     border-radius: 2px;
+  }
+  .video-preview-list {
+    .preview-list-item {
+      margin-top: 10px;
+    }
   }
 }
 </style>

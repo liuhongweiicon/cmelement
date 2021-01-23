@@ -36,7 +36,6 @@ import RoomControllerWhiteboard from '../room/room-controller-whiteboard'
 import RoomControllerFeature from '../room/room-controller-feature'
 import RoomChattingList from '../room/room-chatting-list'
 
-import BUS from '../../../js/room/utils/bus/index'
 
 import zegoClient from '../../../js/room/zego/zegoClient/index'
 

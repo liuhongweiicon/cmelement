@@ -77,7 +77,6 @@
   </div>
 </template>
 <script>
-import BUS from '../../../js/room/utils/bus/index'
 export default {
   name: 'RoomChattingList',
   inject: ['zegoLiveRoom'],

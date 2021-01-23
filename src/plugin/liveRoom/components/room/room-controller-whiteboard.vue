@@ -181,7 +181,7 @@ export default {
       selectExcelId: null, //Excelid
       roomAuth: this.zegoLiveRoom.$http.auth, // 权限
       noList: false, // 是否列表为空，默认false
-      classScene: 2, // 当前课堂场景
+      classScene: this.thisParent.liveRoomParams.classScene || 1, // 当前课堂场景
       role: this.thisParent.liveRoomParams.USER_INFO.role || 1, // 当前用户角色
     }
   },
@@ -310,6 +310,8 @@ export default {
         this.zegoWhiteboardArea.setZoom(_zoom)
       }
     },
+  },
+  created() {
   },
   mounted() {
     this.handlePageChange_ = debounce(this.handlePageChange, 500, true)

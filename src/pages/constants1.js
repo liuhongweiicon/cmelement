@@ -20,7 +20,7 @@ const ENVTYPE = true;
 const USER_INFO = {
   userID: '12345672289', // 用户id
   userName: '学生', // 用户姓名
-  roomId: '12222341214', // 房间id
+  roomId: '122222341214', // 房间id
   role: 2, // 进入直播间的角色 1 => 教师 2 => 学生
 }
 
@@ -46,6 +46,11 @@ const SERVER = {
   overseas: 'wss://webliveroom-alpha.zego.im/ws' //海外服务器地址
 }
 
+/**
+ * 大班课和小班课
+ * 1 => 小班课 2 => 大班课
+ */
+const classScene = 1;
 
 export default { 
   APPID, 
@@ -56,5 +61,6 @@ export default {
   USER_INFO, 
   AREA_ENV, 
   maxMemberCount, 
-  hostMap 
+  hostMap,
+  classScene
 }

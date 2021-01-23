@@ -62,7 +62,6 @@ const controlBtnList = [
 ]
 
 import { debounce } from '../../../js/room/utils/tool'
-import BUS from '../../../js/room/utils/bus/index'
 
 export default {
   name: 'RoomControllerVideo',
@@ -110,6 +109,7 @@ export default {
       return str + item.cnName
     },
     async handleMainBtnClick({ name }) {
+      debugger
       if (this.isMe && name === 'can_share') return
       if (this.role == this.ROLE_TEACHER || this.isMe) {
         const state = this.user[name] == this.STATE_OPEN ? this.STATE_CLOSE : this.STATE_OPEN

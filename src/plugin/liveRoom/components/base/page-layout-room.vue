@@ -27,11 +27,8 @@ import RoomVideoList from '../room/room-video-list'
 import ZegoWhiteboardArea from '../zego/zego-whiteboard-area'
 import RoomControllerWhiteboard from '../room/room-controller-whiteboard'
 import RoomControllerFeature from '../room/room-controller-feature'
-import { storage } from '@/utils/tool'
-import { roomStore } from '@/service/biz/room'
-import zegoClient from '@/service/zego/zegoClient'
+import zegoClient from '../../../js/room/zego/zegoClient/index'
 
-import BUS from '../../../js/room/utils/bus/index'
 
 export default {
   name: 'PageLayoutRoom',
@@ -42,7 +39,7 @@ export default {
     RoomVideoList,
     ZegoWhiteboardArea
   },
-  inject: ['zegoLiveRoom'],
+  inject: ['thisParent', 'zegoLiveRoom'],
   data() {
     return {
       share: false, // 是否开启共享， share => false,非共享，=> true 共享
@@ -67,8 +64,8 @@ export default {
     }
   },
   mounted() {
-    const { roomId, userId, userName, role, classScene } = storage.get('loginInfo')
-    roomStore.init({ roomId, uid: userId, name: userName, role, route: this.$route.meta.from, room_type: classScene });
+    const { roomId, userID, userName, role } = this.thisParent.liveRoomParams.USER_INFO;
+    this.zegoLiveRoom.$http.init({ roomId, uid: userID, name: userName, role }); // 初始化,监听房间人数等信息变化
     
 
     // 监听开启共享屏幕

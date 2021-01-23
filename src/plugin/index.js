@@ -33,7 +33,7 @@ cmelement.install = (Vue, options) => {
     for (let key in vuePrototype) {
         Vue.prototype[key] = vuePrototype[key];
     }
-
+    window.BUS = new Vue();
     Vue.prototype.$message = Message
     Vue.prototype.showToast = function(msg = '', duration = 3000) {
       Message.closeAll()

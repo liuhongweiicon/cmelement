@@ -18,7 +18,6 @@ const errorTips = {
 
 
 import zegoClient from '../zego/zegoClient/index'
-import BUS from '../utils/bus/index'
 class HTTP {
     url = '';
     config = null;
@@ -82,14 +81,14 @@ class HTTP {
       return this.postRoomHttp('end_teaching', this.params);
     }
  
-    init({ roomId, uid, name, role }) {
+    init({ roomId, uid, name, role, classScene }) {
         this.roomId = roomId
         this.uid = +uid
         this.name = name
         this.role = role
         this.params.room_id = roomId
         this.params.uid = Number(uid)
-        this.params.room_type = 2
+        this.params.room_type = classScene || 1
         if (role == this.config.ROLE_TEACHER) {
           this.auth.can_share = this.config.STATE_OPEN
           this.auth.share = true

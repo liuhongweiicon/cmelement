@@ -140,7 +140,6 @@ import { getUserMedia } from '../../../js/room/utils/browser'
 import { debounce, storage } from '../../../js/room/utils/tool'
 
 
-import BUS from '../../../js/room/utils/bus/index'
 
 
 
@@ -257,7 +256,7 @@ export default {
       quitDialogShow: false, // 退出课堂弹窗标识
       roomUserList: [], // 房间成员列表
       roomAuth: this.zegoLiveRoom.$http.auth, // 房间权限
-      classScene: 2, // 当前课堂场景
+      classScene: 1, // 当前课堂场景
       role: 1, // 当前用户角色
       liveRoomParams: null, // 直播间参数
     }
@@ -277,6 +276,7 @@ export default {
   created() {
     this.liveRoomParams = this.thisParent.liveRoomParams;
     this.role = this.thisParent.liveRoomParams.USER_INFO.role;
+    this.classScene = this.thisParent.liveRoomParams.classScene;
   },
   mounted() {
     // 业务逻辑：如果是学生进入大班课场景，底部工具栏控制显示并且不启用设备推流
@@ -380,9 +380,10 @@ export default {
      * @param {cb} 回调方法
      */
     getUserMediaAuth(num, showErrorToast = true, cb) {
+      debugger
       const _this = this;
       if (num > 1) {
-        if (num == 3 && !_this.roomAuth.share) {
+        if (!_this.roomAuth.share) {
           _this.showToast('老师还未允许你使用共享功能')
         }
         return
@@ -463,7 +464,6 @@ export default {
     async toggleDeviceOpen(flag, item, noSetUser, reverse) {
       if (
         this.zegoLiveRoom.$http.role == this.liveRoomParams.ROLE_STUDENT &&
-        this.zegoLiveRoom.$http.joinLiveList.length >= 4 &&
         this.roomAuth[item.name] == this.liveRoomParams.STATE_CLOSE
       ) {
         const id = this.zegoLiveRoom.$http.uid
@@ -552,10 +552,10 @@ export default {
     
 
     /**
-     * 创建屏幕共享OR屏幕采集
-     * @param {item} item => true 屏幕采集，false或undefined=> 屏幕共享
+     * 创建屏幕共享
+     * 
      */
-    async handleCreateStream(item) {
+    async handleCreateStream() {
       const option = {
         screen: {
           //@ts-ignore

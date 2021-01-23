@@ -2,8 +2,8 @@
     <div class="cm-live-room">
 
         <zego-live-room v-if="isLogin">
-            <!-- <page-layout-room/> -->
-            <large-class-layout-room/>
+            <page-layout-room v-if="liveRoomParams.classScene == 1"/>
+            <!-- <large-class-layout-room/> -->
         </zego-live-room>
 
         
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import PageLayoutRoom from './components/base/page-layout-room.vue';
+import PageLayoutRoom from './components/base/page-layout-room.vue';
 import LargeClassLayoutRoom from './components/base/largeClass-layout-room';
 import ZegoLiveRoom from './components/zego/zego-live-room';
 
@@ -39,6 +39,7 @@ export default {
     name: 'cm-live-room',
     components: {
         ZegoLiveRoom,
+        PageLayoutRoom,
         LargeClassLayoutRoom
     },
     data() {
@@ -72,7 +73,7 @@ export default {
          * @desc: 后台业务 - 登录房间
          */
         async loginRoomBiz() {
-            const { roomId, userID, userName, role } = this.liveRoomParams.USER_INFO;
+            const { roomId, userID, userName, role, classScene } = this.liveRoomParams.USER_INFO;
             this.roomId = roomId
             this.userName = userName
 
@@ -81,7 +82,7 @@ export default {
                 room_id: roomId,
                 nick_name: userName,
                 role: role || 2,
-                room_type: 2
+                room_type: classScene || 1
             }
             const login = await this.$http.loginRoom(loginParams);
 

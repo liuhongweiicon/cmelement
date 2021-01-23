@@ -20,7 +20,6 @@ import RoomWhiteboardCanvastools from './room-whiteboard-canvastools'
 import RoomControllerPpt from './room-controller-ppt'
 import RoomControllerThumbnails from './room-controller-thumbnails'
 import RoomDialogEnd from './room-dialog-end'
-import BUS from '../../../js/room/utils/bus/index'
 
 export default {
   name: 'RoomWhiteboardArea',

@@ -38,10 +38,10 @@ export default {
     return {
       dialogVisible: true,
       role: 0,
-      classScene: 2,
+      classScene: this.thisParent.liveRoomParams.classScene || 1, // 课堂场景
     }
   },
-  inject: ['zegoLiveRoom'],
+  inject: ['zegoLiveRoom', 'thisParent'],
   mounted() {
     this.role = this.zegoLiveRoom.$http.role
   }

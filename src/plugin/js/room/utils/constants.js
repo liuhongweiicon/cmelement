@@ -23,11 +23,10 @@ const STATE_OPEN = 2
 
 /**
  * 目前项目要使得多个场景进入相同roomID不相互影响，一个场景需要一套appID配置
- * ROOM_TYPE 1为小班课，2为大班课
+ * classScene 1为小班课，2为大班课
  * 本演示项目仅提供小班课场景演示，如需本地体验大班课需申请appID，如需帮助可联系技术支持
  */
-
-const ROOM_TYPE = sessionStorage.getItem('zego_room_type') || 1
+const classScene = 1;
 
 //AppID 
 const APPID = {
@@ -80,4 +79,18 @@ const USER_INFO = {
 }
 
 
-export default { APPID, SERVER, serverSecret, ZEGOENV, ROLE_TEACHER, ROLE_STUDENT, STATE_CLOSE, STATE_OPEN, DOCS_TEST, ENVTYPE, getTokenUrl, USER_INFO }
+
+export default { 
+  APPID, 
+  SERVER, 
+  serverSecret, 
+  ZEGOENV, 
+  ROLE_TEACHER, 
+  ROLE_STUDENT, 
+  STATE_CLOSE, 
+  STATE_OPEN, 
+  DOCS_TEST, 
+  ENVTYPE, 
+  getTokenUrl, 
+  USER_INFO,
+  classScene }
