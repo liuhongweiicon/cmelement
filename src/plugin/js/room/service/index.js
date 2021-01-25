@@ -1,6 +1,5 @@
 
 
-import { Message } from 'element-ui'
 const errorTips = {
     'Network Error': '网络异常，请检查网络后重试',
     'timeout': '请求超时，服务器未响应',

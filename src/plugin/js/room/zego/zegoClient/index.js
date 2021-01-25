@@ -3,6 +3,7 @@ import { ZegoClient } from './base'
 import {ZegoExpressEngine} from '../../SDK/ZegoExpressWhiteboardWeb';
 import {ZegoExpressDocs} from '../../SDK/ZegoExpressDocsWeb';
 
+
 class WebZegoClient extends ZegoClient {
   /**
    * @desc: 初始化web端sdk

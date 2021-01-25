@@ -368,9 +368,9 @@ export default {
         speaker: devices.speakers
       }
       this.$set(this, 'deviceInfo', deviceInfo)
-      this.activeDeviceIds.camera = devices.cameras[0].deviceID
-      this.activeDeviceIds.mic = devices.microphones[0].deviceID
-      this.activeDeviceIds.speaker = devices.speakers[0].deviceID
+      this.activeDeviceIds.camera = devices.cameras[0] && devices.cameras[0].deviceID
+      this.activeDeviceIds.mic = devices.cameras[0] && devices.microphones[0].deviceID
+      this.activeDeviceIds.speaker = devices.cameras[0] && devices.speakers[0].deviceID
       this.zegoLiveRoom.setActiveDevice(this.activeDeviceIds)
     },
     /**
@@ -380,7 +380,6 @@ export default {
      * @param {cb} 回调方法
      */
     getUserMediaAuth(num, showErrorToast = true, cb) {
-      debugger
       const _this = this;
       if (num > 1) {
         if (!_this.roomAuth.share) {
@@ -424,6 +423,7 @@ export default {
         }
       )
     },
+
     handleMainBtnClick(item) {
       if (item.noAuth) return
       switch (item.name) {
@@ -454,6 +454,7 @@ export default {
           break
       }
     },
+    
     /**
      * @desc: 设备状态管理
      * @param {flag} 设备类型

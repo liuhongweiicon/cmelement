@@ -10,7 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 
-// import plugin from '../dist/cmelement'
+// import plugin from '../dist/cmelement.js'
 
 Vue.use(plugin);
 

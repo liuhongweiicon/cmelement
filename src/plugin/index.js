@@ -5,8 +5,6 @@ import './static/css/iconfont.css';
 import './js/swiper/index.css'; // swiper样式
 import './js/swiper/swiper'; // swiperJS
 import './static/css/room/reset.scss';
-import { Message } from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
 
 
 
@@ -29,14 +27,15 @@ let cmelement = {};
 
 
 cmelement.install = (Vue, options) => {
+
     // 注册全局方法
     for (let key in vuePrototype) {
         Vue.prototype[key] = vuePrototype[key];
     }
     window.BUS = new Vue();
-    Vue.prototype.$message = Message
+    window.Message = Vue.prototype.$message;
     Vue.prototype.showToast = function(msg = '', duration = 3000) {
-      Message.closeAll()
+      this.$message.closeAll()
       this.$message({
         dangerouslyUseHTMLString: true,
         message: msg,

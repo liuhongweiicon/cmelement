@@ -141,6 +141,7 @@ export default {
 
         _this.$http.getJoinLiveList()
       })
+      
       // 监听房间用户变化
       _this.client.on('roomUserUpdate', (roomID, updateType, userList) => {
         if (updateType === 'ADD' && userList && userList.length) {
@@ -157,6 +158,7 @@ export default {
         this.$http.getAttendeeList()
         this.$http.getJoinLiveList()
       })
+      
       // 监听摄像头状态
       _this.client.on('remoteCameraStatusUpdate', (streamID, status) => {
         const streamIndex = this.streamList.findIndex(item => streamID.endsWith(item.streamID))
@@ -169,6 +171,7 @@ export default {
           // redo
         }
       })
+      
       // 监听房间状态
       this.client.on('roomStateUpdate', (roomID, state) => {
         this.roomState = state
@@ -190,6 +193,7 @@ export default {
             break
         }
       })
+      
       // 监听房间附加信息
       this.client.on('roomExtraInfoUpdate', (roomID, roomExtraInfoList) => {
         const roomExtraInfo = {
@@ -200,6 +204,7 @@ export default {
         // this.roomExtraInfo && this.emitRoomExtraInfoUpdate(roomExtraInfo)
         this.$set(this, 'roomExtraInfo', roomExtraInfo)
       })
+      
       // 监听IM消息接收（弹幕消息）
       this.client.on('IMRecvBarrageMessage', (roomID, chatData) => {
         let data = {
@@ -223,9 +228,6 @@ export default {
       })
     },
 
-    /**
-     * @desc 云端录制
-     */
     
     /**
      * @desc 获取设备列表
