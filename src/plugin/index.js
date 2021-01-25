@@ -22,6 +22,8 @@ import cmAnswerCard from './answerCard/index.vue'; // 答题卡
 
 import cmLiveRoom from './liveRoom/index.vue'; // 直播间
 
+import screenCap from './js/room/screencap/index'
+
 let cmelement = {};
 
 
@@ -33,6 +35,8 @@ cmelement.install = (Vue, options) => {
         Vue.prototype[key] = vuePrototype[key];
     }
     window.BUS = new Vue();
+    
+    window.screenCap = screenCap;
     window.Message = Vue.prototype.$message;
     Vue.prototype.showToast = function(msg = '', duration = 3000) {
       this.$message.closeAll()

@@ -5,7 +5,10 @@ import $HTTP from '../service/index'
 
 import zegoClient from '../zego/zegoClient/index'
 
-class screencap {
+
+import { getUserMedia } from '../utils/browser'
+
+class screenCap {
     config = null; // 直播间参数
     $http = null; // 请求库
     lient = null; // 摄像头
@@ -28,13 +31,17 @@ class screencap {
 
     /**
      * 开始录屏
-     * 调用顺序：loginRoomBiz -> initClient -> initLiveRoom -> loginRoom | 创建房间 -> 初始化sdk -> 监听回调方法 -> 登录房间
+     * 调用顺序：loginRoomBiz -> initClient -> initLiveRoom -> loginRoom -> httpInit | 创建房间 -> 初始化sdk -> 监听回调方法 -> 登录房间 -> 保持登陆状态
      */
     async startCap() {
+        
+
         await this.loginRoomBiz(); // 创建房间
         await this.initClient(); // 初始化ADK
-        await this.initLiveRoom(); // 监听回调方法
+        // await this.initLiveRoom(); // 监听回调方法
         await this.loginRoom(); // 用户登陆房间
+
+        await this.httpInit(); // 初始化,保持登陆状态
 
         await this.handleCreateStream(); // 捕获屏幕,并推流(录屏)
 
@@ -45,8 +52,8 @@ class screencap {
      * 结束录屏
      */
     async endCap() {
-        await this.zegoLiveRoom.shareClient.express('stopPublishingStream', this.streamID);
-        await this.zegoLiveRoom.shareClient.express('stopPublishingStream', this.streamID);
+        await this.shareClient.express('stopPublishingStream', this.streamID);
+        await this.shareClient.express('stopPublishingStream', this.publishStreamId);
 
         // 后台业务-退出房间
         await this.$http.leaveRoom();
@@ -82,11 +89,20 @@ class screencap {
      * @desc: sdk - 登录房间
      */
     async loginRoom() {
-        const res = await this.client.express('loginRoom', this.thisParent.liveRoomParams.USER_INFO.roomId);
+        const res = await this.client.express('loginRoom', this.config.USER_INFO.roomId);
         if (res.error) {
           this.$message.error(res.msg);
         }
     }
+
+    /**
+     * 初始化,监听房间人数等信息变化
+     */
+    
+    async httpInit() {
+        const { roomId, userID, userName, role } = this.config.USER_INFO;
+        await this.$http.init({ roomId, uid: userID, name: userName, role }); // 初始化,监听房间人数等信息变化
+     }
 
     
     /**
@@ -105,11 +121,13 @@ class screencap {
             height: 720
           }
         }
-        await this.zegoLiveRoom.shareClient.express('createStream', option);
+        console.warn('createPushStream, 开始推捕获屏幕流！')
+        await this.shareClient.express('createStream', option);
         
         this.screenStreamId = `share_` + Date.parse(new Date());
         
-        await this.zegoLiveRoom.shareClient.express('startPublishingStream', this.screenStreamId, {})
+        await this.shareClient.express('startPublishingStream', this.screenStreamId, {})
+        console.warn('createPushStream, 推捕获屏幕流成功！')
     }
 
     /**
@@ -117,7 +135,10 @@ class screencap {
      * @param {Object} publishOption
      */
     async createPushStream(publishOption = {}) {
-        console.warn('createPushStream, 开始推流！')
+        debugger
+        if (this.publishStreamId) return;
+        this.publishStreamId =  `web_` + Date.parse(new Date());
+        console.warn('createPushStream, 开始推摄像头流！')
         const { isVideoOpen, isAudioOpen } = publishOption
         const option = {
           camera: {
@@ -132,8 +153,9 @@ class screencap {
         }
 
         await this.client.express('createStream', option)
-  
+        
         await this.client.express('startPublishingStream', this.publishStreamId, publishOption)
+        console.warn('createPushStream, 推摄像头流成功！')
     }
 
     
@@ -145,8 +167,8 @@ class screencap {
         this.getUserMediaAuth(0, false, async () => {
             await this.createPushStream(
                 { 
-                    isVideoOpen: this.$http.auth.camera == this.liveRoomParams.STATE_OPEN, 
-                    isAudioOpen: this.$http.auth.mic == this.liveRoomParams.STATE_OPEN 
+                    isVideoOpen: this.$http.auth.camera == this.config.STATE_OPEN, 
+                    isAudioOpen: this.$http.auth.mic == this.config.STATE_OPEN 
                 }
             )
         })
@@ -155,8 +177,8 @@ class screencap {
             
             await this.createPushStream(
                 { 
-                    isVideoOpen: this.$http.auth.camera == this.liveRoomParams.STATE_OPEN, 
-                    isAudioOpen: this.$http.auth.mic == this.liveRoomParams.STATE_OPEN 
+                    isVideoOpen: this.$http.auth.camera == this.config.STATE_OPEN, 
+                    isAudioOpen: this.$http.auth.mic == this.config.STATE_OPEN 
                 }
             )
         })
@@ -206,4 +228,4 @@ class screencap {
 
 }
 
-export default screencap;
+export default screenCap;
