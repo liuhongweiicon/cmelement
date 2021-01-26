@@ -112,10 +112,12 @@ export default {
       if (this.isMe && name === 'can_share') return
       if (this.role == this.ROLE_TEACHER || this.isMe) {
         const state = this.user[name] == this.STATE_OPEN ? this.STATE_CLOSE : this.STATE_OPEN
+      
         await this.zegoLiveRoom.$http.setUserInfo({
           target_uid: this.user.uid,
           [name]: state
         })
+        
         this.user[name] = state
         if (this.isMe) {
           BUS.$emit('userStateChange', { [this.user.uid]: { [name]: state } }, true)

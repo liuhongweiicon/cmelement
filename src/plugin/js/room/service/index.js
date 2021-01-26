@@ -110,11 +110,13 @@ class HTTP {
       if (socket) {
         socket.addEventListener('message', res => {
           const reg = /custommsg.*custom_content.*cmd.*10[1-7]/
+          
           if (!res.data || !reg.test(res.data)) return
           try {
             res = JSON.parse(res.data)
             res = JSON.parse(res.body.custommsg)
             res = JSON.parse(res.custom_content)
+            console.log('====edu_zpush====', res)
             if (res.cmd == 102) {
               this.onUserStateChange(res.data)
             } else if (res.cmd == 103) {
@@ -137,6 +139,7 @@ class HTTP {
   
     onUserStateChange(data) {
       const uid = this.uid
+      
       if (data.type == 1 || !data.users) return
       if (this.role == this.config.ROLE_TEACHER) {
         // 老师主动改变自己状态
@@ -290,10 +293,12 @@ class HTTP {
     }
     
 
-    // 拉取教室内某个用户的属性信息，包括用户角色、用户 ID、用户昵称、摄像头和麦克风状态、用户权限等。
+    // 修改教室内某个用户的属性信息，包括用户角色、用户 ID、用户昵称、摄像头和麦克风状态、用户权限等。
     async setUserInfo(params) {
+      
       if (!this.inited) return
-      const res = await this.postRoomHttp('set_user_info', { ...params, ...this.params })
+      const res = await this.postRoomHttp('set_user_info', { ...params, ...this.params });
+      
       const id = params.target_uid
       let user = this.attendeeList.find(v => v.uid == id)
       if (user) Object.assign(user, params)

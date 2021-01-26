@@ -1,7 +1,9 @@
 import { ZegoClient } from './base'
 
-import {ZegoExpressEngine} from '../../SDK/ZegoExpressWhiteboardWeb';
-import {ZegoExpressDocs} from '../../SDK/ZegoExpressDocsWeb';
+// import {ZegoExpressEngine} from '../../SDK/ZegoExpressWhiteboardWeb';
+import { ZegoExpressEngine } from 'zego-express-whiteboard-web';
+import { ZegoExpressDocs } from 'zego-express-docsview-web';
+// import {ZegoExpressDocs} from '../../SDK/ZegoExpressDocsWeb';
 
 
 class WebZegoClient extends ZegoClient {
@@ -29,7 +31,8 @@ class WebZegoClient extends ZegoClient {
     console.log('docs sdk version ', zgDocsClient.getVersion())
     this._client = zg
     const config = {
-      logLevel: 3
+      logLevel: "error",
+      remoteLogLevel: 'error'
     }
     logURL && (config.logURL = logURL)
     this.setState({ user })

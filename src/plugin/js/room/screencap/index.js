@@ -102,7 +102,15 @@ class screenCap {
     async httpInit() {
         const { roomId, userID, userName, role } = this.config.USER_INFO;
         await this.$http.init({ roomId, uid: userID, name: userName, role }); // 初始化,监听房间人数等信息变化
-     }
+    }
+
+    
+    /**
+     * @desc: 监听回调方法
+     */
+    initLiveRoom() {
+      return zegoClient;
+    }
 
     
     /**
@@ -135,7 +143,6 @@ class screenCap {
      * @param {Object} publishOption
      */
     async createPushStream(publishOption = {}) {
-        debugger
         if (this.publishStreamId) return;
         this.publishStreamId =  `web_` + Date.parse(new Date());
         console.warn('createPushStream, 开始推摄像头流！')

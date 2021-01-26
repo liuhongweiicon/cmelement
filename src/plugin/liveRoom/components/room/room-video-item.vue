@@ -177,6 +177,8 @@ export default {
       this.stream.user.isMe
         ? this.zegoLiveRoom.startPreview(streamID, this.$el)
         : await this.zegoLiveRoom.startPlayingStream(streamID, {}, this.$el)
+
+      
       this.$video = document.getElementById(streamID);
       this.$video.setAttribute('class', className)
       // tip:本端播放自己流的video muted属性设置都是为true，播放其他流的video的muted属性则根据扬声器状态来设置

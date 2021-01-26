@@ -58,9 +58,9 @@ export default {
     },
     created() {
         this.$http = new $HTTP(this.request, this.liveRoomParams);
-        // this.loginRoomBiz()
+        this.loginRoomBiz()
         if (window.performance.navigation.type === 0) { // 首次被加载
-            this.loginRoomBiz()
+            // this.loginRoomBiz()
         } else { // 刷新进入
             this.isLogin = true;
         }
@@ -115,6 +115,7 @@ export default {
 @import '../static/css/room/_mixin.scss';
 
 .cm-live-room {
+    user-select: none;
     height: 100%;
     width: 100%;
     .cm-live-enter {

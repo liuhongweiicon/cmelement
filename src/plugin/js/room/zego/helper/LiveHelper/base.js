@@ -97,7 +97,6 @@ export class LiveHelper {
   }
 
   async createStream(option) {
-    debugger
     if (this.isCreatingStream) return;
     this.isCreatingStream = true;
     this.localStream = await this._client.createStream(option);
