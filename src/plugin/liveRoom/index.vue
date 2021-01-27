@@ -120,25 +120,4 @@ export default {
 }
 
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 10px;
-  background-color: #fff;
-}
-
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background: #fff ;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: rgba(7, 0, 0, 0.3);
-}
-::-webkit-scrollbar-thumb:hover {
-  border-radius: 3px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: rgba(7, 0, 0, 0.5);
-}
 </style>
