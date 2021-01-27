@@ -39,6 +39,9 @@ export default {
     @include wh(34px, 34px);
     margin: 0 auto;
     margin-top: 20px;
+    p {
+      text-align: center;
+    }
     .fade-item {
       position: absolute;
       top: 0;

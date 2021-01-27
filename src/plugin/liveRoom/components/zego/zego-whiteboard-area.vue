@@ -251,6 +251,12 @@ export default {
             _this.loading = false;
             _this.$message.success('取消上传！');
             break;
+          case 2:
+            break;
+          default:
+            _this.loading = false;
+            _this.$message.error(res.error.message);
+            break
         }
         console.log(res)
       })

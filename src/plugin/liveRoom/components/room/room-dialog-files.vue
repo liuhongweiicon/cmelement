@@ -32,8 +32,8 @@
             <span class="dynamic">动态：可展示PPT动画</span>
           </div>
           <div class="fileInput">
-             <label for="file-input">上传文件</label>
-              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .potx, .pot" @change="changeHandler" id="file-input"  style="display: none;"/>
+              <label for="file-input">上传文件</label>
+              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .pdf, .potx, .pot, .txt" @change="changeHandler" id="file-input"  style="display: none;"/>
           </div>
         </div>
       </div>
