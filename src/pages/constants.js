@@ -18,9 +18,9 @@ const ENVTYPE = true;
 
 // 用户信息
 const USER_INFO = {
-  userID: '1234526789', // 用户id
+  userID: '123452126789', // 用户id
   userName: '1212', // 用户姓名
-  roomId: '122222341214', // 房间id
+  roomId: '12222121212341214', // 房间id
   role: 1, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }

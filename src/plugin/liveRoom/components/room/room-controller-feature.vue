@@ -127,7 +127,6 @@
       v-if="filesListDialogShow"
       @handleClose="zegoWhiteboardArea.setFilesListDialogShow(false)"
     />
-    <room-dialog-quit v-if="quitDialogShow" @handleClose="quitDialogShow = false" />
   </div>
 </template>
 
@@ -135,11 +134,10 @@
 import RoomDialogMembers from './room-dialog-members'
 import RoomDialogShare from './room-dialog-share'
 import RoomDialogFiles from './room-dialog-files'
-import RoomDialogQuit from './room-dialog-quit'
 import { getUserMedia } from '../../../js/room/utils/browser'
 import { debounce, storage } from '../../../js/room/utils/tool'
 
-
+import zegoClient from '../../../js/room/zego/zegoClient/index'
 
 
 
@@ -236,7 +234,6 @@ export default {
     RoomDialogMembers,
     RoomDialogShare,
     RoomDialogFiles,
-    RoomDialogQuit
   },
   data() {
     return {
@@ -253,7 +250,6 @@ export default {
       },
       memberListDialogShow: false, // 成员列表弹窗标识
       shareDialogShow: false, // 邀请弹窗标识
-      quitDialogShow: false, // 退出课堂弹窗标识
       roomUserList: [], // 房间成员列表
       roomAuth: this.zegoLiveRoom.$http.auth, // 房间权限
       classScene: 1, // 当前课堂场景
@@ -448,11 +444,22 @@ export default {
           this.shareDialogShow = true
           break
         case 'quit':
-          this.quitDialogShow = true
+          this.quitClass();
           break
         default:
           break
       }
+    },
+    
+    /**
+     * 离开直播间
+     */
+    async quitClass() {
+      this.zegoLiveRoom.isquit = true;
+      await this.zegoLiveRoom.$http.leaveRoom()
+      zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId);
+      window.open(' ','_self');
+      window.close();
     },
     
     /**

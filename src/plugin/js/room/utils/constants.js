@@ -73,10 +73,23 @@ const ENVTYPE = false;
 const getTokenUrl = 'https://wsliveroom-alpha.zego.im:8282/token'
 
 const USER_INFO = {
-  userID: '9090909090909',
-  userName: '张三',
-  roomId: '89898989'
+  userID: '1234526789', // 用户id
+  userName: '1212', // 用户姓名
+  roomId: '122222341214', // 房间id
+  role: 1, // 进入直播间的角色 1 => 教师 2 => 学生
+  isMe: true, // 本身标识
 }
+
+// 国内环境或海外环境
+// home => 国内环境
+// overseas => 海外环境
+const AREA_ENV = 'home';
+
+// 房间最大连接数
+const maxMemberCount = 10;
+
+// 用户管理服务接口
+const hostMap = 'https://goclass-server-sh.zego.im/edu_room/'
 
 
 
@@ -93,4 +106,7 @@ export default {
   ENVTYPE, 
   getTokenUrl, 
   USER_INFO,
-  classScene }
+  classScene,
+  hostMap,
+  maxMemberCount,
+  AREA_ENV }

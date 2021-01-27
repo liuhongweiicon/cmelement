@@ -13,12 +13,11 @@ export default {
     data() {
         return {
             params: constants,
-            request: $http,
+            request: window.$axios,
             screenCap: null,
         }
     },
     created() {
-        
     },
 
     methods: {

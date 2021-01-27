@@ -12,7 +12,9 @@
     >
       <div class="dialog-content">
         <ul class="file-list">
+          <div class="file-list-nodata" v-if="!fileList.length">暂无分享文件，请先上传文件，再分享文件！</div>
           <li
+            v-else
             class="file-item"
             v-for="item in fileList"
             :key="item.name + item.id"
@@ -25,9 +27,13 @@
           </li>
         </ul>
         <div class="tips">
-          <div style="width:400px;border-top:1px solid #f4f5f8">
+          <div style="width:400px;">
             <span class="static">静态：无法展示PPT动画</span>
             <span class="dynamic">动态：可展示PPT动画</span>
+          </div>
+          <div class="fileInput">
+             <label for="file-input">上传文件</label>
+              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .potx, .pot" @change="changeHandler" id="file-input"  style="display: none;"/>
           </div>
         </div>
       </div>
@@ -42,7 +48,7 @@ export default {
   inject: ['zegoWhiteboardArea'],
   data() {
     return {
-      fileList: [],
+      // fileList: [],
       waitting: false
     }
   },
@@ -60,13 +66,21 @@ export default {
      */
     activeViewIsPPTH5() {
       return this.zegoWhiteboardArea.activeViewIsPPTH5
+    },
+
+    /**
+     * 共享文件列表
+     */
+    fileList() {
+      return this.zegoWhiteboardArea.fileLists
     }
   },
   async mounted() {
     // 根据登录页选择链接环境获取对应配置
-    const env = 'home'
-    const { fileList } = await this.zegoWhiteboardArea.client.context.Config.getParams(env)
-    this.$set(this, 'fileList', fileList)
+    // const env = 'home'
+    // const { fileList } = await this.zegoWhiteboardArea.client.context.Config.getParams(env)
+    // this.$set(this, 'fileList', fileList)
+    
   },
   methods: {
     /**
@@ -87,7 +101,16 @@ export default {
     },
     closeDialog() {
       this.zegoWhiteboardArea.setFilesListDialogShow(false)
-    }
+    },
+
+
+    /**
+     * 上传的文件
+     */
+    changeHandler() {
+       var file = document.getElementById('file-input').files[0];
+       this.zegoWhiteboardArea.docsClient.uploadFile(file, 1)
+    },
   }
 }
 </script>
@@ -127,6 +150,12 @@ export default {
       &::-webkit-scrollbar-thumb {
         background-color: rgba(177, 180, 188, 0.5);
         border-radius: 2px;
+      }
+      .file-list-nodata {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .file-list .file-item {
@@ -184,7 +213,19 @@ export default {
       color: #585c62;
       line-height: 51px;
       padding: 0 0 0 30px;
-      // border-top: 1px solid #f4f5f8;
+      border-top: 1px solid rgb(244, 245, 248);
+      display: flex;
+      .fileInput {
+        width: 100px;
+        color: #0045ff;
+        text-align: center;
+        label:hover  {
+          cursor: pointer;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
     .tips .static {
       margin-right: 20px;

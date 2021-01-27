@@ -17,11 +17,12 @@
       <i class="fade-item fade-item11"></i>
       <i class="fade-item fade-item12"></i>
     </div>
-    <p>网络异常，正在重新加入...</p>
+    <p>{{tipsText ? tipsText : '网络异常，正在重新加入...'}}</p>
   </div>
 </template>
 <script>
 export default {
+  props: ['tipsText'],
   name: 'RoomDialogLoading'
 }
 </script>

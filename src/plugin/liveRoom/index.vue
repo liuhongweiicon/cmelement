@@ -22,20 +22,11 @@ import $HTTP from '../js/room/service/index'; // 请求实例
 
 import defaultParams from '../js/room/utils/constants'; // 直播间默认配置参数
 export default {
-    props: {
-        // 直播间配置参数
-        constants: {
-            type: Object,
-            default: () => {
-                return null
-            }
-        },
-
-        // 请求库
-        request: {
-            type: Object,
-        }
-    },
+    /**
+     * request => 请求库
+     * constants => 直播间配置参数
+     */
+    props: ['request', 'constants'],
     name: 'cm-live-room',
     components: {
         ZegoLiveRoom,
@@ -62,7 +53,7 @@ export default {
         if (window.performance.navigation.type === 0) { // 首次被加载
             // this.loginRoomBiz()
         } else { // 刷新进入
-            this.isLogin = true;
+            // this.isLogin = true;
         }
     },
     mounted() {
@@ -79,6 +70,7 @@ export default {
 
             const loginParams = {
                 uid: Number(userID),
+                // uid: userID,
                 room_id: roomId,
                 nick_name: userName,
                 role: role || 2,

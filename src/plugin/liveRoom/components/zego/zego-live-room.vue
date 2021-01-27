@@ -56,6 +56,8 @@ export default {
       shareList: null, // 共享流监听
 
       $http: null, // 请求实例
+
+      isquit: false, // 是否是退出
     }
   },
   
@@ -175,11 +177,15 @@ export default {
       // 监听房间状态
       this.client.on('roomStateUpdate', (roomID, state) => {
         this.roomState = state
-
+        
         switch (state) {
           // 连接中
           case 'CONNECTING':
-            this.offlineHandle()
+            // 点击退出时，不执行重连操作
+            if (!_this.isquit) {
+              this.offlineHandle()
+            }
+            
             break
           // 已连接
           case 'CONNECTED':
@@ -187,7 +193,11 @@ export default {
             break
           // 连接失败
           case 'DISCONNECTED':
-            this.disconnectedHandle()
+            // 点击退出时，不执行重连操作
+            if (!_this.isquit) {
+              this.disconnectedHandle()
+            }
+            
             break
           default:
             break

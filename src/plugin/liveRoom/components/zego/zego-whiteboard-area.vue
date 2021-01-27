@@ -4,13 +4,19 @@
 <template>
   <div class="zego-whiteboard-area" v-if="!!client">
     <slot></slot>
+    
+    <room-dialog-loading :tipsText="tipsText" v-if="loading" />
   </div>
 </template>
 <script>
 import zegoClient from '../../../js/room/zego/zegoClient/index'
+import RoomDialogLoading from '../room/room-dialog-loading'
 
 export default {
   name: 'ZegoWhiteboardArea',
+  components: {
+    RoomDialogLoading
+  },
   props: {
     parentId: String // 传入白板渲染dom id
   },
@@ -60,6 +66,9 @@ export default {
       thumbnailsImg: [], // 缩略图列表
       filesListDialogShow: false, // 文件列表弹窗
       isAllowSendRoomExtraInfo: true, // 是否发送房间附加信息
+      tipsText: '上传中...', // 上传文件时的文案
+      loading: false, // 上传文件lodding
+      fileLists: [], // 上传文件的列表
     }
   },
   inject: ['zegoLiveRoom', 'thisParent'],
@@ -159,6 +168,7 @@ export default {
      * @desc: 初始化白板区域相关回调
      */    
     async initWhiteboardArea() {
+      const _this = this;
       /**
        * @desc: 监听所有error错误
        * @param {错误码和错误描述} errorData
@@ -201,7 +211,48 @@ export default {
        * @return {文档相关信息} res
        */      
       this.docsClient.on('onLoadFile', async res => {
+        console.log(res, 'onLoadFile')
         await this.createFileWBView(res)
+      })
+
+      
+      /**
+       * @desc: 监听上传文档
+       * @return {文档相关信息} res
+       */      
+      this.docsClient.on('onUpload', async res => {
+        
+        switch(res.status) {
+          case 1:
+            _this.loading = true;
+            _this.tipsText = '上传中...'
+            break;
+          case 4:
+            _this.tipsText = '排队中...'
+            break;
+          case 8:
+            _this.tipsText = '文件转换中...'
+            break;
+          case 16:
+            BUS.$emit('fileUpload', res)
+            const info = { 
+              id: res.fileID, 
+              name: res.fileName, 
+            };
+            _this.fileLists.push(info);
+            _this.loading = false;
+            _this.$message.success('上传/转换成功！');
+            break;
+          case 32:
+            _this.loading = false;
+            _this.tipsText = '上传转换失败！'
+            break;
+          case 64:
+            _this.loading = false;
+            _this.$message.success('取消上传！');
+            break;
+        }
+        console.log(res)
       })
       /**
        * @desc: 动态PPT步数改变的回调

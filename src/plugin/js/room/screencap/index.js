@@ -38,7 +38,7 @@ class screenCap {
 
         await this.loginRoomBiz(); // 创建房间
         await this.initClient(); // 初始化ADK
-        // await this.initLiveRoom(); // 监听回调方法
+        await this.initLiveRoom(); // 监听回调方法
         await this.loginRoom(); // 用户登陆房间
 
         await this.httpInit(); // 初始化,保持登陆状态
@@ -46,19 +46,21 @@ class screenCap {
         await this.handleCreateStream(); // 捕获屏幕,并推流(录屏)
 
         await this.tryJionLive(); // 开始摄像头和麦克风,创建流并推流
+
     }
 
     /**
      * 结束录屏
      */
     async endCap() {
+        this.$http.heartBeatId && clearInterval(this.$http.heartBeatId);
+        this.$http.heartBeatId = 0
         await this.shareClient.express('stopPublishingStream', this.streamID);
         await this.shareClient.express('stopPublishingStream', this.publishStreamId);
-
+        // 退出房间
+        const res = await zegoClient._client.logoutRoom(this.config.USER_INFO.roomId);
         // 后台业务-退出房间
         await this.$http.leaveRoom();
-        // 退出房间
-        zegoClient._client.logoutRoom(this.config.USER_INFO.roomId)
     }
 
     /**
@@ -68,6 +70,7 @@ class screenCap {
         const { roomId, userID, userName, role, classScene } = this.config.USER_INFO;
         const loginParams = {
             uid: Number(userID),
+            // uid: userID,
             room_id: roomId,
             nick_name: userName,
             role: role || 2,
@@ -108,8 +111,13 @@ class screenCap {
     /**
      * @desc: 监听回调方法
      */
-    initLiveRoom() {
-      return zegoClient;
+    async initLiveRoom() {
+      const _this = this;
+
+      // 监听停止共享
+      this.shareClient.on('screenSharingEnded', () => {
+        _this.endCap()
+      });
     }
 
     

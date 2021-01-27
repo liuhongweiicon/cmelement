@@ -87,6 +87,7 @@ class HTTP {
         this.role = role
         this.params.room_id = roomId
         this.params.uid = Number(uid)
+        // this.params.uid = uid
         this.params.room_type = classScene || 1
         if (role == this.config.ROLE_TEACHER) {
           this.auth.can_share = this.config.STATE_OPEN

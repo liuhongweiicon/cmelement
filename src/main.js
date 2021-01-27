@@ -11,7 +11,6 @@ Vue.use(ElementUI);
 
 
 // import plugin from '../dist/cmelement.js'
-
 Vue.use(plugin);
 
 window.$vue = new Vue({
