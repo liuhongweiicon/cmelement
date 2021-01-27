@@ -171,6 +171,8 @@ export default {
       @include wh(100%, 100%);
       position: relative;
       margin: 0 auto;
+      padding-right: 10px;
+      box-sizing: border-box;
       //position: absolute !important;
     }
 

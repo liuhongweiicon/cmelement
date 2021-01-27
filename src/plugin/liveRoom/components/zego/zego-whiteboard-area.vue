@@ -221,7 +221,6 @@ export default {
        * @return {文档相关信息} res
        */      
       this.docsClient.on('onUpload', async res => {
-        
         switch(res.status) {
           case 1:
             _this.loading = true;
@@ -252,6 +251,8 @@ export default {
             _this.$message.success('取消上传！');
             break;
           case 2:
+            _this.loading = true;
+            _this.tipsText = '文件转换中...'
             break;
           default:
             _this.loading = false;
@@ -452,7 +453,7 @@ export default {
         if ((code + '').indexOf('timeout') > -1) {
           this.showToast('请求超时')
         } else {
-          this.showToast('共享失败')
+          this.showToast(error.msg ? error.msg : '共享失败')
         }
       }
     },
@@ -700,7 +701,7 @@ export default {
           if ((code + '').indexOf('timeout') > -1) {
             this.showToast('请求超时')
           } else {
-            this.showToast('共享失败')
+            this.showToast(error.msg ? error.msg : '共享失败')
           }
         }
       }
@@ -758,7 +759,7 @@ export default {
           if ((code + '').indexOf('timeout') > -1) {
             this.showToast('请求超时')
           } else {
-            this.showToast('共享失败')
+            this.showToast(error.msg ? error.msg : '共享失败')
           }
         }
       }
