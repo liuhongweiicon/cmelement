@@ -112,7 +112,7 @@ export default {
        let type = 3;
        const suffix = file.name.substring(file.name.lastIndexOf('.') + 1);
        if (suffix == 'ppt' || suffix == 'pptx') {
-         type = 3
+         type = 6
        }
       await this.zegoWhiteboardArea.docsClient.uploadFile(file, type);
     },

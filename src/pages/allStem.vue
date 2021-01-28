@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.allStem {
+#allStem {
     height: 100%;
 }
 :root {

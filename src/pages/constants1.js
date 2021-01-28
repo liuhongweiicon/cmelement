@@ -20,7 +20,7 @@ const ENVTYPE = true;
 const USER_INFO = {
   userID: '12345672289', // 用户id
   userName: '学生', // 用户姓名
-  roomId: '122222341214', // 房间id
+  roomId: '12222121212341214', // 房间id
   role: 2, // 进入直播间的角色 1 => 教师 2 => 学生
 }
 

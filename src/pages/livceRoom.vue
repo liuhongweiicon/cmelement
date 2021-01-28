@@ -1,8 +1,8 @@
 <template>
     <div class="liveRoom">
-        <!-- <cm-live-room :constants="params" :request="request"></cm-live-room> -->
+        <cm-live-room :constants="params" :request="request"></cm-live-room>
 
-        <div @click="capHandler">{{!screenCap ? '捕获' : '停止'}}</div>
+        <!-- <div @click="capHandler">{{!screenCap ? '捕获' : '停止'}}</div> -->
     </div>
 </template>
 
