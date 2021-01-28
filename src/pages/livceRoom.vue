@@ -1,8 +1,8 @@
 <template>
     <div class="liveRoom">
-        <cm-live-room :constants="params" :request="request"></cm-live-room>
+        <!-- <cm-live-room :constants="params" :request="request"></cm-live-room> -->
 
-        <!-- <div @click="capHandler">{{!screenCap ? '捕获' : '停止'}}</div> -->
+        <div @click="capHandler">{{!screenCap ? '捕获' : '停止'}}</div>
     </div>
 </template>
 
@@ -22,13 +22,19 @@ export default {
 
     methods: {
         // 采集屏幕
-        capHandler() {
+        async capHandler() {
+            const _this = this;
             if (!this.screenCap) {
                 this.screenCap = new window.screenCap(this.request, this.params);
-                this.screenCap.startCap();
+                await this.screenCap.startCap();
+                this.screenCap.shareClient.on('screenSharingEnded', () => {
+                    _this.screenCap.endCap()
+                    _this.screenCap = null;
+                });;
 
             } else {
-                this.screenCap.endCap();
+                this.screenCap.endCap()
+                this.screenCap = null;
             }
             
         }

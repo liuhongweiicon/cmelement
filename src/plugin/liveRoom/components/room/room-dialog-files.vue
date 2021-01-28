@@ -105,11 +105,16 @@ export default {
 
 
     /**
-     * 上传的文件
+     * 上传文件
      */
-    changeHandler() {
+    async changeHandler() {
        var file = document.getElementById('file-input').files[0];
-       this.zegoWhiteboardArea.docsClient.uploadFile(file, 3)
+       let type = 3;
+       const suffix = file.name.substring(file.name.lastIndexOf('.') + 1);
+       if (suffix == 'ppt' || suffix == 'pptx') {
+         type = 3
+       }
+      await this.zegoWhiteboardArea.docsClient.uploadFile(file, type);
     },
   }
 }

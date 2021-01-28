@@ -35,10 +35,9 @@ class screenCap {
      */
     async startCap() {
         
-
         await this.loginRoomBiz(); // 创建房间
         await this.initClient(); // 初始化ADK
-        await this.initLiveRoom(); // 监听回调方法
+        // await this.initLiveRoom(); // 监听回调方法
         await this.loginRoom(); // 用户登陆房间
 
         await this.httpInit(); // 初始化,保持登陆状态
@@ -57,6 +56,17 @@ class screenCap {
         this.$http.heartBeatId = 0
         await this.shareClient.express('stopPublishingStream', this.streamID);
         await this.shareClient.express('stopPublishingStream', this.publishStreamId);
+        zegoClient.initConfig = async function(env) {
+          {
+            if (!this.state.tokenInfo.token1) {
+              await this.createZegoContext(env)
+            }
+            this.setState({ isInit: true, env }, () => {
+              this.initConfig = null
+            })
+          }
+        };
+        
         // 退出房间
         const res = await zegoClient._client.logoutRoom(this.config.USER_INFO.roomId);
         // 后台业务-退出房间
@@ -94,7 +104,7 @@ class screenCap {
     async loginRoom() {
         const res = await this.client.express('loginRoom', this.config.USER_INFO.roomId);
         if (res.error) {
-          this.$message.error(res.msg);
+          Message.error(res.msg);
         }
     }
 
@@ -113,11 +123,11 @@ class screenCap {
      */
     async initLiveRoom() {
       const _this = this;
-
       // 监听停止共享
       this.shareClient.on('screenSharingEnded', () => {
         _this.endCap()
       });
+
     }
 
     

@@ -233,11 +233,14 @@ export default {
             _this.tipsText = '文件转换中...'
             break;
           case 16:
-            BUS.$emit('fileUpload', res)
-            const info = { 
+            let info = { 
               id: res.fileID, 
               name: res.fileName, 
             };
+            const suffix = res.fileName.substring(res.fileName.lastIndexOf('.') + 1);
+            if (suffix == 'ppt' || suffix == 'pptx') {
+              info.isDynamic = true
+            }
             _this.fileLists.push(info);
             _this.loading = false;
             _this.$message.success('上传/转换成功！');
