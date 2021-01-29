@@ -15,7 +15,7 @@
         <el-popover
           v-if="item.name === 'share'"
           placement="top"
-          width="154"
+          width="200"
           trigger="click"
           popper-class="control-btn-share-popper"
           :disabled="!roomAuth.share"
@@ -639,10 +639,6 @@ export default {
         color: #18191a;
       }
     }
-    // .el-popover__reference:active {
-    //   background-color: red;
-    //   // color: #18191a;
-    // }
     & + .control-btn-item {
       margin-left: 16px;
     }
@@ -767,6 +763,7 @@ export default {
         }
       }
     }
+
   }
 
   .quit-button {
@@ -812,6 +809,39 @@ export default {
         @include wh(20px, 20px);
         margin-right: 6px;
       }
+    }
+  }
+}
+
+
+.control-btn-share-popper {
+  padding: 0 !important;
+  .share-list-popper {
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 6px;
+    .share-item {
+      @include wh(54px, 58px);
+      text-align: center;
+
+      &:hover {
+        cursor: pointer;
+        background: rgba(244, 245, 248, 1);
+        color: #18191a;
+        border-radius: 4px;
+
+        .hover-stroke {
+          stroke: #18191a;
+        }
+      }
+    }
+    .si-icon {
+      @include wh(30px, 30px);
+      margin: 6px auto 4px;
+    }
+    .si-name {
+      font-size: 12px;
     }
   }
 }
