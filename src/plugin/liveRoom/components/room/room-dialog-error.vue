@@ -68,6 +68,7 @@ export default {
   }
   .dialog-content {
     padding: 0 0 30px 0;
+    text-align: center;
   }
   .des {
     margin-bottom: 30px;

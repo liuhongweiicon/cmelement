@@ -4,7 +4,6 @@ import './static/css/reset.css';
 import './static/css/iconfont.css';
 import './js/swiper/index.css'; // swiper样式
 import './js/swiper/swiper'; // swiperJS
-import './static/css/room/reset.scss';
 
 
 

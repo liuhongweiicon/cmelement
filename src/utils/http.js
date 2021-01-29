@@ -48,7 +48,7 @@ $.interceptors.response.use((response) => {
     if (response.config.showLoading) {
         tryHideFullScreenLoading();
     }
-    if (response.config.url.indexOf('goclass') > -1) {
+    if (response.config.url.indexOf('liveroom') > -1) {
         return response.data;
     }
     if (response.data.httpCode) {

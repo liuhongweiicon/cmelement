@@ -18,9 +18,9 @@ const ENVTYPE = true;
 
 // 用户信息
 const USER_INFO = {
-  userID: '123452126789', // 用户id
-  userName: '1212', // 用户姓名
-  roomId: '12222121212341214', // 房间id
+  userID: 'ee5d70d819d14696a0a1bec6e7361e76', // 用户id
+  userName: '教师嘿嘿', // 用户姓名
+  roomId: '551042970258771967', // 房间id
   role: 1, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }
@@ -34,12 +34,13 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-const hostMap = 'https://goclass-server-sh.zego.im/edu_room/'
+// const hostMap = 'http://live-dev.xinguoren.cn/liveroom/zego/';
+const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**
  * 登陆房间token请求地址
  */
-const getTokenUrl = 'https://wsliveroom-alpha.zego.im:8282/token'
+const getTokenUrl = hostMap + 'thirdToken';
 
 //构建即构示例服务器地址参数
 const SERVER = {

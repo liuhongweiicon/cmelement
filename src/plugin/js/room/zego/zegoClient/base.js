@@ -95,7 +95,8 @@ export class ZegoClient {
       xmlhttp.onreadystatechange = e => {
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
-            resolve(xmlhttp.response);
+            const info = JSON.parse(xmlhttp.response).data
+            resolve(info);
           } else {
             reject(e);
           }

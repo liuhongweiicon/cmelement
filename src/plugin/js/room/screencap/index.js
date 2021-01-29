@@ -79,8 +79,8 @@ class screenCap {
     async loginRoomBiz() {
         const { roomId, userID, userName, role, classScene } = this.config.USER_INFO;
         const loginParams = {
-            uid: Number(userID),
-            // uid: userID,
+            // uid: Number(userID),
+            uid: userID,
             room_id: roomId,
             nick_name: userName,
             role: role || 2,

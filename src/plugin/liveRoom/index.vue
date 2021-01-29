@@ -69,8 +69,8 @@ export default {
             this.userName = userName
 
             const loginParams = {
-                uid: Number(userID),
-                // uid: userID,
+                // uid: Number(userID),
+                uid: userID,
                 room_id: roomId,
                 nick_name: userName,
                 role: role || 2,
@@ -105,6 +105,7 @@ export default {
 <style lang="scss" scoped>
 
 @import '../static/css/room/_mixin.scss';
+
 
 .cm-live-room {
     user-select: none;
