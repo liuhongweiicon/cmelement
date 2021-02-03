@@ -109,6 +109,7 @@ export default {
       return str + item.cnName
     },
     async handleMainBtnClick({ name }) {
+      
       if (this.isMe && name === 'can_share') return
       if (this.role == this.ROLE_TEACHER || this.isMe) {
         const state = this.user[name] == this.STATE_OPEN ? this.STATE_CLOSE : this.STATE_OPEN

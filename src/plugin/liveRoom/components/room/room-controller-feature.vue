@@ -460,8 +460,8 @@ export default {
      */
     async quitClass() {
       this.zegoLiveRoom.isquit = true;
+      await zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId);
       await this.zegoLiveRoom.$http.leaveRoom()
-      zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId);
       window.open(' ','_self');
       window.close();
     },

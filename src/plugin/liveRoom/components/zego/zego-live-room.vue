@@ -117,7 +117,6 @@ export default {
       this.client.on('roomStreamUpdate', (roomID, updateType, streamList) => {
 
         const shareStreamList = JSON.parse(JSON.stringify(streamList));
-        
         let tempStreamList = []
         streamList = streamList.filter(v => !!v.streamID && v.streamID.indexOf("share") == -1);
 
@@ -475,7 +474,7 @@ export default {
           this.messages[this.messages.length - 1].messageContent.push({
             messageID: new Date().getTime(),
             messageState: 1,
-            content: data.messageContent[0].content
+            content: data.messageContent[0].content,
           })
         } else{
           this.messages.push(data)

@@ -54,18 +54,18 @@ export default {
     }
   },
   mounted() {
-    BUS.$on('roomJoinLivesChange', this.onRoomJoinLivesChange)
+    BUS.$on('roomAttendeesChange', this.onRoomAttendeesChange)
     BUS.$on('userStateChange', this.onUserStateChange)
   },
   destroyed() {
-    BUS.$off('roomJoinLivesChange', this.onRoomJoinLivesChange)
+    BUS.$on('roomAttendeesChange', this.onRoomAttendeesChange)
     BUS.$off('userStateChange', this.onUserStateChange)
   },
   methods: {
     /**
-     * @desc 房间连麦成员列表变化监听
+     * @desc 房间成员列表变化监听
      */    
-    onRoomJoinLivesChange(res) {
+    onRoomAttendeesChange(res) {
       this.$set(this, 'memberList', res)
     },
     /**
@@ -81,7 +81,7 @@ export default {
     /**
      * @desc  获取老师流
      * @param {streamList} 音视频sdk原始成员流
-     * @param {memberList} 后台返回房间连麦成员列表
+     * @param {memberList} 后台返回房间成员列表
      */
     makeTeacherStream(streamList, memberList) {
       if (!memberList.length) return
@@ -95,8 +95,8 @@ export default {
         return
       }
       const id = memberList[0].uid
-      const joing = memberList[0].joing
-      const stream = streamList.find(v => joing && (v.user.uid == id || v.user.userID == id))
+      // const joing = memberList[0].joing
+      const stream = streamList.find(v => (v.user.uid == id || v.user.userID == id))
       if (!stream) {
         const teacherStream = this.teacherStream
         teacherStream.user = memberList[0]
@@ -112,7 +112,7 @@ export default {
     /**
      * @desc  获取学生流列表
      * @param {streamList} 音视频sdk原始成员流
-     * @param {memberList} 后台返回成员连麦成员列表
+     * @param {memberList} 后台返回成员成员列表
      */
     makeStuStreamList(streamList, memberList) {
       let arr = []
@@ -128,7 +128,8 @@ export default {
       }
       this.$set(this, 'stuStreamList', arr)
       arr = null
-    }
+    },
+
   }
 }
 </script>

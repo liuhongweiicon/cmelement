@@ -1,17 +1,5 @@
 
 
-const errorTips = {
-    'Network Error': '网络异常，请检查网络后重试',
-    'timeout': '请求超时，服务器未响应',
-    'Internal Server Error': '请求服务器错误',
-    'Request failed with status code 502': '请求服务器错误',
-    10001: '课堂已有其他老师，不能加入',
-    10002: '课堂人数已满，不能加入',
-    10003: '用户没有权限修改',
-    10004: '目标用户不在教室',
-    10005: '需要先登录房间',
-    10006: '房间不存在',
-}
 
 
 
@@ -51,16 +39,7 @@ class HTTP {
       const res = await this.$http.post(this.url + api, data);
 
       return new Promise((resolve, reject) => {
-          if (errorTips[res.ret.code] || (res.ret.code + '').indexOf('timeout') > -1) {
-            Message.closeAll()
-            Message({
-              customClass: 'common-toast',
-              type: 'error',
-              message: (res.ret.code + '').indexOf('timeout') > -1 ? errorTips.timeout : errorTips[res.ret.code]
-            })
-          } else if (res.ret.code == 0) {
-            resolve(res)
-          } else {
+          if (res.ret.code !== 0) {
             Message.closeAll()
             Message({
               customClass: 'common-toast',
@@ -68,7 +47,7 @@ class HTTP {
               message: res.ret.message
             })
           }
-          
+          resolve(res)
       });
     }
     
@@ -148,7 +127,6 @@ class HTTP {
   
     onUserStateChange(data) {
       const uid = this.uid
-      
       if (data.type == 1 || !data.users) return
       if (this.role == this.config.ROLE_TEACHER) {
         // 老师主动改变自己状态
@@ -182,7 +160,7 @@ class HTTP {
         s[v.uid] = v
         return s
       }, {})
-      BUS.$emit('userStateChange', map, true)
+      BUS.$emit('userStateChange', map)
     }
   
     onEndTeaching() {

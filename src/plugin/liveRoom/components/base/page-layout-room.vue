@@ -17,7 +17,7 @@
     </div>
     <div class="page-right">
       <room-video-list />
-      <!-- <room-chatting-list /> -->
+      <room-chatting-list />
     </div>
   </div>
 </template>
@@ -226,6 +226,11 @@ export default {
 
   .page-right {
     @include wh(256px, 100%);
+    display: flex;
+    flex-direction: column;
+    .room-video-list {
+      flex: 1;
+    }
   }
 }
 </style>

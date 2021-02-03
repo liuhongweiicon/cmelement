@@ -21,7 +21,7 @@
         />
       </div>
     </div>
-    <div class="no-video-mask" v-if="!isTeacher && !isVideoOpen">
+    <div class="no-video-mask" v-if="(!isTeacher && !isVideoOpen) || !stream.streamID">
       <div
         class="icon-camera-close"
         v-html="require('../../../static/img/roomIcon/seating_student.svg').default"
