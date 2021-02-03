@@ -4,7 +4,10 @@
 <template>
   <div class="message-box" :class="{'message-box-wrap': isMessage}">
     <div class="message-box-content" >
-      <div class="title" @click="messageHandler">讨论区</div>
+      <div class="title" @click="messageHandler">
+        <span> 讨论区</span>
+        <span class="title-tips" v-if="numberUnread">{{numberUnread}}条未读</span>
+      </div>
       <div class="message-list" ref="messageList">
         <div
           v-for="item of messages"
@@ -92,6 +95,8 @@ export default {
       sendTime: 0,
       clientHeight: 0, //im初始高度
       isMessage: false, // 聊天列表展示条件
+      numberUnread: 0, // 未读信息条数
+
     }
   },
   computed: {
@@ -101,6 +106,16 @@ export default {
     isDisabled() {
       return !this.textareaValue
     },
+  },
+  watch: {
+    messages: {
+      handler(val, newVal) {
+        if (!this.isMessage) {
+          this.numberUnread++;
+        }
+      },
+      deep: true,
+    }
   },
   mounted() {
     this.user = this.zegoLiveRoom.$http.params // 用户信息
@@ -137,6 +152,8 @@ export default {
         this.showToast('消息发送过于频繁')
         return
       }
+      
+      this.isMessage = true;
       // 除掉回车换行符
       let textareaValue = this.textareaValue.replace(/[\r\n]/g, '')
       this.textareaValue = ''
@@ -155,6 +172,7 @@ export default {
         this.showToast('消息发送过于频繁')
         return
       }
+      this.isMessage = true;
       let message = this.textareaValue
       this.textareaValue = ''
       this.sendMessage(message)
@@ -164,7 +182,7 @@ export default {
      */    
     async sendMessage(message){
       try {
-        await this.zegoLiveRoom.sendBarrageMessage(message)
+        await this.zegoLiveRoom.sendBarrageMessage(message);
       } catch (e) {
         this.showToast('消息发送失败')
       }
@@ -179,6 +197,7 @@ export default {
      */
     messageHandler() {
       this.isMessage = !this.isMessage;
+      this.numberUnread = 0;
     }
   },
 }
@@ -205,6 +224,21 @@ export default {
       border-top: 1px solid#E5E6E7;
       position: relative;
       padding-left: 40px;
+      .title-tips {
+        display: inline-block;
+        margin-left: 10px;
+        background: #ff9d9d;
+        height: 20px;
+        width: 86px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border-radius: 20px;
+        line-height: 20px;
+        text-align: center;
+        color: #333333;
+        font-size: 12px;
+      }
       &:hover {
         cursor: pointer;
       }
