@@ -17,6 +17,7 @@
     </div>
     <div class="page-right">
       <room-video-list />
+      <!-- <room-chatting-list /> -->
     </div>
   </div>
 </template>
@@ -27,6 +28,7 @@ import RoomVideoList from '../room/room-video-list'
 import ZegoWhiteboardArea from '../zego/zego-whiteboard-area'
 import RoomControllerWhiteboard from '../room/room-controller-whiteboard'
 import RoomControllerFeature from '../room/room-controller-feature'
+import RoomChattingList from '../room/room-chatting-list'
 import zegoClient from '../../../js/room/zego/zegoClient/index'
 
 
@@ -37,7 +39,8 @@ export default {
     RoomControllerFeature,
     RoomControllerWhiteboard,
     RoomVideoList,
-    ZegoWhiteboardArea
+    ZegoWhiteboardArea,
+    RoomChattingList
   },
   inject: ['thisParent', 'zegoLiveRoom'],
   data() {

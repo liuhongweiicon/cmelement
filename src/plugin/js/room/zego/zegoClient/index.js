@@ -1,9 +1,7 @@
 import { ZegoClient } from './base'
 
-// import {ZegoExpressEngine} from '../../SDK/ZegoExpressWhiteboardWeb';
 import { ZegoExpressEngine } from 'zego-express-whiteboard-web';
 import { ZegoExpressDocs } from 'zego-express-docsview-web';
-// import {ZegoExpressDocs} from '../../SDK/ZegoExpressDocsWeb';
 
 
 class WebZegoClient extends ZegoClient {

@@ -77,24 +77,10 @@ export default {
                 room_type: classScene || 1
             }
             const login = await this.$http.loginRoom(loginParams);
-
-            const errorTips = {
-                'Network Error': '网络异常，请检查网络后重试',
-                'timeout': '请求超时，服务器未响应',
-                'Internal Server Error': '请求服务器错误',
-                'Request failed with status code 502': '请求服务器错误',
-                10001: '课堂已有其他老师，不能加入',
-                10002: '课堂人数已满，不能加入',
-                10003: '用户没有权限修改',
-                10004: '目标用户不在教室',
-                10005: '需要先登录房间',
-                10006: '房间不存在',
-                10007: '演示课堂最多开启3路学生音视频'
-            }
             if (login.ret.code === 0) {
                 this.isLogin = true;
             } else {
-                this.enterHtml = (login.ret.code + '').indexOf('timeout') > -1 ? errorTips.timeout : errorTips[login.ret.code];
+                this.enterHtml = login.ret.message;
             }
         },
     }

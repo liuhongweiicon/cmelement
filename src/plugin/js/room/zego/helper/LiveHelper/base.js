@@ -64,7 +64,7 @@ export class LiveHelper {
     let res
     try {
       const args = [roomID, token1, { userID, userName }, config]
-     
+     console.log(args, 'argsargsargsargs')
       res = await this._client.loginRoom(...args);
      
       if (res) {

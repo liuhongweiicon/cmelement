@@ -11,7 +11,6 @@ const errorTips = {
     10004: '目标用户不在教室',
     10005: '需要先登录房间',
     10006: '房间不存在',
-    10007: '演示课堂最多开启3路学生音视频'
 }
 
 
@@ -59,8 +58,17 @@ class HTTP {
               type: 'error',
               message: (res.ret.code + '').indexOf('timeout') > -1 ? errorTips.timeout : errorTips[res.ret.code]
             })
+          } else if (res.ret.code == 0) {
+            resolve(res)
+          } else {
+            Message.closeAll()
+            Message({
+              customClass: 'common-toast',
+              type: 'error',
+              message: res.ret.message
+            })
           }
-          resolve(res)
+          
       });
     }
     
@@ -167,14 +175,14 @@ class HTTP {
         this.auth.mic = user.mic
         this.auth.can_share = user.can_share
         this.auth.share = user.can_share == this.config.STATE_OPEN
-        Message({ customClass: 'common-toast', type: 'info', message: str })
+        str && Message({ customClass: 'common-toast', type: 'info', message: str })
       }
       // 同步所有人状态
       const map = data.users.reduce((s, v) => {
         s[v.uid] = v
         return s
       }, {})
-      BUS.$emit('userStateChange', map)
+      BUS.$emit('userStateChange', map, true)
     }
   
     onEndTeaching() {
@@ -217,7 +225,7 @@ class HTTP {
       this.heartBeatId = 0
     }
     
-    //拉取教室内连麦中的成员信息，包括用户角色、用户 ID、用户昵称、用户摄像头和麦克风状态、用户权限等。
+    //拉取教室内在线的成员信息，包括用户角色、用户 ID、用户昵称、用户摄像头和麦克风状态、用户权限等。
     async getAttendeeList() {
       if (!this.inited) return
       const res = await this.postRoomHttp('get_attendee_list', this.params)

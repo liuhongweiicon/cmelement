@@ -34,8 +34,8 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-// const hostMap = 'http://live-dev.xinguoren.cn/liveroom/zego/';
-const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
+const hostMap = 'http://tjdev.xinguoren.cn/g/liveroom/zego/';
+// const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**
  * 登陆房间token请求地址

@@ -310,6 +310,7 @@ export default {
       if (this.zegoLiveRoom.$http.role == this.liveRoomParams.ROLE_TEACHER) {
         const state = (users && users[this.zegoLiveRoom.$http.uid]) || { camera: this.liveRoomParams.STATE_OPEN, mic: this.liveRoomParams.STATE_OPEN }
         Object.assign(this.roomAuth, state)
+
         if (state.camera == this.liveRoomParams.STATE_OPEN) {
           this.getUserMediaAuth(0, false, async () => {
             await this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
@@ -326,15 +327,16 @@ export default {
         }
       } else {
         const state = users && users[this.zegoLiveRoom.$http.uid]
+
         if (!state) return
         Object.assign(this.roomAuth, state)
         const len = this.zegoLiveRoom.$http.joinLiveList.length
-        if (len <= 4 && state.camera == this.liveRoomParams.STATE_OPEN) {
+        if (state.camera == this.liveRoomParams.STATE_OPEN) {
           this.getUserMediaAuth(0, false, () => {
             this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
           })
         }
-        if (len <= 4 && state.mic == this.liveRoomParams.STATE_OPEN) {
+        if (state.mic == this.liveRoomParams.STATE_OPEN) {
           this.getUserMediaAuth(1, false, () => {
             this.toggleDeviceOpen('audio', this.controlBtnList[1], noSetUser)
           })
@@ -364,9 +366,10 @@ export default {
         speaker: devices.speakers
       }
       this.$set(this, 'deviceInfo', deviceInfo)
+      console.log(devices, 'deviceInfodeviceInfodeviceInfodeviceInfo')
       this.activeDeviceIds.camera = devices.cameras[0] && devices.cameras[0].deviceID
-      this.activeDeviceIds.mic = devices.cameras[0] && devices.microphones[0].deviceID
-      this.activeDeviceIds.speaker = devices.cameras[0] && devices.speakers[0].deviceID
+      this.activeDeviceIds.mic = devices.microphones[0] && devices.microphones[0].deviceID
+      this.activeDeviceIds.speaker = devices.speakers[0] && devices.speakers[0].deviceID
       this.zegoLiveRoom.setActiveDevice(this.activeDeviceIds)
     },
     /**
@@ -424,6 +427,7 @@ export default {
       if (item.noAuth) return
       switch (item.name) {
         case 'camera':
+          
           this.toggleDeviceOpen('video', item, false, true)
           break
         case 'mic':
@@ -470,22 +474,6 @@ export default {
      * @param {reverse}
      */
     async toggleDeviceOpen(flag, item, noSetUser, reverse) {
-      if (
-        this.zegoLiveRoom.$http.role == this.liveRoomParams.ROLE_STUDENT &&
-        this.roomAuth[item.name] == this.liveRoomParams.STATE_CLOSE
-      ) {
-        const id = this.zegoLiveRoom.$http.uid
-        const joined = this.zegoLiveRoom.$http.joinLiveList.find(v => v.uid == id)
-        if (!joined) {
-          this.zegoLiveRoom.$http.setUserInfo({
-            target_uid: this.zegoLiveRoom.$http.uid,
-            camera: this.liveRoomParams.STATE_CLOSE,
-            mic: this.liveRoomParams.STATE_CLOSE
-          })
-          return this.showToast('演示课堂最多开启3路学生音视频')
-        }
-      }
-
       if (!noSetUser) {
         const key = flag == 'video' ? 'camera' : 'mic'
         const val = this.roomAuth[key]

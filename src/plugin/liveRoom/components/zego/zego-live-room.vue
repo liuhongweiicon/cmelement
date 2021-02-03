@@ -163,6 +163,7 @@ export default {
       
       // 监听摄像头状态
       _this.client.on('remoteCameraStatusUpdate', (streamID, status) => {
+        console.log(streamID, status, 'streamID, status');
         const streamIndex = this.streamList.findIndex(item => streamID.endsWith(item.streamID))
         streamIndex !== -1 &&
           this.$set(this.streamList[streamIndex], 'isVideoOpen', status === 'OPEN')
