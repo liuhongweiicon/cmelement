@@ -263,6 +263,7 @@ export default {
       padding: 0 10px;
       overflow: auto;
       flex-grow: 1;
+      user-select: text;
       @include wh(100%, 0px);
 
       &::-webkit-scrollbar {
