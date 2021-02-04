@@ -104,7 +104,7 @@ class HTTP {
             res = JSON.parse(res.data)
             res = JSON.parse(res.body.custommsg)
             res = JSON.parse(res.custom_content)
-            console.log('====edu_zpush====', res, this.config)
+            console.log('====edu_zpush====', res, this)
             if (res.cmd == 102) {
               this.onUserStateChange(res.data)
             } else if (res.cmd == 103) {
