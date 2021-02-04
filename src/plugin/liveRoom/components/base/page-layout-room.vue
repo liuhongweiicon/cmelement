@@ -77,18 +77,29 @@ export default {
     // 监听教师端开始共享
     BUS.$on('startShare', this.pullVideo);
 
- 
+  
     // 刷新或关闭浏览器
-    if (role == 2) {
-      // 学生端刷新浏览器时,停止拉流
-      window.addEventListener('beforeunload', e => this.screenSharingEndedHandler());
+    // if (role == 2) {
+    //   // 学生端刷新浏览器时,停止拉流
+    //   window.addEventListener('beforeunload', this.screenSharingEndedHandler);
 
-    } else {
-      window.addEventListener('beforeunload',  e => this.beforeunloadFn());
-      window.addEventListener("unload",  e => this.unloadFn())
-    }
+    // } else {
+      
+    //   window.addEventListener('beforeunload',  this.beforeunloadFn);
+    //   window.addEventListener("unload",  this.unloadFn)
+    // }
 
   },
+  // destroyed() {
+  //   const { roomId, userID, userName, role } = this.thisParent.liveRoomParams.USER_INFO;
+  //   if (role == 2) {
+  //      window.removeEventListener('beforeunload',  this.screenSharingEndedHandler);
+  //   } else {
+  //     window.removeEventListener("beforeunload", this.beforeunloadFn);
+  //   }
+    
+  //   window.removeEventListener("unload", this.unloadFn)
+  // },
   methods: {
     /**
      *  页面加载时只执行onload
@@ -98,6 +109,7 @@ export default {
      *  记录onbeforeunload时的时间
      */
     unloadFn() {
+      return
       const _this = this;
       const time = new Date().getTime() - sessionStorage.getItem('beforeunloadTime');
       if(time <= 5){
@@ -113,8 +125,14 @@ export default {
      * 记录onbeforeunload时的时间
      */
     beforeunloadFn() {
-      sessionStorage.setItem('beforeunloadTime', new Date().getTime())
+      if (res == true){
+        sessionStorage.setItem('beforeunloadTime', new Date().getTime())
+      } else{
+        document.write("You pressed Cancel!")
+      }
+      
     },
+
     
     /**
      * 拉流监听

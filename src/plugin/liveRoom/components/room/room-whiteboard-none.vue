@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { storage } from '../../../js/room/utils/tool'
 
 export default {
   name: 'RoomWhiteboardNone',
@@ -63,6 +62,7 @@ export default {
   background-color: #f4f5f8;
   .share-content {
     @include sc(20px, #585c62);
+    text-align: center;
     &.large-class{
       font-size: 16px;
       line-height: 16px;

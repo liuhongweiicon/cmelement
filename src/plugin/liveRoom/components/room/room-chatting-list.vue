@@ -542,7 +542,7 @@ export default {
   }
 }
 .message-box-wrap {
-  height: 100%;
+  height: 70%;
   .message-box-content {
     flex: 1;
     display: flex;

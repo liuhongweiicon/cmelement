@@ -90,22 +90,22 @@ export default {
     BUS.$on('startShare', this.pullVideo);
 
  
-    // 刷新或关闭浏览器
-    if (role == 2) {
-      // 学生端刷新浏览器时,停止拉流
-      window.addEventListener('beforeunload', e => this.screenSharingEndedHandler());
+    // // 刷新或关闭浏览器
+    // if (role == 2) {
+    //   // 学生端刷新浏览器时,停止拉流
+    //   window.addEventListener('beforeunload', e => this.screenSharingEndedHandler());
 
-    } else {
-      window.addEventListener('beforeunload',  e => this.beforeunloadFn());
-      window.addEventListener("unload",  e => this.unloadFn())
-    }
+    // } else {
+    //   window.addEventListener('beforeunload',  e => this.beforeunloadFn());
+    //   window.addEventListener("unload",  e => this.unloadFn())
+    // }
 
   },
-  destroyed() {
-    window.removeEventListener("beforeunload", e => this.screenSharingEndedHandler());
-    window.addEventListener('beforeunload',  e => this.beforeunloadFn());
-    window.addEventListener("unload",  e => this.unloadFn())
-  },
+  // destroyed() {
+  //   window.removeEventListener("beforeunload", e => this.screenSharingEndedHandler());
+  //   window.addEventListener('beforeunload',  e => this.beforeunloadFn());
+  //   window.addEventListener("unload",  e => this.unloadFn())
+  // },
   methods: {
     /**
      *  页面加载时只执行onload
