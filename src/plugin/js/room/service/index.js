@@ -104,7 +104,7 @@ class HTTP {
             res = JSON.parse(res.data)
             res = JSON.parse(res.body.custommsg)
             res = JSON.parse(res.custom_content)
-            console.log('====edu_zpush====', res)
+            console.log('====edu_zpush====', res, this.config)
             if (res.cmd == 102) {
               this.onUserStateChange(res.data)
             } else if (res.cmd == 103) {
@@ -137,6 +137,7 @@ class HTTP {
         return
       }
       // 学生主动改变自己状态
+      
       if (this.role == this.config.ROLE_STUDENT && data.operator_uid == uid) return
       // 学生自己状态被动改变，消息提示
       const user = data.users.find(v => v.uid == uid)
