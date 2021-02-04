@@ -557,8 +557,8 @@ export default {
           //@ts-ignore
           audio: true,
           videoQuality: 4,
-          bitRate: 4000,
-          frameRate: 2,
+          bitRate: 10000,
+          frameRate: 5,
           width: 1280,
           height: 720
         }

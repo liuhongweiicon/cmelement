@@ -137,7 +137,7 @@ class HTTP {
         return
       }
       // 学生主动改变自己状态
-      console.log(this.role, this.config.ROLE_STUDENT, data.operator_uid, uid, 'this.role, this.config.ROLE_STUDENT, data.operator_uid, uid')
+      console.log(this.role, this.config, this.config.ROLE_STUDENT, data.operator_uid, uid, 'this.role, this.config, this.config.ROLE_STUDENT, data.operator_uid, uid')
       console.log(this.role == this.config.ROLE_STUDENT && data.operator_uid == uid, 'this.role == this.config.ROLE_STUDENT && data.operator_uid == uid');
       
       if (this.role == this.config.ROLE_STUDENT && data.operator_uid == uid) return
