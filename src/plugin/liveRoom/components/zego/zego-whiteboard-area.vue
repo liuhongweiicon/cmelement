@@ -210,7 +210,7 @@ export default {
        * @desc: 监听加载文档
        * @return {文档相关信息} res
        */      
-      this.docsClient.on('onLoadFile', async res => {
+      this.docsClient.on('onLoadFile', async (res) => {
         console.log(res, 'onLoadFile')
         await this.createFileWBView(res)
       })
@@ -220,7 +220,7 @@ export default {
        * @desc: 监听上传文档
        * @return {文档相关信息} res
        */      
-      this.docsClient.on('onUpload', async res => {
+      this.docsClient.on('onUpload', async (res) => {
         switch(res.status) {
           case 1:
             _this.loading = true;

@@ -137,6 +137,7 @@ class HTTP {
         return
       }
       // 学生主动改变自己状态
+      console.log(this.role == this.config.ROLE_STUDENT && data.operator_uid == uid, 'this.role == this.config.ROLE_STUDENT && data.operator_uid == uid');
       
       if (this.role == this.config.ROLE_STUDENT && data.operator_uid == uid) return
       // 学生自己状态被动改变，消息提示
