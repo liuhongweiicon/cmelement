@@ -13,7 +13,9 @@
                 <base-type-stem
                     :questionDetails="paperDataHandler(item4)"
                     :paperState="paperState"
-                    :orderNum="orderNum + '.' + (index4 + 1)">
+                    :orderNum="orderNum + '.' + (index4 + 1)"
+                    :showBlock="showBlock"
+                    :showKnowledgePoint="showKnowledgePoint">
                 </base-type-stem>
             </div>
 
@@ -64,6 +66,24 @@
             orderNum: {
                 type: String | Number,
                 default: '1'
+            },
+            /**
+             * 区分展示题干/作答/答案/解析
+             * 为空 => 全部展示
+             * 1 => 只展示题干
+             * 2 => 只展示题干及作答
+             * 3 => 只展示答案
+             * 4 => 只展示解析
+             * 5 => 只展示知识点
+             */
+            showBlock: {
+                type: String | Number,
+                default: ''
+            },
+            // 是否展示知识点
+            showKnowledgePoint: {
+                type: Boolean,
+                default: false
             }
 
         },

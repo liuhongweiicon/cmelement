@@ -557,8 +557,8 @@ export default {
           //@ts-ignore
           audio: true,
           videoQuality: 4,
-          bitRate: 10000,
-          frameRate: 5,
+          bitRate: 4000,
+          frameRate: 2,
           width: 1280,
           height: 720
         }
@@ -569,11 +569,12 @@ export default {
       if (!isShare) return;
       await this.zegoLiveRoom.shareClient.express('createStream', option);
       
-      const streamID = `share_` + Date.parse(new Date());
+      // const { user } = zegoClient.getState('user')
+      // const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
       
-      await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
+      // await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
       
-      BUS.$emit('startShare', streamID)
+      // BUS.$emit('startShare', streamID)
       
     },
 

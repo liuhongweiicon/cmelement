@@ -9,7 +9,7 @@ const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
 let URL_PREFIX = 'http://tjtest.xinguoren.cn';
 
-
+let LAN_TIAN_URL = 'http://lantiantest.e-edusky.com/diagnosis/resource'
 
 const lantianUrl = URL_PREFIX + '/diagnosis/manager/';
 const protalUrl = URL_PREFIX + '/diagnosis/protal/';
@@ -118,5 +118,6 @@ export default {
     protalUrl,
     lantianUrl,
     submitUrl,
-    payUrl
+    payUrl,
+    LAN_TIAN_URL
 };

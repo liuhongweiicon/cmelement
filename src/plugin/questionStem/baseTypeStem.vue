@@ -173,8 +173,21 @@
         </div>
       </div>
     </div>
+    <!-- 知识点 -->
+    <div v-if="paperState == 2 && isShowBlock('5') && showKnowledgePoint">
+      <div class="result answer">
+				<span class="name">知识点：</span>
+        <span class="value" v-if="questionDetailsInfo.baseKnowledgeModels && questionDetailsInfo.baseKnowledgeModels.length > 0">
+          <span v-for="(know, k) in questionDetailsInfo.baseKnowledgeModels" :key="k">
+            {{ know.baseProductionName }}
+            <span v-if="k != questionDetailsInfo.baseKnowledgeModels.length -1">、</span>
+          </span>
+        </span>
+      </div>
+    </div>
 		<!--答案 解析-->
 		<div v-if="paperState == 2 && isShowBlock('3')">
+      <!-- 单选题、多选题 -->
 			<div
 				class="result answer"
 				v-if="questionDetailsInfo.type == 1 || questionDetailsInfo.type == 2"
@@ -182,35 +195,47 @@
 				<span class="name">答案：</span>
 				<span class="value">{{ questionDetailsInfo.answer }}</span>
 			</div>
+      <!-- 判断题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 3">
 				<span class="name">答案：</span>
 				<span class="value">{{ questionDetailsInfo.answer == 0 ? "×" : "√" }}</span>
 			</div>
+      <!-- 填空题 -->
 			<div
 				class="result answer blanks-answer"
 				v-if="questionDetailsInfo.type == 4"
 			>
 				<span class="name">答案：</span>
-				<div>
-				<p
-					class="value"
-					v-for="(answeritem, index) in questionDetailsInfo.answer"
-					:key="index"
-					v-html="answeritem.answerValue"
-				></p>
+				<div v-if="questionDetailsInfo.answer && questionDetailsInfo.answer.length > 0">
+          <p
+            class="value value-4"
+            v-for="(answeritem, index) in questionDetailsInfo.answer"
+            :key="index"
+          >
+          <span v-if="questionDetailsInfo.answer.length > 1">{{index+1+'、'}}</span>
+          <span v-if="answeritem.answerKeys && answeritem.answerKeys.length > 0">
+            <span class="value-child" v-for="(a, b) in answeritem.answerKeys" :key="b">
+              <span v-if="answeritem.answerKeys.length > 1">{{`（${b+1}）`}}</span>
+              <span v-html="strUrlChange(a)" ></span>
+            </span>
+          </span>
+          <span v-else>略</span>
+          </p>
 				</div>
+        <div class="value" v-else>略</div>
 			</div>
+      <!-- 主观题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 5">
 				<span class="name">答案：</span>
-				<span class="value">{{ questionDetailsInfo.answer }}</span>
+				<span class="value" v-html="strUrlChange(questionDetailsInfo.answer)"></span>
 			</div>
 		</div>
 
 		<div v-if="paperState == 2 && isShowBlock('4')">
-			<div class="result analysis">
+			<div class="result analysis 2132">
         
             <span class="name">解析：</span>
-            <span v-if="!questionDetails.quesAnalyze || !JSON.parse(questionDetails.quesAnalyze).length">暂无解析</span>
+            <span class="value" v-if="!questionDetails.quesAnalyze || !JSON.parse(questionDetails.quesAnalyze).length">暂无解析</span>
             <div v-else class="analysis_info"> 
               <div 
                 v-for="(item, inx) in JSON.parse(questionDetails.quesAnalyze)" 
@@ -262,10 +287,16 @@ export default {
      * 2 => 只展示题干及作答
      * 3 => 只展示答案
      * 4 => 只展示解析
+     * 5 => 只展示知识点
      */
     showBlock: {
       type: String | Number,
       default: ''
+    },
+    // 是否展示知识点
+    showKnowledgePoint: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -278,6 +309,7 @@ export default {
      * 2 => 只展示题干及作答
      * 3 => 只展示答案
      * 4 => 只展示解析
+     * 5 => 只展示知识点
      */
     isShowBlock() {
       /**
@@ -300,6 +332,9 @@ export default {
             break;
           case '4':
             return this.showBlock == 4;
+            break;
+          case '5':
+            return this.showBlock == 5;
             break;
         }
       }
@@ -440,9 +475,11 @@ export default {
           this.questionDetailsInfo.quesOption = obj;
         }
       } else if (this.questionDetailsInfo.type == "4") {
-        if (typeof this.questionDetailsInfo.answerKeys != "object") {
+        // console.log(typeof this.questionDetailsInfo.answerKeys != "object");
+        if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
+            console.log(888888, obj);
             if (_this.paperState == 2) {
               var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : '';
             }
@@ -460,6 +497,17 @@ export default {
             }
             if (_this.paperState == 2) {
               this.$set(this.questionDetailsInfo, "userAnswer", useranswerArr);
+            }
+            this.$set(this.questionDetailsInfo, "answer", obj);
+          }
+        }else {
+          const answer = this.questionDetailsInfo.answer
+          if(answer && typeof answer != "object"){
+            const obj = JSON.parse(answer)
+            if(obj.length > 0){
+              for(let o of obj){
+                o['answerKeys'] = [o.answerValue]
+              }
             }
             this.$set(this.questionDetailsInfo, "answer", obj);
           }
@@ -763,6 +811,7 @@ export default {
       }
       &.answer{
         display: flex;
+        align-items: baseline;
         .answer_know {
           flex: 1;
         }
@@ -774,7 +823,15 @@ export default {
             font-weight: 400 !important;
             line-height: 24px!important;
             font-family: "微软雅黑"!important;
+            .value-child {
+              display: flex;
+              color: #7ac858;
+            }
           }
+        }
+        .value-4 {
+          display: flex;
+
         }
       }
     }

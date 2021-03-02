@@ -3,7 +3,8 @@
 export class LiveHelper {
   _client = null
   constructor({ context, client }) {
-    this.context = context
+    
+    // this.context = context
     this._client = client
     this.room_id = null
     this.roomUserList = []
@@ -57,9 +58,9 @@ export class LiveHelper {
 
   async loginRoom(roomID = '', config = {}) {
 
-    const { token1 } = this.context.state.tokenInfo
-    config = { userUpdate: true, maxMemberCount: this.context.Config.maxMemberCount, ...config }
-    const { userID, userName } = this.context.state.user
+    const { token1 } = window.zg_ZegoClient.state.tokenInfo
+    config = { userUpdate: true, maxMemberCount: window.zg_ZegoClient.Config.maxMemberCount, ...config }
+    const { userID, userName } = window.zg_ZegoClient.state.user
    
     let res
     try {
@@ -74,10 +75,10 @@ export class LiveHelper {
       res = {
         error: false
       }
-      this.context.setState({ tokenInfo: {} })
+      window.zg_ZegoClient.setState({ tokenInfo: {} })
     } catch (e) {
       console.log('login error', { e })
-      this.context.setState({ tokenInfo: {} })
+      window.zg_ZegoClient.setState({ tokenInfo: {} })
       res = {
         error: true,
         msg: e.msg,
@@ -89,8 +90,8 @@ export class LiveHelper {
 
   afterLoginRoom(roomId) {
     this.room_id = roomId
-    this.roomUserList.push(this.context.state.user)
-    this.context.setState({
+    this.roomUserList.push(window.zg_ZegoClient.state.user)
+    window.zg_ZegoClient.setState({
       isLogin: true,
       room_id: roomId
     })

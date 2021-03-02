@@ -71,11 +71,11 @@ export default {
      * @param {item}  目标设备
      */
     getItemIcon(item) {
-      return this.user[item.name] == constants.STATE_OPEN ? item.imgSrc.open : item.imgSrc.close
+      return this.user[item.name] == this.constants.STATE_OPEN ? item.imgSrc.open : item.imgSrc.close
     },
 
     getItemContent(item) {
-      const isOpen = this.user[item.name] == constants.STATE_OPEN
+      const isOpen = this.user[item.name] == this.constants.STATE_OPEN
       let str = isOpen ? '关闭' : '打开'
       if (item.name == 'can_share') {
         str = isOpen ? '取消' : ''
@@ -89,15 +89,8 @@ export default {
      */    
     async handleMainBtnClick({ name }) {
       const isOpen = this.user[name] == constants.STATE_OPEN
-      if (name !== 'can_share' && !isOpen && roomStore.joinLiveList.length >= 4) {
-        const id = this.userId
-        const joined = roomStore.joinLiveList.find(v => v.uid == id)
-        if (!joined) {
-          return this.showToast('演示课堂最多开启3路学生音视频')
-        }
-      }
-      if (this.role == constants.ROLE_TEACHER) {
-        const state = isOpen ? constants.STATE_CLOSE : constants.STATE_OPEN
+      if (this.role == this.constants.ROLE_TEACHER) {
+        const state = isOpen ? this.constants.STATE_CLOSE : this.constants.STATE_OPEN
         await roomStore.setUserInfo({
           target_uid: this.user.uid,
           [name]: state

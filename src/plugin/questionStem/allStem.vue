@@ -78,6 +78,8 @@
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
+                  :showBlock="showBlock"
+                  :showKnowledgePoint="showKnowledgePoint"
                 ></base-type-stem>
 
                 <compound-type-stem
@@ -88,6 +90,8 @@
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
+                  :showBlock="showBlock"
+                  :showKnowledgePoint="showKnowledgePoint"
                 >
                 </compound-type-stem>
               </div>
@@ -145,6 +149,24 @@ export default {
     headerShow: {
       type: Boolean,
       default: true,
+    },
+    /**
+     * 区分展示题干/作答/答案/解析
+     * 为空 => 全部展示
+     * 1 => 只展示题干
+     * 2 => 只展示题干及作答
+     * 3 => 只展示答案
+     * 4 => 只展示解析
+     * 5 => 只展示知识点
+     */
+    showBlock: {
+      type: String | Number,
+      default: ''
+    },
+    // 是否展示知识点
+    showKnowledgePoint: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {

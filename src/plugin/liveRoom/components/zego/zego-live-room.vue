@@ -174,6 +174,11 @@ export default {
         }
       })
       
+      // 推流质量回调
+      _this.client.on('publishQualityUpdate', (streamID, stats) => {
+        console.log(streamID, stats, '推流质量')
+      })
+      
       // 监听房间状态
       this.client.on('roomStateUpdate', (roomID, state) => {
         this.roomState = state
@@ -301,7 +306,7 @@ export default {
       console.warn('创建流 更新流列表 start')
       const { userID } = this.user
       this.isPushStreamList = true
-      this.publishStreamId = `${this.client.isElectron ? 'ec' : 'web'}_${userID}`
+      this.publishStreamId = `${this.client.isElectron ? 'ec' : 'web'}_${userID}_${Date.parse(new Date())}`
       if (this.isPushStreamList) {
         this.streamList.push({
           streamID: this.publishStreamId,

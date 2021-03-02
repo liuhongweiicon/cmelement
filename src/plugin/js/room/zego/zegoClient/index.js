@@ -27,7 +27,7 @@ class WebZegoClient extends ZegoClient {
     console.log('web sdk version ', zg.getVersion())
     if (zgDocsClient) console.log('init docs sdk success!')
     console.log('docs sdk version ', zgDocsClient.getVersion())
-    this._client = zg
+    this._client = zg;
     const config = {
       logLevel: "error",
       remoteLogLevel: 'error'

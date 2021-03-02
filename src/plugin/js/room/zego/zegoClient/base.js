@@ -17,6 +17,7 @@ export class ZegoClient {
   Config = null
 
   constructor() {
+
     this.state = {
       room_id: null,
       env: 'home',
@@ -34,6 +35,8 @@ export class ZegoClient {
    * @returns {Promise<WhiteboardHelper|LiveHelper|DocsHelper>}
    */
   async init(client, env = 'home', constant = {}) {
+    
+    window.zg_ZegoClient = this;
     // 设置常量
     if (!this.Config) {
       this.Config = new Config(constant)

@@ -18,6 +18,12 @@ var router =  new VueRouter({
         component: () => import('@/pages/allStem.vue'),
         meta: { title: "全题型" }
       },
+      {
+        path: '/allSingleStem',
+        name: 'allSingleStem',
+        component: () => import('@/pages/allSingleStem.vue'),
+        meta: { title: "单题组合" }
+      },
       // 进入直播间等待页面
       {
         path: '/livceRoom',
