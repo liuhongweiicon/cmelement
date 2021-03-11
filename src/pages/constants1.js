@@ -18,9 +18,9 @@ const ENVTYPE = true;
 
 // 用户信息
 const USER_INFO = {
-  userID: 'ee5d7022d8194696a0a1bec6e7361e76', // 用户id
+  userID: '6a81c7ca-e923-4893-b21c-b44b001eaddd', // 用户id
+  roomId: '554736907834183680', // 房间id
   userName: '刘喜喜', // 用户姓名
-  roomId: '551042970258771967', // 房间id
   role: 2, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }
@@ -34,7 +34,7 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-const hostMap = 'http://tjdev.xinguoren.cn/g/liveroom/zego/';
+const hostMap = 'http://tj.xinguoren.cn/g/liveroom/zego/';
 // const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**

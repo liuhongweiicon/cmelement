@@ -115,7 +115,7 @@ export default {
       // 监听房间流更新
       const _this = this;
       this.client.on('roomStreamUpdate', (roomID, updateType, streamList) => {
-
+        console.log(streamList, '监听房间流更新')
         const shareStreamList = JSON.parse(JSON.stringify(streamList));
         let tempStreamList = []
         streamList = streamList.filter(v => !!v.streamID && v.streamID.indexOf("share") == -1);
@@ -145,6 +145,7 @@ export default {
       
       // 监听房间用户变化
       _this.client.on('roomUserUpdate', (roomID, updateType, userList) => {
+        console.log(updateType, userList, '监听房间用户变化')
         if (updateType === 'ADD' && userList && userList.length) {
           // 去重
           userList.forEach(user => {
@@ -176,7 +177,7 @@ export default {
       
       // 推流质量回调
       _this.client.on('publishQualityUpdate', (streamID, stats) => {
-        console.log(streamID, stats, '推流质量')
+        // console.log(streamID, stats, '推流质量')
       })
       
       // 监听房间状态

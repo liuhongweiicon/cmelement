@@ -569,12 +569,12 @@ export default {
       if (!isShare) return;
       await this.zegoLiveRoom.shareClient.express('createStream', option);
       
-      // const { user } = zegoClient.getState('user')
-      // const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
+      const { user } = zegoClient.getState('user')
+      const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
       
-      // await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
+      await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
       
-      // BUS.$emit('startShare', streamID)
+      BUS.$emit('startShare', streamID)
       
     },
 
