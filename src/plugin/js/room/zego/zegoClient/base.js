@@ -116,7 +116,8 @@ export class ZegoClient {
 
   async createZegoContext(roomEnv) {
     const { appID, userID, isTestEnv, docsviewAppID, tokenUrl } = await this.Config.getParams(roomEnv)
-    const token1 = await this.getToken(appID, userID, tokenUrl)
+    const token1 = 'eyJ2ZXIiOjEsImV4cGlyZWQiOjE2MTU1MzgzNTgsIm5vbmNlIjoiZTE3Y2RhNGZjYTQxNDIwMTgwMWUxNmJmODE5YmY0MTUiLCJoYXNoIjoiNzkwZjY3ZThiYmU1MmY4ZmZiZjlhZTJkMGFiMGQzNDIifQ=='
+    // const token1 = await this.getToken(appID, userID, tokenUrl)
     let token2 = token1
     if (docsviewAppID != appID && !isTestEnv) {
       token2 = await this.getToken(docsviewAppID, userID, tokenUrl)
