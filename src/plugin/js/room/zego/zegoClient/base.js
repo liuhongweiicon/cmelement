@@ -92,7 +92,7 @@ export class ZegoClient {
 
   // 正式环境请调用自己的后台接口，token 生成方法请参考 ZEGO 开发者中心
   getToken = (appID, userID, tokenUrl) => {
-    const url = `${tokenUrl}?app_id=${appID}&id_name=${userID}`
+    const url = `${tokenUrl}?app_id=${appID}&id_name=${userID}&tokenType=OAUTH_TOKEN`
     return new Promise((resolve, reject) => {
       const xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = e => {
@@ -116,8 +116,7 @@ export class ZegoClient {
 
   async createZegoContext(roomEnv) {
     const { appID, userID, isTestEnv, docsviewAppID, tokenUrl } = await this.Config.getParams(roomEnv)
-    const token1 = 'eyJ2ZXIiOjEsImV4cGlyZWQiOjE2MTU1MzgzNTgsIm5vbmNlIjoiZTE3Y2RhNGZjYTQxNDIwMTgwMWUxNmJmODE5YmY0MTUiLCJoYXNoIjoiNzkwZjY3ZThiYmU1MmY4ZmZiZjlhZTJkMGFiMGQzNDIifQ=='
-    // const token1 = await this.getToken(appID, userID, tokenUrl)
+    const token1 = await this.getToken(appID, userID, tokenUrl)
     let token2 = token1
     if (docsviewAppID != appID && !isTestEnv) {
       token2 = await this.getToken(docsviewAppID, userID, tokenUrl)
