@@ -405,7 +405,7 @@ export default {
      * @param {需要更新页码} page
      */    
     updateCurrPage(page) {
-      this.currPage = page || (this.activeWBView && this.activeWBView.getPage()) || 1
+      this.currPage = page || (this.activeWBView && this.activeWBView.getPageCount()) || 1
     },
     
     /**
