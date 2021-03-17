@@ -60,12 +60,14 @@ export default {
     }
   },
   mounted() {
-    this.roomId = roomStore.roomId // 房间id
-    this.userId = roomStore.uid // 用户id
-    this.role = roomStore.role  // 用户角色
-    this.handleMainBtnClick_ = debounce(this.handleMainBtnClick, 500, true)
+    this.roomId = this.roomStore.roomId // 房间id
+    this.userId = this.roomStore.uid // 用户id
+    this.role = this.roomStore.role  // 用户角色
+    this.handleMainBtnClick_ = debounce(this.handleMainBtnClick, 500, true);
+
   },
   methods: {
+    
     /**
      * @desc: 获取该设备状态
      * @param {item}  目标设备

@@ -9,6 +9,22 @@
       <room-dialog-error ref="errorDialog" />
     </div>
 
+    
+    <el-dialog
+      title="提示"
+      :modal="false"
+      :visible.sync="liveTips"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      width="380px"
+    >
+      <div class="zego-live-timer">
+        预定上课的时间还有1分钟结束，是否继续？
+        已超时30分钟，是否继续上课？
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -58,6 +74,15 @@ export default {
       $http: null, // 请求实例
 
       isquit: false, // 是否是退出
+
+      endLiveTime: '', // 结束直播时间
+      endLiveTimer: null, // 直播结束定时器
+      liveTips: false, // 直播时间到提示框
+            
+      _beforeUnload_time:'', // 监听beforeunload执行回调时时间戳
+      _gap_time:'', //  监听unload执行回调时时间戳与_beforeUnload_time的差，小于5表示关闭，否则是刷新浏览器
+
+      
     }
   },
   
@@ -73,15 +98,72 @@ export default {
     this.userName = this.thisParent.liveRoomParams.USER_INFO.userName;
 
     this.$http = new $HTTP(this.thisParent.request, this.thisParent.liveRoomParams);
-    
+
+    this.endLiveTime = this.thisParent.endLiveTime;
+
+    // 设置结束直播定时器
+    if (this.thisParent.liveRoomParams.USER_INFO.role == 1) {
+      this.setLiveTime();
+    }
   },
   async mounted() {
+    
+
       // 调用顺序：initClient -> initLiveRoom -> loginRoom | 初始化sdk -> 监听回调方法 -> 登录房间
       await this.initClient()
       await this.initLiveRoom() // 回调方法
       await this.loginRoom()
+      
+    
+      // 监听浏览器刷新和关闭事件    
+      window.addEventListener('beforeunload', this.beforeunloadHandler)
+      window.addEventListener('unload', this.unloadHandler)
   },
   methods: {
+    // 刷新关闭浏览器之前回调
+    beforeunloadHandler(e){
+        this._beforeUnload_time = new Date().getTime();
+        // e.returnValue = '确定要退出当前课堂？'; // 弹窗
+    },
+    // 刷新环比卸载回调
+    async unloadHandler(e){
+        this._gap_time = new Date().getTime() - this._beforeUnload_time;
+        
+        if (this._gap_time > 5) {
+            this.endClass('unload');
+        }
+    },
+
+    /**
+     * 直播间结束定时器
+     */
+
+    setLiveTime() {
+
+      if (this.endLiveTime) {
+        this.endLiveTimer = setInterval(() => {
+          if (new Date().getTime() >= this.endLiveTime) {
+            this.liveTips = true;
+            clearInterval(this.endLiveTimer);
+          }
+        }, 1000);
+      }
+    },
+    
+    /**
+     * 结束教学
+     */
+    async endClass(val) {
+      if (this.thisParent.liveRoomParams.USER_INFO.role == 1) {
+        await this.$http.endTeaching()
+      }
+      
+      await this.$http.leaveRoom()
+      zegoClient._client.logoutRoom(this.$http.roomId)
+      if (val != "unload") {
+        window.close();
+      }
+    },
     /**
      * @desc: 初始化sdk
      */
@@ -96,7 +178,6 @@ export default {
     async loginRoom() {
 
       const res = await this.client.express('loginRoom', this.thisParent.liveRoomParams.USER_INFO.roomId);
-
       if (res.error) {
         this.$message.error(res.msg);
         return
@@ -552,6 +633,9 @@ export default {
     },
   },
   destroyed() {
+    // 卸载监听浏览器刷新和关闭事件  
+    window.removeEventListener('beforeunload', this.beforeunloadHandler)
+    window.removeEventListener('unload', this.unloadHandler)
     this.$off(['muteSpeaker', 'roomExtraInfoUpdate'])
   }
 }

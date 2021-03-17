@@ -26,7 +26,7 @@ export default {
      * request => 请求库
      * constants => 直播间配置参数
      */
-    props: ['request', 'constants'],
+    props: ['request', 'constants', 'endLiveTime'],
     name: 'cm-live-room',
     components: {
         ZegoLiveRoom,
@@ -40,6 +40,7 @@ export default {
             enterHtml: '正在进入直播间...', // 等待进入文案
             
             $http: null, // 请求实例
+
         }
     },
     provide() {
@@ -50,16 +51,18 @@ export default {
     created() {
         this.$http = new $HTTP(this.request, this.liveRoomParams);
         this.loginRoomBiz()
-        if (window.performance.navigation.type === 0) { // 首次被加载
-            // this.loginRoomBiz()
-        } else { // 刷新进入
-            // this.isLogin = true;
-        }
+        // if (window.performance.navigation.type === 0) { // 首次被加载
+        //     this.loginRoomBiz()
+        // } else { // 刷新进入
+        //     this.isLogin = true;
+        // }
+        
     },
     mounted() {
+        // debugger
     },
     methods: {
-        
+
         /**
          * @desc: 后台业务 - 登录房间
          */

@@ -10,17 +10,15 @@ const APPID = {
   overseas: 4057099555
 }
 
-// 用于后台服务请求接口的鉴权校验
-const serverSecret = 'd9ecd57052284ebcc997cadd323824ca';
 
 // 是否是测试环境, => true 测试环境 => 正式环境
 const ENVTYPE = true;
 
 // 用户信息
 const USER_INFO = {
-  userID: '6a81c7ca-e923-4893-b21c-b44b001eaddd', // 用户id
-  roomId: '554736907834183680', // 房间id
-  userName: '刘喜喜', // 用户姓名
+  userID: '1ff3b0bc-0f42-49c2-b544-3440fcfb471d', // 用户id
+  roomId: '569609344967069696', // 房间id
+  userName: '嗯嗯', // 用户姓名
   role: 2, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }
@@ -34,7 +32,7 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-const hostMap = 'http://tj.xinguoren.cn/g/liveroom/zego/';
+const hostMap = 'https://omp.xinguoren.cn/g/liveroom/zego/';
 // const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**
@@ -44,7 +42,7 @@ const getTokenUrl = hostMap + 'thirdToken';
 
 //构建即构示例服务器地址参数
 const SERVER = {
-  home: 'wss://webliveroom-test.zego.im/ws', //国内服务器地址
+  home: 'wss://webliveroom4057099555-api.zego.im/ws', //国内服务器地址
   overseas: 'wss://webliveroom-alpha.zego.im/ws' //海外服务器地址
 }
 
@@ -58,7 +56,6 @@ const classScene = 1;
 export default { 
   APPID, 
   SERVER, 
-  serverSecret, 
   ENVTYPE, 
   getTokenUrl, 
   USER_INFO, 

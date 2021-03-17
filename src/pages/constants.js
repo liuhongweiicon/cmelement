@@ -10,17 +10,15 @@ const APPID = {
   overseas: 4057099555
 }
 
-// 用于后台服务请求接口的鉴权校验
-const serverSecret = 'd9ecd57052284ebcc997cadd323824ca';
 
 // 是否是测试环境, => true 测试环境 => 正式环境
-const ENVTYPE = true;
+const ENVTYPE = false;
 
 // 用户信息
 const USER_INFO = {
-  userID: "b86f09123b494786aa1080966f6d8bd7", // 用户id
-  userName: '测试老师10', // 用户姓名
-  roomId: "567338906274562048", // 房间id
+  userID: "8b3f75de10a54ad0a8826276dd345586", // 用户id
+  userName: '测试干预老师5', // 用户姓名
+  roomId: "569609344967069696", // 房间id
   role: 1, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }
@@ -34,7 +32,7 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-const hostMap = 'https://omptest.xinguoren.cn/g/liveroom/zego/';
+const hostMap = 'https://omp.xinguoren.cn/g/liveroom/zego/';
 // const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**
@@ -58,7 +56,6 @@ const classScene = 1;
 export default { 
   APPID, 
   SERVER, 
-  serverSecret, 
   ENVTYPE, 
   getTokenUrl, 
   USER_INFO, 

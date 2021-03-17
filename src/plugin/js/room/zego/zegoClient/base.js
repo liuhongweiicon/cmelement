@@ -4,6 +4,8 @@ import WhiteboardHelper from '../helper/WhiteboardHelper'
 import DocsHelper from '../helper/DocsHelper'
 import Config from '../config/index'
 
+import md5 from 'js-md5'
+
 export class ZegoClient {
   _client = null
   _docsClient = null
@@ -116,7 +118,10 @@ export class ZegoClient {
 
   async createZegoContext(roomEnv) {
     const { appID, userID, isTestEnv, docsviewAppID, tokenUrl } = await this.Config.getParams(roomEnv)
-    const token1 = await this.getToken(appID, userID, tokenUrl)
+    // const token1 = await this.getToken(appID, userID, tokenUrl)
+
+    // const token1 = "eyJ2ZXIiOjEsImhhc2giOiIxOTg2NzczZWVlODY1NDBiZDNkMjg5YmRjMGZmYjRkNyIsIm5vbmNlIjoiMTYxNTk2Nzk5NDM1MyIsImV4cGlyZWQiOjE2MTU5Njk3OTR9"
+    const token1 = this.getTokentest(appID, 'c826cf6f1c33f5119557b96bb77e755b5b441e21f096c34076a9d8e2c3c4ab62', userID)
     let token2 = token1
     if (docsviewAppID != appID && !isTestEnv) {
       token2 = await this.getToken(docsviewAppID, userID, tokenUrl)
@@ -126,6 +131,31 @@ export class ZegoClient {
       tokenInfo: { token1, token2 }
     })
   }
+  
+  getTokentest(appId, appSign, userID) {
+    let nonce = new Date().getTime().toString();
+    let time = Math.floor(new Date().getTime() / 1000 + 30 * 60);
+    let appSign32 = appSign.substring(0, 32);
+    console.log('appSign:' + time + '    ' + appSign32 + '    ' + nonce);
+
+    if (appSign32.length < 32) {
+        console.log('private sign erro!!!!');
+        return null;
+    }
+
+    let sourece = md5(appId + appSign32 + userID + nonce + time);
+    console.log('hash:' + sourece);
+
+    let jsonStr = JSON.stringify({
+        'ver': 1,
+        'expired': time,
+        'nonce': nonce,
+        'hash': sourece
+    });
+    console.log('json', jsonStr);
+    console.log(Buffer.from(jsonStr).toString('base64'));
+    return Buffer.from(jsonStr).toString('base64');
+}
 
   /**
    * @desc: 初始化web端sdk

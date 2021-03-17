@@ -41,8 +41,6 @@ const SERVER = {
 }
 
 
-// 用于后台服务请求接口的鉴权校验
-const serverSecret = 'd9ecd57052284ebcc997cadd323824ca';
 
 
 /**
@@ -96,7 +94,6 @@ const hostMap = 'https://goclass-server-sh.zego.im/edu_room/'
 export default { 
   APPID, 
   SERVER, 
-  serverSecret, 
   ZEGOENV, 
   ROLE_TEACHER, 
   ROLE_STUDENT, 

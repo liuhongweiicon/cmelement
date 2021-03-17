@@ -9,7 +9,7 @@
         class="control-btn-item"
         v-for="(item, i) in controlBtnList"
         :key="item.name"
-        @click="getUserMediaAuth(i)"
+        @click="getUserMediaAuth(item, i)"
       >
         <!-- 共享按钮开始 -->
         <el-popover
@@ -127,6 +127,7 @@
       v-if="filesListDialogShow"
       @handleClose="zegoWhiteboardArea.setFilesListDialogShow(false)"
     />
+    <room-dialog-quit v-if="quitDialogShow" @handleClose="quitDialogShow = false" />
   </div>
 </template>
 
@@ -134,6 +135,7 @@
 import RoomDialogMembers from './room-dialog-members'
 import RoomDialogShare from './room-dialog-share'
 import RoomDialogFiles from './room-dialog-files'
+import RoomDialogQuit from './room-dialog-quit'
 import { getUserMedia } from '../../../js/room/utils/browser'
 import { debounce, storage } from '../../../js/room/utils/tool'
 
@@ -234,6 +236,7 @@ export default {
     RoomDialogMembers,
     RoomDialogShare,
     RoomDialogFiles,
+    RoomDialogQuit
   },
   data() {
     return {
@@ -250,11 +253,14 @@ export default {
       },
       memberListDialogShow: false, // 成员列表弹窗标识
       shareDialogShow: false, // 邀请弹窗标识
+      quitDialogShow: false, // 退出课堂弹窗标识
       roomUserList: [], // 房间成员列表
       roomAuth: this.zegoLiveRoom.$http.auth, // 房间权限
       classScene: 1, // 当前课堂场景
       role: 1, // 当前用户角色
       liveRoomParams: null, // 直播间参数
+
+      
     }
   },
   inject: ['zegoLiveRoom', 'zegoWhiteboardArea', 'thisParent'],
@@ -285,7 +291,8 @@ export default {
       BUS.$on('userStateChange', this.tryJionLive)
     }
     BUS.$on('roomAttendeesChange', this.onRoomAttendeesChange)
-    this.handleMainBtnClick_ = debounce(this.handleMainBtnClick, 500, true)
+    this.handleMainBtnClick_ = debounce(this.handleMainBtnClick, 500, true);
+    this.registerUnloadEvent();
     
   },
   destroyed() {
@@ -293,6 +300,18 @@ export default {
     BUS.$off('userStateChange', this.tryJionLive)
   },
   methods: {
+
+    
+    registerUnloadEvent() {
+        window.onbeforeunload = async (e) => {
+          
+          var e = window.event||e;  
+  　　    e.returnValue=("确定离开当前页面吗？");
+          //  await this.zegoLiveRoom.$http.endTeaching()
+          // await this.zegoLiveRoom.$http.leaveRoom()
+          // zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
+        }
+    },
     
 
     /**
@@ -312,14 +331,14 @@ export default {
         Object.assign(this.roomAuth, state)
 
         if (state.camera == this.liveRoomParams.STATE_OPEN) {
-          this.getUserMediaAuth(0, false, async () => {
+          this.getUserMediaAuth(null, 0, false, async () => {
             await this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
           })
         } else {
           await this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
         }
         if (state.mic == this.liveRoomParams.STATE_OPEN) {
-          this.getUserMediaAuth(1, false, async () => {
+          this.getUserMediaAuth(null, 1, false, async () => {
             await this.toggleDeviceOpen('audio', this.controlBtnList[1], noSetUser)
           })
         } else {
@@ -332,23 +351,23 @@ export default {
         Object.assign(this.roomAuth, state)
         const len = this.zegoLiveRoom.$http.joinLiveList.length
         if (state.camera == this.liveRoomParams.STATE_OPEN) {
-          this.getUserMediaAuth(0, false, () => {
+          this.getUserMediaAuth(null, 0, false, () => {
             this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
           })
         }
         if (state.mic == this.liveRoomParams.STATE_OPEN) {
-          this.getUserMediaAuth(1, false, () => {
+          this.getUserMediaAuth(null, 1, false, () => {
             this.toggleDeviceOpen('audio', this.controlBtnList[1], noSetUser)
           })
         }
 
         if (state.camera == this.liveRoomParams.STATE_CLOSE) {
-          this.getUserMediaAuth(0, false, () => {
+          this.getUserMediaAuth(null, 0, false, () => {
             this.toggleDeviceOpen('video', this.controlBtnList[0], noSetUser)
           })
         }
         if (state.mic == this.liveRoomParams.STATE_CLOSE) {
-          this.getUserMediaAuth(1, false, () => {
+          this.getUserMediaAuth(null, 1, false, () => {
             this.toggleDeviceOpen('audio', this.controlBtnList[1], noSetUser)
           })
         }
@@ -378,10 +397,10 @@ export default {
      * @param {showErrorToast} 展示错误提示，默认true
      * @param {cb} 回调方法
      */
-    getUserMediaAuth(num, showErrorToast = true, cb) {
+    getUserMediaAuth(item, num, showErrorToast = true, cb) {
       const _this = this;
       if (num > 1) {
-        if (!_this.roomAuth.share) {
+        if (!_this.roomAuth.share && item.name == 'share') {
           _this.showToast('老师还未允许你使用共享功能')
         }
         return
@@ -448,7 +467,8 @@ export default {
           this.shareDialogShow = true
           break
         case 'quit':
-          this.quitClass();
+          // this.quitClass();
+          this.quitDialogShow = true
           break
         default:
           break
@@ -557,6 +577,7 @@ export default {
           //@ts-ignore
           audio: true,
           videoQuality: 4,
+          bitRate: 4000,
           bitRate: 4000,
           frameRate: 2,
           width: 1280,

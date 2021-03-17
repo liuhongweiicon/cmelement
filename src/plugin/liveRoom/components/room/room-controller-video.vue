@@ -88,6 +88,7 @@ export default {
     this.roomId = roomId
     this.userId = userID
     this.role = role
+    this.controlBtnList = this.isTeacher || role == 2 ? controlBtnList.slice(0, 2) : controlBtnList
     this.isMe = this.userId == this.user.uid
   },
   mounted(){

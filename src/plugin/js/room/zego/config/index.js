@@ -22,7 +22,6 @@
     this.homesServer = constant.SERVER.home // 国内环境服务器地址
     this.overseasServer = constant.SERVER.overseas // 海外环境服务器地址
     this.maxMemberCount = constant.maxMemberCount; // 房间最大连接数
-    this.serverSecret = constant.serverSecret // ServerSecret App 唯一凭证密钥
     this.userID = constant.USER_INFO.userID
     // 国内环境配置
     this.home = this.createConfig(
@@ -31,7 +30,6 @@
       '',
       this.userID,
       [],
-      this.serverSecret,
     )
 
     // 海外环境配置
@@ -41,11 +39,10 @@
       '',
       this.userID,
       [],
-      this.serverSecret,
     )
   }
 
-  createConfig(appID, server, logURL, userID, fileList, serverSecret) {
+  createConfig(appID, server, logURL, userID, fileList) {
     return {
       appID,
       docsviewAppID: appID,
@@ -53,7 +50,6 @@
       logURL,
       userID,
       fileList,
-      serverSecret,
       isTestEnv: this.isTestEnv,
       tokenUrl: this.tokenUrl,
       maxMemberCount: this.maxMemberCount,

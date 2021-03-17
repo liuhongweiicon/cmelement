@@ -36,21 +36,21 @@ const canvasToolConf = {
   textSize: 24
 }
 const canvasToolList = [
-  {
-    imgName: 'tool_click',
-    cnName: '点击',
-    type: 256,
-  },
+  // {
+  //   imgName: 'tool_click',
+  //   cnName: '点击',
+  //   type: 256,
+  // },
   {
     imgName: 'tool_choose',
     cnName: '选择',
     type: 32
   },
-  {
-    imgName: 'tool_hand',
-    cnName: '拖拽',
-    type: 0
-  },
+  // {
+  //   imgName: 'tool_hand',
+  //   cnName: '拖拽',
+  //   type: 0
+  // },
   {
     imgName: 'tool_laser',
     cnName: '激光笔',

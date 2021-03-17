@@ -10,8 +10,6 @@ const APPID = {
   overseas: 4057099555
 }
 
-// 用于后台服务请求接口的鉴权校验
-const serverSecret = 'd9ecd57052284ebcc997cadd323824ca';
 
 // 是否是测试环境, => true 测试环境 => 正式环境
 const ENVTYPE = true;
@@ -58,7 +56,6 @@ const classScene = 1;
 export default { 
   APPID, 
   SERVER, 
-  serverSecret, 
   ENVTYPE, 
   getTokenUrl, 
   USER_INFO, 

@@ -13,12 +13,11 @@
       <div class="dialog-content">
         <div v-if="role == 1">
           <div>
-            你可以暂时离开课堂，课堂不会立即结束。<br />
-            结束教学后，学生将被移出课堂。
+            确定要退出当前课堂？
           </div>
           <el-button class="cancle" round @click="$emit('handleClose')">取消</el-button>
-          <el-button class="quit" round @click="quitClass">离开课堂</el-button>
-          <el-button class="end" round @click="endClass">结束教学</el-button>
+          <!-- <el-button class="quit" round @click="quitClass">离开课堂</el-button> -->
+          <el-button class="end" round @click="endClass">退出</el-button>
         </div>
         <div v-else>
           确定要退出当前课堂？
@@ -48,6 +47,7 @@ export default {
   },
   mounted() {
     this.role = this.zegoLiveRoom.$http.role;
+    // this.registerUnloadEvent()
     
   },
   methods: {
@@ -55,6 +55,9 @@ export default {
      * 离开直播间
      */
     async quitClass() {
+      // await zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId);
+      // await this.zegoLiveRoom.$http.leaveRoom()
+
       await this.zegoLiveRoom.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
       window.close();
@@ -64,7 +67,11 @@ export default {
      * 结束教学
      */
     async endClass() {
-      await this.zegoLiveRoom.$http.endTeaching()
+      if (this.role == 1) {
+        await this.zegoLiveRoom.$http.endTeaching()
+      }
+      
+      await this.zegoLiveRoom.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
       window.close();
     },
@@ -75,12 +82,13 @@ export default {
      */
     registerUnloadEvent() {
       if (this.role == 1) {
-        window.onbeforeunload = (e) => {
+        window.onbeforeunload = async (e) => {
           
-        var e = window.event||e;  
+          var e = window.event||e;  
   　　    e.returnValue=("确定离开当前页面吗？");
-          this.zegoLiveRoom.$http.endTeaching()
-          zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
+          //  await this.zegoLiveRoom.$http.endTeaching()
+          // await this.zegoLiveRoom.$http.leaveRoom()
+          // zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
         }
       }
     }
@@ -91,6 +99,7 @@ export default {
 <style lang="scss">
 @import '../../../static/css/room/_mixin.scss';
 .room-dialog-quit {
+  text-align: center;
   .el-dialog__wrapper {
     margin-top: 22vh;
   }

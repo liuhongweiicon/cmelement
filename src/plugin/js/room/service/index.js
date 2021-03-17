@@ -130,17 +130,17 @@ class HTTP {
       if (data.type == 1 || !data.users) return
       if (this.role == this.config.ROLE_TEACHER) {
         // 老师主动改变自己状态
-        if (data.operator_uid == uid && data.users.find(v => v.uid == uid)) return
+        if (data.oprator_uid == uid && data.users.find(v => v.uid == uid)) return
         // 学生状态改变，老师同步用户列表和连麦列表
         this.getAttendeeList()
         this.getJoinLiveList()
         return
       }
       // 学生主动改变自己状态
-      console.log(this.role, this.config, this.config.ROLE_STUDENT, data.operator_uid, uid, 'this.role, this.config, this.config.ROLE_STUDENT, data.operator_uid, uid')
-      console.log(this.role == this.config.ROLE_STUDENT && data.operator_uid == uid, 'this.role == this.config.ROLE_STUDENT && data.operator_uid == uid');
-      
-      if (this.role == this.config.ROLE_STUDENT && data.operator_uid == uid) return
+      console.log(this.role, this.config, this.config.ROLE_STUDENT, data.oprator_uid, uid, 'this.role, this.config, this.config.ROLE_STUDENT, data.oprator_uid, uid')
+      console.log(this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid, 'this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid');
+      // debugger
+      if (this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid) return
       // 学生自己状态被动改变，消息提示
       const user = data.users.find(v => v.uid == uid)
       if (this.role == this.config.ROLE_STUDENT && user) {
