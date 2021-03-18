@@ -577,11 +577,11 @@ export default {
           //@ts-ignore
           audio: true,
           videoQuality: 4,
-          bitrate: 1000,
-          bitrate: 1000,
-          frameRate: 15,
-          width: 1280,
-          height: 720
+          bitrate: 4000,
+          bitRate: 4000,
+          frameRate: 5,
+          width: 1920,
+          height: 1080
         }
       }
       // 检测浏览器是否支持共享

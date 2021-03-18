@@ -33,7 +33,7 @@ export default {
     end() {
       this.show = false
       this.$route.meta.reload = true
-      this.$router.replace('/login')
+      window.close();
     }
   }
 }
