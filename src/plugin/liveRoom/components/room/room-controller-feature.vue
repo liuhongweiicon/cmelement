@@ -292,7 +292,6 @@ export default {
     }
     BUS.$on('roomAttendeesChange', this.onRoomAttendeesChange)
     this.handleMainBtnClick_ = debounce(this.handleMainBtnClick, 500, true);
-    this.registerUnloadEvent();
     
   },
   destroyed() {
@@ -300,18 +299,6 @@ export default {
     BUS.$off('userStateChange', this.tryJionLive)
   },
   methods: {
-
-    
-    registerUnloadEvent() {
-        window.onbeforeunload = async (e) => {
-          
-          var e = window.event||e;  
-  　　    e.returnValue=("确定离开当前页面吗？");
-          //  await this.zegoLiveRoom.$http.endTeaching()
-          // await this.zegoLiveRoom.$http.leaveRoom()
-          // zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
-        }
-    },
     
 
     /**
@@ -577,11 +564,10 @@ export default {
           //@ts-ignore
           audio: true,
           videoQuality: 4,
-          bitrate: 4000,
-          bitRate: 4000,
-          frameRate: 5,
-          width: 1920,
-          height: 1080
+          bitrate: 2000,
+          frameRate: 10,
+          width: 1280,
+          height: 720
         }
       }
       // 检测浏览器是否支持共享
@@ -592,7 +578,8 @@ export default {
       
       const { user } = zegoClient.getState('user')
       const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
-      
+
+      // const streamID = 'share_1ff3b0bc-0f42-49c2-b544-3440fcfb471d_898989898'
       await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
       
       BUS.$emit('startShare', streamID)
