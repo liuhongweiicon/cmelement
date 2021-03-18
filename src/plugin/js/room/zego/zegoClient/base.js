@@ -118,10 +118,10 @@ export class ZegoClient {
 
   async createZegoContext(roomEnv) {
     const { appID, userID, isTestEnv, docsviewAppID, tokenUrl } = await this.Config.getParams(roomEnv)
-    // const token1 = await this.getToken(appID, userID, tokenUrl)
+    const token1 = await this.getToken(appID, userID, tokenUrl)
 
-    // const token1 = "eyJ2ZXIiOjEsImhhc2giOiIxOTg2NzczZWVlODY1NDBiZDNkMjg5YmRjMGZmYjRkNyIsIm5vbmNlIjoiMTYxNTk2Nzk5NDM1MyIsImV4cGlyZWQiOjE2MTU5Njk3OTR9"
-    const token1 = this.getTokentest(appID, 'c826cf6f1c33f5119557b96bb77e755b5b441e21f096c34076a9d8e2c3c4ab62', userID)
+    // const token1 = "eyJ2ZXIiOjEsImV4cGlyZWQiOjE2MTYwMzcwMzEsIm5vbmNlIjoiNjI4MzBkMjNhMDQzNDI1ZGJhZmI1MTU1Nzk2YmZjNjQiLCJoYXNoIjoiMGM1YjJhY2JiYWIzYThmZDRkYzMyM2YwYzAyOTk0ZjkifQ=="
+    // const token1 = this.getTokentest(appID, 'c826cf6f1c33f5119557b96bb77e755b5b441e21f096c34076a9d8e2c3c4ab62', userID)
     let token2 = token1
     if (docsviewAppID != appID && !isTestEnv) {
       token2 = await this.getToken(docsviewAppID, userID, tokenUrl)
