@@ -1,6 +1,6 @@
 {
   "name": "cmelement",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "cmelement vue plugin",
   "private": false,
   "main": "dist/cmelement.js",
