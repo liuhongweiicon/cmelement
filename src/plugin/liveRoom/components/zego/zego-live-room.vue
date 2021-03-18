@@ -123,14 +123,14 @@ export default {
     // 刷新关闭浏览器之前回调
     beforeunloadHandler(e){
         this._beforeUnload_time = new Date().getTime();
-        // e.returnValue = '确定要退出当前课堂？'; // 弹窗
+        e.returnValue = '确定要退出当前课堂？'; // 弹窗
     },
     // 刷新环比卸载回调
     async unloadHandler(e){
         this._gap_time = new Date().getTime() - this._beforeUnload_time;
-        
-        if (this._gap_time > 5) {
-            this.endClass('unload');
+        alert(this._gap_time)
+        if (this._gap_time <= 5) {
+            // this.endClass('unload');
         }
     },
 

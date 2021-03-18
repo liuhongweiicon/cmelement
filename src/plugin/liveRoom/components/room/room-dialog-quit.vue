@@ -47,7 +47,6 @@ export default {
   },
   mounted() {
     this.role = this.zegoLiveRoom.$http.role;
-    // this.registerUnloadEvent()
     
   },
   methods: {
@@ -76,22 +75,6 @@ export default {
       window.close();
     },
 
-    /**
-     * 监听页面刷新或关闭
-     * 结束教学
-     */
-    registerUnloadEvent() {
-      if (this.role == 1) {
-        window.onbeforeunload = async (e) => {
-          
-          var e = window.event||e;  
-  　　    e.returnValue=("确定离开当前页面吗？");
-          //  await this.zegoLiveRoom.$http.endTeaching()
-          // await this.zegoLiveRoom.$http.leaveRoom()
-          // zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
-        }
-      }
-    }
   }
 }
 </script>

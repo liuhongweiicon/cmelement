@@ -77,61 +77,9 @@ export default {
     // 监听教师端开始共享
     BUS.$on('startShare', this.pullVideo);
 
-  
-    // 刷新或关闭浏览器
-    // if (role == 2) {
-    //   // 学生端刷新浏览器时,停止拉流
-    //   window.addEventListener('beforeunload', this.screenSharingEndedHandler);
-
-    // } else {
-      
-    //   window.addEventListener('beforeunload',  this.beforeunloadFn);
-    //   window.addEventListener("unload",  this.unloadFn)
-    // }
 
   },
-  // destroyed() {
-  //   const { roomId, userID, userName, role } = this.thisParent.liveRoomParams.USER_INFO;
-  //   if (role == 2) {
-  //      window.removeEventListener('beforeunload',  this.screenSharingEndedHandler);
-  //   } else {
-  //     window.removeEventListener("beforeunload", this.beforeunloadFn);
-  //   }
-    
-  //   window.removeEventListener("unload", this.unloadFn)
-  // },
   methods: {
-    /**
-     *  页面加载时只执行onload
-        页面关闭时只执行onunload
-        页面刷新时先执行onbeforeunload，然后onunload，最后onload。这样我们可以在onbeforeunload中加一个标记，在onunload中判断该标记，即可达到判断页面是否真的关闭了。
-     *  onbeforeunload 事件在即将离开当前页面（刷新或关闭）时触发。
-     *  记录onbeforeunload时的时间
-     */
-    unloadFn() {
-      return
-      const _this = this;
-      const time = new Date().getTime() - sessionStorage.getItem('beforeunloadTime');
-      if(time <= 5){
-        //关闭浏览器执行的代码
-        sessionStorage.clear();
-        _this.zegoLiveRoom.$http.endTeaching()
-        zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
-      }
-    },
-
-    /**
-     * onbeforeunload
-     * 记录onbeforeunload时的时间
-     */
-    beforeunloadFn() {
-      if (res == true){
-        sessionStorage.setItem('beforeunloadTime', new Date().getTime())
-      } else{
-        document.write("You pressed Cancel!")
-      }
-      
-    },
 
     
     /**
