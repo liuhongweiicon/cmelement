@@ -115,6 +115,7 @@ export default {
       zegoLiveRoom: this
     }
   },
+  
   created() {
     // 延长上课时刷新页面，初始化延长次数
     this.extendNum = sessionStorage.getItem('extendNum') || 0
@@ -175,7 +176,7 @@ export default {
 
     setLiveTime() {
       if (this.endLiveTime) {
-        let time = this.endLiveTime
+        let time = Number(this.endLiveTime);
         if (this.extendNum > 0) {
           time = moment(time).add(this.extendNum * this.spaceTipsTime, 'minutes').valueOf()
         }
