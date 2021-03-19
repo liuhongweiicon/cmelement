@@ -26,7 +26,7 @@ export default {
      * request => 请求库
      * constants => 直播间配置参数
      */
-    props: ['request', 'constants', 'endLiveTime'],
+    props: ['request', 'constants', 'endTime'],
     name: 'cm-live-room',
     components: {
         ZegoLiveRoom,

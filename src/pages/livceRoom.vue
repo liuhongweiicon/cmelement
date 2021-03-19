@@ -1,6 +1,6 @@
 <template>
     <div class="liveRoom">
-        <cm-live-room :constants="params" :request="request"></cm-live-room>
+        <cm-live-room :constants="params" :request="request" :endTime="endTime"></cm-live-room>
 
         <!-- <div @click="capHandler">{{!screenCap ? '捕获' : '停止'}}</div> -->
     </div>
@@ -15,6 +15,10 @@ export default {
             params: constants,
             request: window.$axios,
             screenCap: null,
+            endTime: { // 延长上课时间配置
+                endLiveTime: '', // 课程预定截止时间
+                spaceTipsTime: 30, // 延长上课时长
+            }
         }
     },
     created() {

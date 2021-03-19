@@ -11,18 +11,36 @@
 
     
     <el-dialog
+      class="zego-live-dialog"
       title="提示"
       :modal="false"
       :visible.sync="liveTips"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :show-close="false"
-      width="380px"
+      width="500px"
+      top="28vh"
+      style="border-radius: 4px;"
     >
-      <div class="zego-live-timer">
-        预定上课的时间还有1分钟结束，是否继续？
-        已超时30分钟，是否继续上课？
+      <div class="live-dialog-timer">
+        <div >
+          
+          <p class="dialog-timer-first">上课时间还有<span>&nbsp;{{courseTipsTime}}秒&nbsp;</span>结束，是否延长{{spaceTipsTime}}分钟上课时间？</p>
+          <p>如不延长上课时间，系统将自动关闭并退出直播间</p>
+        </div>
+        
+        <!-- <div v-else>
+          <p class="dialog-timer-first">已超时{{extendNum * spaceTipsTime}}分钟，是否继续延长上课时间？</p>
+          <p>如不延长上课时间，<span style="color: red">{{courseTipsTime}}秒</span>后系统将自动关闭并退出直播间</p>
+        </div> -->
+        <!-- 预定上课的时间还有1分钟结束，是否继续？
+        已超时30分钟，是否继续上课？ -->
       </div>
+      
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="liveTips = false">不延长</el-button>
+      <el-button type="primary" @click="extendTime">延长</el-button>
+    </div>
     </el-dialog>
 
   </div>
@@ -33,7 +51,7 @@ import zegoClient from '../../../js/room/zego/zegoClient/index'
 
 import RoomDialogLoading from '../room/room-dialog-loading'
 import RoomDialogError from '../room/room-dialog-error'
-
+import moment from "moment";
 import $HTTP from '../../../js/room/service/index'; // 请求实例
 
 export default {
@@ -75,9 +93,15 @@ export default {
 
       isquit: false, // 是否是退出
 
-      endLiveTime: '', // 结束直播时间
-      endLiveTimer: null, // 直播结束定时器
+      endLiveTime: '', // 结束上课时间
+      endLiveTimer: null, // 上课结束定时器
       liveTips: false, // 直播时间到提示框
+      extendNum: 0, // 延长上课时间次数
+      spaceTipsTime: 30, // 延长上课时长
+
+      courseTipsTime: '60', // 上课时间的提示文案
+      courseTipsTimer: null, // 上课时间提示时间定时器
+
             
       _beforeUnload_time:'', // 监听beforeunload执行回调时时间戳
       _gap_time:'', //  监听unload执行回调时时间戳与_beforeUnload_time的差，小于5表示关闭，否则是刷新浏览器
@@ -92,6 +116,8 @@ export default {
     }
   },
   created() {
+    // 延长上课时刷新页面，初始化延长次数
+    this.extendNum = sessionStorage.getItem('extendNum') || 0
     // 运行环境,是否是测试环境, => home 国内环境  => overseas 正式环境
     this.env = this.thisParent.liveRoomParams.AREA_ENV;
     this.roomId = this.thisParent.liveRoomParams.USER_INFO.roomId;
@@ -99,13 +125,22 @@ export default {
 
     this.$http = new $HTTP(this.thisParent.request, this.thisParent.liveRoomParams);
 
-    this.endLiveTime = this.thisParent.endLiveTime;
-
+    // 初始化，设置延长上课配置参数
+    this.endLiveTime = this.thisParent.endTime ? this.thisParent.endTime.endLiveTime : this.endLiveTime;
+    this.spaceTipsTime = this.thisParent.endTime ? this.thisParent.endTime.spaceTipsTime : this.spaceTipsTime;
+  
     // 设置结束直播定时器
     if (this.thisParent.liveRoomParams.USER_INFO.role == 1) {
-      this.setLiveTime();
+      if (!this.extendNum && this.endLiveTime && this.endLiveTime < new Date().getTime()) {
+        this.thisParent.isLogin = false;
+        this.thisParent.enterHtml = '直播已结束'
+      } else {
+        this.setLiveTime();
+      }
+      
     }
   },
+  
   async mounted() {
     
 
@@ -123,14 +158,14 @@ export default {
     // 刷新关闭浏览器之前回调
     beforeunloadHandler(e){
         this._beforeUnload_time = new Date().getTime();
-        e.returnValue = '确定要退出当前课堂？'; // 弹窗
+        // e.returnValue = '确定要退出当前课堂？'; // 弹窗
     },
     // 刷新环比卸载回调
     async unloadHandler(e){
         this._gap_time = new Date().getTime() - this._beforeUnload_time;
         alert(this._gap_time)
         if (this._gap_time <= 5) {
-            // this.endClass('unload');
+            this.endClass();
         }
     },
 
@@ -139,30 +174,68 @@ export default {
      */
 
     setLiveTime() {
-
       if (this.endLiveTime) {
-        this.endLiveTimer = setInterval(() => {
-          if (new Date().getTime() >= this.endLiveTime) {
+        let time = this.endLiveTime
+        if (this.extendNum > 0) {
+          time = moment(time).add(this.extendNum * this.spaceTipsTime, 'minutes').valueOf()
+        }
+        this.endLiveTimer = window.setInterval(() => {
+          if (new Date().getTime() >= time) {
             this.liveTips = true;
-            clearInterval(this.endLiveTimer);
+            window.clearInterval(this.endLiveTimer);
+            this.setCourseTipsTimer();
           }
         }, 1000);
       }
     },
+
+    /**
+     * 上课结束提示定时器
+     */
+    setCourseTipsTimer() {
+
+      this.courseTipsTime = 59;
+      this.courseTipsTimer = window.setInterval(() => {
+        if (this.courseTipsTime <= 0) {
+          this.liveTips = false;
+          // this.endClass();
+          window.clearInterval(this.courseTipsTimer);
+        }
+        
+        this.courseTipsTime--;
+      }, 1000);
+    },
+
+    /**
+     * 延长上课时间
+     */
+    extendTime() {
+      const _this = this;
+      _this.liveTips = false;
+      _this.$nextTick(() => {
+        _this.extendNum++;
+        // 延长上课时刷新页面，存储延长次数
+        sessionStorage.setItem('extendNum', _this.extendNum);
+        window.clearInterval(_this.courseTipsTimer);
+        _this.setLiveTime();
+      })
+    },
+    
     
     /**
      * 结束教学
      */
-    async endClass(val) {
+    async endClass() {
+      // 结束教学，清除存储的延长上课次数
+      sessionStorage.getItem('extendNum') && sessionStorage.removeItem("extendNum");
+      
       if (this.thisParent.liveRoomParams.USER_INFO.role == 1) {
         await this.$http.endTeaching()
       }
       
       await this.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.$http.roomId)
-      if (val != "unload") {
-        window.close();
-      }
+      window.close();
     },
     /**
      * @desc: 初始化sdk
@@ -633,6 +706,12 @@ export default {
     },
   },
   destroyed() {
+    // 清除定时器
+    window.clearInterval(this.courseTipsTimer);
+    window.clearInterval(this.endLiveTimer);
+    // 离开页面时，清除存储的延长上课次数
+    sessionStorage.getItem('extendNum') && sessionStorage.removeItem("extendNum");
+
     // 卸载监听浏览器刷新和关闭事件  
     window.removeEventListener('beforeunload', this.beforeunloadHandler)
     window.removeEventListener('unload', this.unloadHandler)
@@ -644,6 +723,30 @@ export default {
 @import '../../../static/css/room/_mixin.scss';
 .zego-live {
   height: 100%;
+  .zego-live-dialog {
+    border-radius: 4px;
+    .el-dialog__header {
+      border-bottom: 1px solid #efefef;
+    }
+    .el-dialog__body {
+      padding: 4px 20px;
+      .live-dialog-timer {
+        .dialog-timer-first {
+          span {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+          }
+        }
+      }
+    }
+    .el-dialog__footer {
+      .el-button {
+        padding: 8px 20px;
+      }
+    }
+
+  }
   .zego-live-room {
     height: 100%;
     width: 100%;
