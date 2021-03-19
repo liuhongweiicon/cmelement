@@ -198,9 +198,9 @@ export default {
       this.courseTipsTime = 59;
       this.courseTipsTimer = window.setInterval(() => {
         if (this.courseTipsTime <= 0) {
-          this.liveTips = false;
-          // this.endClass();
           window.clearInterval(this.courseTipsTimer);
+          this.liveTips = false;
+          this.endClass();
         }
         
         this.courseTipsTime--;
