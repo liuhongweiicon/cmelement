@@ -201,6 +201,7 @@ export default {
           window.clearInterval(this.courseTipsTimer);
           this.liveTips = false;
           this.endClass();
+          return
         }
         
         this.courseTipsTime--;
@@ -227,6 +228,7 @@ export default {
      * 结束教学
      */
     async endClass() {
+      // debugger
       // 结束教学，清除存储的延长上课次数
       sessionStorage.getItem('extendNum') && sessionStorage.removeItem("extendNum");
       
@@ -236,6 +238,7 @@ export default {
       
       await this.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.$http.roomId)
+      window.history.back(-1);
       window.close();
     },
     /**
