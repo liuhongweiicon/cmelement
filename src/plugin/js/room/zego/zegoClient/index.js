@@ -24,6 +24,7 @@ class WebZegoClient extends ZegoClient {
       isTestEnv
     })
     if (zg) console.log('init web sdk success!')
+    console.log(appID, server, docsviewAppID, userID, isTestEnv, 'appID, server, docsviewAppID, userID, isTestEnv')
     console.log('web sdk version ', zg.getVersion())
     if (zgDocsClient) console.log('init docs sdk success!')
     console.log('docs sdk version ', zgDocsClient.getVersion())
