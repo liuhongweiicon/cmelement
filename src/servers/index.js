@@ -1,5 +1,4 @@
 import $http from '../utils/http'
-const qs = require('qs');
 // 测试
 const getPaper = (data) => {
     return $http.post($http.submitUrl + 'paper/getPaper', data)
@@ -14,7 +13,7 @@ const getTestQuestion = (data) => {
 
 // 上传文件
 const liveUpload = (data) => {
-    return $http.post('http://transcodinput.e-eduspace.com/liveFile/liveUpload', data)
+    return $http.post('https://transcodinput.e-eduspace.com/liveFile/liveUpload', data)
 }
 
 export default {
