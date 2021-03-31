@@ -211,7 +211,6 @@ export default {
        * @return {文档相关信息} res
        */      
       this.docsClient.on('onLoadFile', async (res) => {
-        console.log(res, 'onLoadFile')
         await this.createFileWBView(res)
       })
 
@@ -262,7 +261,6 @@ export default {
             _this.$message.error(res.error.message);
             break
         }
-        console.log(res)
       })
       /**
        * @desc: 动态PPT步数改变的回调

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-
+import $http from '../../../../servers/index'
 export default {
   name: 'RoomDialogFiles',
   inject: ['zegoWhiteboardArea'],
@@ -108,13 +108,30 @@ export default {
      * 上传文件
      */
     async changeHandler() {
-       var file = document.getElementById('file-input').files[0];
+      const domfile = document.getElementById('file-input');
+      if (!domfile.files.length) return;
+      const file = domfile.files[0];
+      const fileName = file.name
+
+       let formData = new FormData();
+       formData.append('file', file);
+       formData.append('name', fileName);
+       this.zegoWhiteboardArea.loading = true;
+       const decryptFile = await $http.liveUpload(formData);
+
+       domfile.value = '';
+
+       const newFile = new File([decryptFile], fileName, {type: file.type});
+
+        console.log(newFile, file, window.URL.createObjectURL(decryptFile), 'newFile, file, decryptFile')
+        
        let type = 3;
-       const suffix = file.name.substring(file.name.lastIndexOf('.') + 1);
+       const suffix = fileName.substring(fileName.lastIndexOf('.') + 1);
        if (suffix == 'ppt' || suffix == 'pptx') {
          type = 6
        }
-      await this.zegoWhiteboardArea.docsClient.uploadFile(file, type);
+
+      this.zegoWhiteboardArea.docsClient.uploadFile(newFile, type);
     },
   }
 }

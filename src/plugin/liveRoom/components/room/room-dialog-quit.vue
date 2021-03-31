@@ -57,8 +57,10 @@ export default {
       // await zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId);
       // await this.zegoLiveRoom.$http.leaveRoom()
 
+      this.zegoLiveRoom.isquit = true;
       await this.zegoLiveRoom.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
+      window.history.go(-1)
       window.close();
     },
 
@@ -66,12 +68,14 @@ export default {
      * 结束教学
      */
     async endClass() {
+      this.zegoLiveRoom.isquit = true;
       if (this.role == 1) {
         await this.zegoLiveRoom.$http.endTeaching()
       }
       
       await this.zegoLiveRoom.$http.leaveRoom()
       zegoClient._client.logoutRoom(this.zegoLiveRoom.$http.roomId)
+      window.history.go(-1)
       window.close();
     },
 

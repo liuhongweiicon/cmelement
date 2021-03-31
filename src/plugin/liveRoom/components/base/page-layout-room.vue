@@ -10,7 +10,7 @@
             <room-whiteboard-area v-show="!share"/>
           </div>
           <div class="main-bottom">
-            <room-controller-feature />
+            <room-controller-feature :share="share"/>
           </div>
         </div>
       </zego-whiteboard-area>

@@ -132,7 +132,7 @@ export default {
     setWBViewEnable(view) {
       if (this.zegoLiveRoom.$http.role == this.thisParent.liveRoomParams.ROLE_STUDENT && view) {
         const val = this.roomAuth.share
-        view.enable(val)
+        // view.enable(val)
         view.setToolType(val ? 1 : null)
         if (val) {
           // 如果当前文件不是动态ppt但是当前使用工具是点击工具就重置工具

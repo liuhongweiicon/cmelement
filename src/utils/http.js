@@ -2,6 +2,7 @@
 
 const axios = require('axios');
 
+
 import { LocalStorage, isEmpty, encodeSearchParams } from './index';
 import { tryHideFullScreenLoading, showFullScreenLoading } from './pageLoading';
 
@@ -21,6 +22,7 @@ URL_PREFIX = URL_PREFIX + '/assessment/'
 const $ = axios.create({
     baseURL: URL_PREFIX,
     timeout: 15000,
+    responseType: 'blob'
 });
 
 window.$axios = $;
@@ -32,7 +34,8 @@ $.interceptors.request.use((config) => {
         showFullScreenLoading(config);
     }
     config.headers = {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json; charset=utf-8',
+        "user_token": '835f290e70ea419b8851acb4f62fcee4'
     };
     config.params = {
         requestId: Math.random()
@@ -44,33 +47,58 @@ $.interceptors.request.use((config) => {
 }, error => Promise.reject(error));
 
 // 响应拦截器
-$.interceptors.response.use((response) => {
+$.interceptors.response.use(async (response) => {
     if (response.config.showLoading) {
         tryHideFullScreenLoading();
     }
-    if (response.config.url.indexOf('liveroom') > -1) {
+
+    // 将blob转未json类型并返回，
+    if (response.data.type.indexOf('application/json') > -1) {
+        const data = await setRespond(response);
+        return data;
+        
+    } else { // 直播间上传文件直接放回blob数据类型
         return response.data;
     }
-    if (response.data.httpCode) {
-        if (response.data.httpCode !== '200' && response.data.httpCode !== '40007') { // 40007 手机号已绑定需要单独处理错误
-            // Message.error(response.data.message ? response.data.message : '请求错误,请重试');
-            vant.Toast(response.data.message ? response.data.message : '请求错误,请重试');
-            // return
-        }
-        return response.data;
-    } else {
-        if (response.data.code !== '000000') {
-            // Message.error(response.data.message ? response.data.message : '请求错误,请重试');
-            vant.Toast(response.data.message ? response.data.message : '请求错误,请重试');
-            // return
-        }
-        return response.data;
-    }
+    
 }, (error) => {
     tryHideFullScreenLoading();
     vant.Toast('服务器响应错误');
     return Promise.reject(error);
 });
+
+const setRespond = (response) => {
+    let data = response.data
+    let reader = new FileReader(); // 创建读取文件对象
+
+    return new Promise((resolve, reject) => {
+        reader.addEventListener("loadend", function () { // 
+            data = JSON.parse(reader.result); // 返回的数据
+            if (response.config.url.indexOf('liveroom') > -1) {
+                resolve(data)
+                return
+            }
+        
+            if (data.httpCode) {
+                if (data.httpCode !== '200' && data.httpCode !== '40007') { // 40007 手机号已绑定需要单独处理错误
+                    vant.Toast(data.message ? data.message : '请求错误,请重试');
+                }
+                resolve(data)
+                return
+            } else {
+                if (data.code !== '000000') {
+                    vant.Toast(data.message ? data.message : '请求错误,请重试');
+                    // return
+                }
+                resolve(data)
+                return
+            }
+        });
+        reader.readAsText(data, 'utf-8'); // 设置读取的数据以及返回的数据类型为utf-8
+    });
+
+}
+
 
 export default {
     request: (interfaceConfig, data, config) => {

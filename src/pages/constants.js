@@ -12,13 +12,13 @@ const APPID = {
 
 
 // 是否是测试环境, => true 测试环境 => 正式环境
-const ENVTYPE = false;
+const ENVTYPE = true;
 
 // 用户信息
 const USER_INFO = {
-  userID: "8b3f75de10a54ad0a8826276dd345586", // 用户id
-  userName: '测试干预老师5', // 用户姓名
-  roomId: "569609344967069696", // 房间id
+  userID: "b86f09123b494786aa1080966f6d8bd7", // 用户id
+  userName: '测试老师10', // 用户姓名
+  roomId: "574272832196902912", // 房间id
   role: 1, // 进入直播间的角色 1 => 教师 2 => 学生
   isMe: true, // 本身标识
 }
@@ -32,7 +32,7 @@ const AREA_ENV = 'home';
 const maxMemberCount = 20;
 
 // 用户管理服务接口
-const hostMap = 'https://omp.xinguoren.cn/g/liveroom/zego/';
+const hostMap = 'https://omptest.xinguoren.cn/g/liveroom/zego/';
 // const hostMap = 'http://192.168.1.57:8192/liveroom/zego/';
 
 /**
@@ -42,7 +42,7 @@ const getTokenUrl = hostMap + 'thirdToken';
 
 //构建即构示例服务器地址参数
 const SERVER = {
-  home: 'wss://webliveroom4057099555-api.zego.im/ws', //国内服务器地址
+  home: 'wss://webliveroom-test.zego.im/ws', //国内服务器地址
   overseas: 'wss://webliveroom-alpha.zego.im/ws' //海外服务器地址
 }
 

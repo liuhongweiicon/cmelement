@@ -232,6 +232,17 @@ const largeClassControlBtnList = [
 
 export default {
   name: 'RoomControllerFeature',
+  props: {
+    /**
+     * 是否开启共享
+     * share => false 非共享，
+     * share => true 共享
+     */
+    share: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     RoomDialogMembers,
     RoomDialogShare,
@@ -260,6 +271,7 @@ export default {
       role: 1, // 当前用户角色
       liveRoomParams: null, // 直播间参数
 
+
       
     }
   },
@@ -273,7 +285,8 @@ export default {
      */
     activeViewIsPPTH5() {
       return this.zegoWhiteboardArea.activeViewIsPPTH5
-    }
+    },
+
   },
   created() {
     this.liveRoomParams = this.thisParent.liveRoomParams;
@@ -559,6 +572,8 @@ export default {
      * 
      */
     async handleCreateStream() {
+      // 已经再共享屏幕直接退出
+      if (this.share) return;
       const option = {
         screen: {
           //@ts-ignore
