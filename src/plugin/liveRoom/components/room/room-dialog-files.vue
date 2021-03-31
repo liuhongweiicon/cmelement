@@ -33,7 +33,7 @@
           </div>
           <div class="fileInput">
               <label for="file-input">上传文件</label>
-              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .pdf, .potx, .pot, .txt, .jpg, .jpeg, .png, .bmp" @change="changeHandler" id="file-input"  style="display: none;"/>
+              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .pdf, .potx, .pot, .txt, .jpg, .jpeg, .png, .bmp, .mp4, .avi" @change="changeHandler" id="file-input"  style="display: none;"/>
           </div>
         </div>
       </div>
