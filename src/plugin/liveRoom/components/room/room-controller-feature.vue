@@ -581,8 +581,8 @@ export default {
           videoQuality: 4,
           bitrate: 2000,
           frameRate: 10,
-          width: 1280,
-          height: 720
+          width: 1920,
+          height: 1080
         }
       }
       // 检测浏览器是否支持共享
