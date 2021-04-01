@@ -94,7 +94,7 @@ export default {
       // 如果新建文件之前的是动态ppt，需手动停止该文件音视频
       if (this.activeViewIsPPTH5) this.zegoWhiteboardArea.stopPlay()
       this.zegoWhiteboardArea.setIsAllowSendRoomExtraInfo(true)
-      await this.zegoWhiteboardArea.createFileView(id)
+      await this.zegoWhiteboardArea.createFileView(id);
       this.waitting = false
       this.closeDialog()
     },
@@ -104,14 +104,33 @@ export default {
 
 
     /**
+     * 获取文件名称字节长度
+     */
+    getByteLength(str) {
+     // 获得字符串实际长度，中文2，英文1
+      let realLength = 0, len = str.length, charCode = -1;
+      for (let i = 0; i < len; i++) {
+        // 获取字字符的 Unicode 编码
+          charCode = str.charCodeAt(i);
+          if (charCode >= 0 && charCode <= 128)
+              realLength += 1;
+          else
+              realLength += 2;
+      }
+      return realLength;
+  },
+    /**
      * 上传文件
      */
     async changeHandler() {
       const domfile = document.getElementById('file-input');
       if (!domfile.files.length) return;
       const file = domfile.files[0];
-      const fileName = file.name
-
+      const fileName = file.name;
+      if (this.getByteLength(fileName) > 50) {
+        this.showToast('文件名称过长');
+        return
+      }
         
        let type = 3;
        const suffix = fileName.substring(fileName.lastIndexOf('.') + 1);

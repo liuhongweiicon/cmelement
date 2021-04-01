@@ -501,6 +501,7 @@ export default {
     -moz-appearance: none;
     -webkit-appearance: none;
   }
+  
 
   // /deep/ {
   .el-input__inner {
@@ -707,6 +708,20 @@ export default {
       display: inline-block;
       @include wh(20px, 20px);
       margin-right: 6px;
+    }
+  }
+}
+
+
+.el-select-dropdown {
+  .el-scrollbar {
+    .delete-btn {
+      position: absolute;
+      top: 2px;
+      right: 3px;
+      height: 15px;
+      width: 15px;
+    
     }
   }
 }

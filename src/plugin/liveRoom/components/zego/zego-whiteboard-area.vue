@@ -638,7 +638,6 @@ export default {
         const fileInfo = item.getFileInfo() || {}
         return fileID === fileInfo.fileID
       })
-
       if (matchedView) {
         return this.selectRemoteView(matchedView.whiteboardID)
       }
@@ -691,11 +690,13 @@ export default {
               fileType: res.fileType
             }
           })
+          
           this.originWBViewList.unshift(
             Object.assign(activeWBView, {
               name: this.getViewName(activeWBView)
             })
           )
+          
         } catch (error) {
           console.log('createFileWBView error', { error })
           const { code } = error
