@@ -327,12 +327,25 @@ export default {
           this.$set(this.streamList[streamIndex], 'isVideoOpen', status === 'OPEN')
       })
       
+
+      // 推流状态回调
       _this.client.on('publisherStateUpdate', result => {
-        if (result.state === 'PUBLISHING') {
-          // redo
-        }
       })
       
+      // 屏幕共享中断回调
+      _this.client.on('screenSharingEnded', result => {
+        
+      })
+
+      // 监听视频设备状态变化
+      _this.client.on('videoDeviceStateChanged', result => {
+        
+      })
+      // audioDeviceStateChanged
+      _this.client.on('videoDeviceStateChanged', result => {
+        
+      })
+
       // 推流质量回调
       _this.client.on('publishQualityUpdate', (streamID, stats) => {
         // console.log(streamID, stats, '推流质量')

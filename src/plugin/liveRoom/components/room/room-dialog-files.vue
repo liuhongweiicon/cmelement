@@ -33,7 +33,7 @@
           </div>
           <div class="fileInput">
               <label for="file-input">上传文件</label>
-              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .pdf, .potx, .pot, .txt, .jpg, .jpeg, .png, .bmp, .mp4, .avi" @change="changeHandler" id="file-input"  style="display: none;"/>
+              <input type="file" accept=".docx, .doc, .xls, .xlsx, .pptx, .ppt, .pdf, .potx, .pot, .txt, .jpg, .jpeg, .png, .bmp" @change="changeHandler" id="file-input"  style="display: none;"/>
           </div>
         </div>
       </div>
@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import $http from '../../../../servers/index'
 export default {
   name: 'RoomDialogFiles',
   inject: ['zegoWhiteboardArea'],
@@ -113,17 +112,6 @@ export default {
       const file = domfile.files[0];
       const fileName = file.name
 
-       let formData = new FormData();
-       formData.append('file', file);
-       formData.append('name', fileName);
-       this.zegoWhiteboardArea.loading = true;
-       const decryptFile = await $http.liveUpload(formData);
-
-       domfile.value = '';
-
-       const newFile = new File([decryptFile], fileName, {type: file.type});
-
-        console.log(newFile, file, window.URL.createObjectURL(decryptFile), 'newFile, file, decryptFile')
         
        let type = 3;
        const suffix = fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -131,7 +119,7 @@ export default {
          type = 6
        }
 
-      this.zegoWhiteboardArea.docsClient.uploadFile(newFile, type);
+      this.zegoWhiteboardArea.docsClient.uploadFile(file, type);
     },
   }
 }

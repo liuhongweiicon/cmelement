@@ -55,6 +55,11 @@ export default {
       return this.zegoLiveRoom.shareList ? JSON.parse(JSON.stringify(this.zegoLiveRoom.shareList)) : null
     }
   },
+  provide() {
+      return {
+          pageLayoutRoom: this
+      }
+  },
   watch: {
     // 监听共享流更新
     shareList: {
@@ -100,6 +105,7 @@ export default {
           const dom = document.querySelector('.main-mid');
           _this.zegoLiveRoom.shareClient.removeElementVideo(dom);
           _this.share = false;
+          _this.streamID = '';
       });
     },
 

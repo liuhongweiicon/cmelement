@@ -232,17 +232,6 @@ const largeClassControlBtnList = [
 
 export default {
   name: 'RoomControllerFeature',
-  props: {
-    /**
-     * 是否开启共享
-     * share => false 非共享，
-     * share => true 共享
-     */
-    share: {
-      type: Boolean,
-      default: false
-    }
-  },
   components: {
     RoomDialogMembers,
     RoomDialogShare,
@@ -270,12 +259,13 @@ export default {
       classScene: 1, // 当前课堂场景
       role: 1, // 当前用户角色
       liveRoomParams: null, // 直播间参数
+      createStream: null, // 共享屏幕对象
 
 
       
     }
   },
-  inject: ['zegoLiveRoom', 'zegoWhiteboardArea', 'thisParent'],
+  inject: ['zegoLiveRoom', 'zegoWhiteboardArea', 'thisParent', 'pageLayoutRoom'],
   computed: {
     filesListDialogShow() {
       return this.zegoWhiteboardArea.filesListDialogShow
@@ -573,7 +563,9 @@ export default {
      */
     async handleCreateStream() {
       // 已经再共享屏幕直接退出
-      if (this.share) return;
+      if (this.pageLayoutRoom.share) return;
+      await this.zegoLiveRoom.shareClient.destroyStream();
+      this.createStream = null;
       const option = {
         screen: {
           //@ts-ignore
@@ -587,17 +579,20 @@ export default {
       }
       // 检测浏览器是否支持共享
       const isShare  = await this.zegoLiveRoom.shareClient.checkAnRun(true);
-
       if (!isShare) return;
-      await this.zegoLiveRoom.shareClient.express('createStream', option);
-      
-      const { user } = zegoClient.getState('user')
-      const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
+      this.createStream = await this.zegoLiveRoom.shareClient.express('createStream', option);
+      if (this.createStream) {
+        this.pageLayoutRoom.share = true;
+        const { user } = zegoClient.getState('user')
+        const streamID = `share_${user.userID}_${Date.parse(new Date())}`;
 
-      // const streamID = 'share_1ff3b0bc-0f42-49c2-b544-3440fcfb471d_898989898'
-      await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
-      
-      BUS.$emit('startShare', streamID)
+        await this.zegoLiveRoom.shareClient.express('startPublishingStream', streamID, {})
+        
+        BUS.$emit('startShare', streamID)
+
+      } else {
+          this.pageLayoutRoom.share = false;
+      }
       
     },
 
