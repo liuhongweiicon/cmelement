@@ -94,6 +94,13 @@ export default {
       const _this = this;
       // 监听开始共享
       this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {
+        console.log(result, '拉流状态回调')
+        _this.share = true;
+          
+      });
+      // 监听开始共享
+      this.zegoLiveRoom.shareClient.on('playQualityUpdate', (streamID, stats) => {
+        console.log(streamID, stats, '拉流质量回调')
         _this.share = true;
           
       });

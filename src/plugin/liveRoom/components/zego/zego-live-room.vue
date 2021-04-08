@@ -164,8 +164,8 @@ export default {
     // 刷新环比卸载回调
     async unloadHandler(e){
         this._gap_time = new Date().getTime() - this._beforeUnload_time;
-        alert(this._gap_time)
-        if (this._gap_time <= 5) {
+        
+        if (this._gap_time <= 5 && !this.$refs.errorDialog.show) {
             this.endClass();
         }
     },
@@ -228,7 +228,6 @@ export default {
      * 结束教学
      */
     async endClass() {
-      // debugger
       // 结束教学，清除存储的延长上课次数
       sessionStorage.getItem('extendNum') && sessionStorage.removeItem("extendNum");
       
@@ -330,6 +329,7 @@ export default {
 
       // 推流状态回调
       _this.client.on('publisherStateUpdate', result => {
+        console.log(result, '推流状态回调')
       })
       
       // 屏幕共享中断回调
@@ -348,7 +348,7 @@ export default {
 
       // 推流质量回调
       _this.client.on('publishQualityUpdate', (streamID, stats) => {
-        // console.log(streamID, stats, '推流质量')
+        console.log(streamID, stats, '推流质量')
       })
       
       // 监听房间状态
