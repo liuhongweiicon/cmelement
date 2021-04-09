@@ -66,6 +66,18 @@ class HTTP {
     endTeaching() {
       return this.postRoomHttp('end_teaching', this.params);
     }
+
+    
+    // 开启共享屏幕，退出共享文件白板
+    closeWhiteboard(params) {
+      return this.postRoomHttp('closeWhiteboard', params);
+    }
+
+    
+    // 展示白板，共享文件
+    shareWhiteboard(params) {
+      return this.postRoomHttp('shareWhiteboard', params);
+    }
  
     init({ roomId, uid, name, role, classScene }) {
         this.roomId = roomId

@@ -12,6 +12,7 @@
 import zegoClient from '../../../js/room/zego/zegoClient/index'
 import RoomDialogLoading from '../room/room-dialog-loading'
 
+
 export default {
   name: 'ZegoWhiteboardArea',
   components: {
@@ -332,11 +333,12 @@ export default {
       let viewList = []
       // 如果是true 则从服务器拉取白板列表
       if (isPullNew) {
-        viewList = await this.client.getViewList()
+        viewList = await this.client.getViewList();
         this.originWBViewList = viewList
       } else {
         viewList = this.originWBViewList
       }
+      console.log(viewList, 'viewList')
       const excelSheetsMap = {}
       viewList = viewList
         .map(view => {
@@ -361,6 +363,7 @@ export default {
 
       this.excelSheetsMap = excelSheetsMap
       this.WBViewList = viewList
+       console.log(this.WBViewList, 'this.WBViewList')
       return viewList
     },
 
@@ -437,7 +440,9 @@ export default {
         name: `${this.userName}创建的白板${this.WBNameIndex++}`
       }
       try {
-        const activeWBView = await this.client.createView(options)
+        const activeWBView = await this.client.createView(options);
+        
+
         await this.client.attachView(activeWBView, this.parentId)
         if (!this.originWBViewList.find(item => item.whiteboardID === activeWBView.whiteboardID)) {
           this.originWBViewList.unshift(
@@ -458,6 +463,40 @@ export default {
         }
       }
     },
+
+    /**
+     * @description  通知后台，激活了当前创建的白板，后台开始录制白板；
+     * @param roomId 房间ID
+     * @param userId 用户ID
+     * @param whiteboardId 白板ID
+     */
+    shareWhiteboard() {
+        if (!this.activeWBId) return;
+        const params = {
+          roomId: this.thisParent.liveRoomParams.USER_INFO.roomId,
+          userId: this.thisParent.liveRoomParams.USER_INFO.userID,
+          whiteboardId: this.activeWBId
+        }
+        this.zegoLiveRoom.$http.shareWhiteboard(params);
+    },
+
+    /**
+     * @description 通知后台，开启了屏幕共享，停止白板共享
+     * @param roomId 房间ID
+     * @param userId 用户ID
+     * @param whiteboardId 白板ID
+     */
+    closeWhiteboard() {
+      debugger
+        if (!this.activeWBId) return;
+        const params = {
+          roomId: this.thisParent.liveRoomParams.USER_INFO.roomId,
+          userId: this.thisParent.liveRoomParams.USER_INFO.userID,
+          whiteboardId: this.activeWBId
+        }
+        this.zegoLiveRoom.$http.closeWhiteboard(params);
+    },
+    
 
     /**
      * @desc: 本演示项目普通白板最多只能创建10个，文件只能创建10个
@@ -490,7 +529,10 @@ export default {
      */    
     updateActiveView(activeWBView) {
       this.$set(this, 'activeWBId', activeWBView.whiteboardID)
-      this.$set(this, 'activeWBView', activeWBView)
+      this.$set(this, 'activeWBView', activeWBView);
+          
+      // 通知后台，激活了当前创建的白板，后台开始录制白板
+      this.shareWhiteboard();
 
       // 每次切换文件/白板 关闭缩略图
       this.isThumbnailsVisible = false
@@ -553,6 +595,8 @@ export default {
         this.showToast('远端白板不存在，请尝试刷新重试')
         return
       }
+      
+
       this.$set(this, 'activeWBView', view)
       // 通过普通白板关联的文件信息加载文件
       const fileInfo = this.activeWBView && this.activeWBView.getFileInfo()
@@ -578,6 +622,7 @@ export default {
      * 加载文件白板就是先根据普通白板id去加载该白板再根据关联的文件信息进行创建和加载对应的文件
      */    
     async loadFileView(id, fileInfo, setSheetID = false) {
+      
       const isExcelFile = fileInfo.fileType === 4
       if (isExcelFile && !setSheetID) {
         // 通过文件id获得Excel文件需要渲染的sheet
@@ -593,7 +638,6 @@ export default {
       try {
         const res = await zgDocsView.loadFile(fileInfo.fileID, fileInfo.authKey)
         this.zgDocsView = zgDocsView
-        this.testPPT(fileInfo.fileID)
         this.$nextTick(() => {
           this.splitExcelSheetSuffixHandle(res)
           this.updateExcelSheetNamesIdMap(res, fileInfo.fileID)
@@ -615,17 +659,6 @@ export default {
       this.updateActiveView(this.activeWBView)
     },
 
-    testPPT(fileID) {
-      const files = ['81XpTUhfhUAfjmgV', 'xaPB31CucBgvb_5I', 'B9woySjyMIDvJ8yz', 'MzmXyyPuU2OunOU8', 'WD7d2diBgFrQwi0P', 'i48rKR3HKnhbe6nu'];
-      if (files.includes(fileID)) {
-        this.zgDocsView.addDOMEventListener('click', () => {
-          this.zgDocsView.previousStep();
-        })
-        this.zgDocsView.addDOMEventListener('mouseup', (e) => {
-          e.button == 2 && this.zgDocsView.nextStep();
-        })
-      }
-    },
 
     /**
      * @desc: 创建文件
@@ -647,13 +680,13 @@ export default {
         ? this.docsClient.createView(this.parentId, undefined, fileName)
         : this.docsClient.createView(this.parentId)
       try {
-        const res = await zgDocsView.loadFile(fileID, '')
+        
+        const res = await zgDocsView.loadFile(fileID, '');
         // 处理Excel文件中每个sheet的文件后缀
         this.splitExcelSheetSuffixHandle(res)
         // 获得当前打开Excel每个sheet的名字
         this.updateExcelSheetNamesIdMap(res, fileID)
         this.zgDocsView = zgDocsView
-        this.testPPT(fileID)
       } catch (e) {
         console.error(e)
         this.showToast(`${(e && e.message) || '网络错误'}，请刷新页面后重试`)
@@ -668,6 +701,7 @@ export default {
       // 创建Excel文件白板
       const isRemoteNoHasExcelFile =
         res.fileType === 4 && !this.originWBViewList.find(x => res.name === x.getName())
+     
       if (isRemoteNoHasExcelFile) {
         await this.createExcelSheetView(res)
         return
@@ -691,6 +725,7 @@ export default {
             }
           })
           
+
           this.originWBViewList.unshift(
             Object.assign(activeWBView, {
               name: this.getViewName(activeWBView)
@@ -725,7 +760,7 @@ export default {
      */    
     async createExcelSheetView(res) {
       const { sheets } = res
-      let activeWBView = this.activeWBView
+      let activeWBView = this.activeWBView;
       if (!this.isRemote) {
         try {
           const views = []
@@ -753,8 +788,11 @@ export default {
               createSingleExcelSheetFunc = null
             }
           }
-          await createSingleExcelSheetFunc(sheets)
-          activeWBView = views[0]
+          await createSingleExcelSheetFunc(sheets);
+          activeWBView = views[0];
+
+          
+
           this.originWBViewList = [...views, ...this.originWBViewList]
         } catch (error) {
           const { code } = error

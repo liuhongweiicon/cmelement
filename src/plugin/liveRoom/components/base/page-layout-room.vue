@@ -1,7 +1,7 @@
 <template>
   <div class="page-view-room">
     <div class="page-left">
-      <zego-whiteboard-area parentId="whiteboardDemo">
+      <zego-whiteboard-area parentId="whiteboardDemo" ref="zegoWhiteboardArea">
         <div class="main-area">
           <div class="main-top">
             <room-controller-whiteboard />
@@ -29,7 +29,6 @@ import ZegoWhiteboardArea from '../zego/zego-whiteboard-area'
 import RoomControllerWhiteboard from '../room/room-controller-whiteboard'
 import RoomControllerFeature from '../room/room-controller-feature'
 import RoomChattingList from '../room/room-chatting-list'
-import zegoClient from '../../../js/room/zego/zegoClient/index'
 
 
 export default {
@@ -48,6 +47,7 @@ export default {
       share: false, // 是否开启共享， share => false,非共享，=> true 共享
       user: null,
       streamID: '', // 共享流ID
+      zegoWhiteboardArea: null, // 组件zego-whiteboard-area实例
     }
   },
   computed: {
@@ -64,11 +64,13 @@ export default {
     // 监听共享流更新
     shareList: {
       handler(val) {
-        if (val) {
+        if (val) { // 开始共享
           this.shareHandler(val);
           
-        } else {
+          
+        } else { // 停止共享
           this.screenSharingEndedHandler();
+          
         }
       },
       deep: true,
@@ -76,9 +78,11 @@ export default {
     }
   },
   mounted() {
+    debugger
     const { roomId, userID, userName, role } = this.thisParent.liveRoomParams.USER_INFO;
     this.zegoLiveRoom.$http.init({ roomId, uid: userID, name: userName, role }); // 初始化,监听房间人数等信息变化
 
+    this.zegoWhiteboardArea = this.$refs.zegoWhiteboardArea;
     // 监听教师端开始共享
     BUS.$on('startShare', this.pullVideo);
 
@@ -113,6 +117,11 @@ export default {
           _this.zegoLiveRoom.shareClient.removeElementVideo(dom);
           _this.share = false;
           _this.streamID = '';
+
+          
+          // 结束共享屏幕时，开始白板录制
+          _this.zegoWhiteboardArea.shareWhiteboard();
+
       });
     },
 
@@ -135,11 +144,17 @@ export default {
      * @returns {Promise<void>}
      */
     async pullVideo(streamID) {
+
+      
       // tip:如果是本端拉自己的流则直接预览即可，如果是要拉对端的流则使用startPlayingStream播放流
       const dom = document.querySelector('.main-mid');
       this.streamID = streamID;
       this.zegoLiveRoom.shareClient.startPreview(streamID, dom);
       this.share = true;
+      
+      
+      // 开始共享屏幕时，停止白板录制
+      this.zegoWhiteboardArea.closeWhiteboard();
       // 监听停止共享
       this.playerStateUpdate(); 
     },

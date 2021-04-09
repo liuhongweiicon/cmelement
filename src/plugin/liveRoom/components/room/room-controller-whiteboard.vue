@@ -328,8 +328,8 @@ export default {
       // 切换文件/白板需通过房间附加信息通知对端
       this.zegoWhiteboardArea.setIsAllowSendRoomExtraInfo(true)
       const activeItem = this.computedViewList.find((item) => item.selfWBID === id)
-
-      this.zegoWhiteboardArea.selectRemoteView(activeItem.whiteboardID)
+      
+      this.zegoWhiteboardArea.selectRemoteView(activeItem.whiteboardID);
     },
     /**
      * @desc: 删除白板
