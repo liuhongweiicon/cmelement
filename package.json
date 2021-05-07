@@ -66,8 +66,9 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
     "webpack-xlsx-loader": "^1.0.0",
-    "zego-express-docsview-web": "^1.18.0",
-    "zego-express-whiteboard-web": "^1.18.0"
+    "zego-express-docsview-web": "^1.19.0",
+    "zego-express-engine-webrtc": "^2.4.0",
+    "zego-express-whiteboard-web": "^1.19.1"
   },
   "files": [
     "cmelement.js",

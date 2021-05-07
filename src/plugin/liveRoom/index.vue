@@ -49,6 +49,7 @@ export default {
         }
     },
     created() {
+        this.we = haha;
         this.$http = new $HTTP(this.request, this.liveRoomParams);
         this.loginRoomBiz()
         // if (window.performance.navigation.type === 0) { // 首次被加载
@@ -59,7 +60,6 @@ export default {
         
     },
     mounted() {
-        // debugger
     },
     methods: {
 

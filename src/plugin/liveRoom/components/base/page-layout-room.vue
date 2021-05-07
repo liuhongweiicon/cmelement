@@ -78,7 +78,6 @@ export default {
     }
   },
   mounted() {
-    debugger
     const { roomId, userID, userName, role } = this.thisParent.liveRoomParams.USER_INFO;
     this.zegoLiveRoom.$http.init({ roomId, uid: userID, name: userName, role }); // 初始化,监听房间人数等信息变化
 
@@ -99,7 +98,12 @@ export default {
       // 监听开始共享
       this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {
         console.log(result, '拉流状态回调')
-        _this.share = true;
+        if (result.state == 'NO_PLAY') {
+          _this.share = false;
+        } else {
+          _this.share = true;
+        }
+        
           
       });
       // 监听开始共享
@@ -110,7 +114,8 @@ export default {
       });
 
       // 监听停止共享
-      this.zegoLiveRoom.shareClient.on('screenSharingEnded', () => {
+      this.zegoLiveRoom.shareClient.on('screenSharingEnded', (res) => {
+          console.log(res, '监听停止共享监听停止共享监听停止共享')
           _this.zegoLiveRoom.shareClient.stopPublishingStream(_this.streamID);
           _this.zegoLiveRoom.shareClient.stopPlayingStream(_this.streamID);
           const dom = document.querySelector('.main-mid');

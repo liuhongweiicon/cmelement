@@ -10,6 +10,12 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 
+// Vue.config.errorHandler = function (err, vm, info) {
+//     console.error('error---', err)
+//     console.info('vm---', vm)
+//     console.info('info---', info)
+//   }
+
 // import plugin from '../dist/cmelement.js'
 Vue.use(plugin);
 

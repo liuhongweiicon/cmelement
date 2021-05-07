@@ -85,7 +85,7 @@
                 <compound-type-stem
                   @getnowIndex="getnowIndex"
                   @beginGestalt="beginGestalt"
-                  v-if="item.bigType == 6"
+                  v-else
                   @twoChoice="twoChoice"
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"

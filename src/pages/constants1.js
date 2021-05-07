@@ -50,7 +50,7 @@ const SERVER = {
  * 大班课和小班课
  * 1 => 小班课 2 => 大班课
  */
-const classScene = 1;
+const classScene = 2;
 
 
 export default { 

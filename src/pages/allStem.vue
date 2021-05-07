@@ -31,6 +31,8 @@ export default {
             const params = {
                 appKey: "string",
                 paperId: "62e8a8303add4555b401ac2c1af9dfcb",
+                
+                // evaluationRecordCode : "BDBF44BD0A674252AEA5615BD037EFA3",
 
                 // paperId: "ff91d49d23504ce7a8c44f33bc159a31",
                 token: "string",

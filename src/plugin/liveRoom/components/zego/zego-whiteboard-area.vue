@@ -487,7 +487,6 @@ export default {
      * @param whiteboardId 白板ID
      */
     closeWhiteboard() {
-      debugger
         if (!this.activeWBId) return;
         const params = {
           roomId: this.thisParent.liveRoomParams.USER_INFO.roomId,

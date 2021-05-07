@@ -7,7 +7,7 @@
 <template>
   <div class="page-view-room">
     <div class="page-left">
-      <zego-whiteboard-area parentId="whiteboardDemo">
+      <zego-whiteboard-area parentId="whiteboardDemo"  ref="zegoWhiteboardArea">
         <div class="main-area">
           <div class="main-top">
             <room-controller-whiteboard />
@@ -37,7 +37,6 @@ import RoomControllerFeature from '../room/room-controller-feature'
 import RoomChattingList from '../room/room-chatting-list'
 
 
-import zegoClient from '../../../js/room/zego/zegoClient/index'
 
 export default {
   name: 'PageLayoutRoom',
@@ -51,6 +50,11 @@ export default {
   },
   
   inject: ['thisParent', 'zegoLiveRoom'],
+  provide() {
+      return {
+          pageLayoutRoom: this
+      }
+  },
   data() {
     return {
       share: false, // 是否开启共享， share => false,非共享，=> true 共享
@@ -60,7 +64,6 @@ export default {
   },
   computed: {
     shareList() {
-      
       return this.zegoLiveRoom.shareList ? JSON.parse(JSON.stringify(this.zegoLiveRoom.shareList)) : null
     }
   },
@@ -68,11 +71,13 @@ export default {
     // 监听共享流更新
     shareList: {
       handler(val) {
-        if (val) {
+        if (val) { // 开始共享
           this.shareHandler(val);
           
-        } else {
+          
+        } else { // 停止共享
           this.screenSharingEndedHandler();
+          
         }
       },
       deep: true,
@@ -98,6 +103,7 @@ export default {
      * 拉流监听
      */
     playerStateUpdate() {
+      
       const _this = this;
       // 监听开始共享
       this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {

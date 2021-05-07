@@ -106,35 +106,33 @@ class HTTP {
       }
     
     registerPushEvent() {
-      const socket = zegoClient._client.zegoWebRTC.socketCenter.websocket
-      if (socket) {
-        socket.addEventListener('message', res => {
-          const reg = /custommsg.*custom_content.*cmd.*10[1-7]/
+      // console.log(zegoClient._client.zegoWebRTC)
+      // debugegr
+      
+      zegoClient._client.on('IMRecvCustomCommand',(roomid, fromUser, command)=>{
+        try {
+          let res = JSON.parse(command)
+          console.warn('后台 message',res)
+          console.log('====edu_zpush====', res)
+
           
-          if (!res.data || !reg.test(res.data)) return
-          try {
-            res = JSON.parse(res.data)
-            res = JSON.parse(res.body.custommsg)
-            res = JSON.parse(res.custom_content)
-            console.log('====edu_zpush====', res, this)
-            if (res.cmd == 102) {
-              this.onUserStateChange(res.data)
-            } else if (res.cmd == 103) {
-              this.notifyAttendeeChange(res.data)
+          if (res.cmd == 102) {
+            this.onUserStateChange(res.data)
+          } else if (res.cmd == 103) {
+            this.notifyAttendeeChange(res.data)
+            this.getAttendeeList()
+          } else if (res.cmd == 104) {
+            this.getJoinLiveList()
+            if (this.role == this.config.ROLE_STUDENT) {
               this.getAttendeeList()
-            } else if (res.cmd == 104) {
-              this.getJoinLiveList()
-              if (this.role == this.config.ROLE_STUDENT) {
-                this.getAttendeeList()
-              }
-            } else if (res.cmd == 105) {
-              this.onEndTeaching()
             }
-          } catch (e) {
-            console.error('====edu_zpush====', e)
+          } else if (res.cmd == 105) {
+            this.onEndTeaching()
           }
-        })
-      }
+        } catch (e) {
+          console.error('====edu_zpush====', e)
+        }
+      })
     }
   
     onUserStateChange(data) {
@@ -151,7 +149,6 @@ class HTTP {
       // 学生主动改变自己状态
       console.log(this.role, this.config, this.config.ROLE_STUDENT, data.oprator_uid, uid, 'this.role, this.config, this.config.ROLE_STUDENT, data.oprator_uid, uid')
       console.log(this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid, 'this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid');
-      // debugger
       if (this.role == this.config.ROLE_STUDENT && data.oprator_uid == uid) return
       // 学生自己状态被动改变，消息提示
       const user = data.users.find(v => v.uid == uid)

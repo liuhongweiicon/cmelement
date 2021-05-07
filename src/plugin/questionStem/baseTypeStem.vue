@@ -75,18 +75,18 @@
             v-for="(answertem, index) in questionDetailsInfo.userAnswer"
             :key="index"
           >
+         
             <div :class="['blank', answertem]">
-            <span class="line"></span>
-            <span class="index">{{ index + 1 }}</span>
-            <div class="cont">
-              <textarea
-              type="textarea"
-              readonly
-
-              :placeholder="answertem"
-              v-model="answertem.answerValue"
-              ></textarea>
-            </div>
+              <span class="line"></span>
+              <span class="index">{{ index + 1 }}</span>
+              <div class="cont">
+                <textarea
+                type="textarea"
+                readonly
+                :placeholder="answertem"
+                v-model="answertem.answerValue"
+                ></textarea>
+              </div>
             </div>
           </div>
 
@@ -400,7 +400,6 @@ export default {
 
       //作答状态
       if (this.paperState == 1) {
-        
         if (this.questionDetailsInfo.type == 1) { //单选
           for (var i = 0; i < this.questionDetailsInfo.quesOption.length; i++) {
             this.questionDetailsInfo.quesOption[i].active = false;
@@ -419,7 +418,6 @@ export default {
 
           emitoption = this.questionDetailsInfo.quesOption[index];
         } else if (this.questionDetailsInfo.type == 4) { //填空
-          
           emitoption = this.questionDetailsInfo.answer;
         } else if (this.questionDetailsInfo.type == 3) { //判断
           
@@ -481,13 +479,13 @@ export default {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
             console.log(888888, obj);
             if (_this.paperState == 2) {
-              var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : '';
+              var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : [];
             }
             for (var i = 0; i < obj.length; i++) {
               if (_this.paperState == 1) {
-                obj[i].userValue = "";
+                obj[i].userValue = null;
               }
-              if (_this.paperState == 2 && useranswerArr) {
+              if (_this.paperState == 2 && useranswerArr.length) {
                 if (obj[i].answerValue == useranswerArr[i].answerValue) {
                   // useranswerArr[i].ok = 'ok';
                 } else {

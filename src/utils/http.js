@@ -35,7 +35,7 @@ $.interceptors.request.use((config) => {
     }
     config.headers = {
         // 'Content-Type': 'application/json; charset=utf-8',
-        "user_token": '835f290e70ea419b8851acb4f62fcee4'
+        // "user_token": '835f290e70ea419b8851acb4f62fcee4'
     };
     config.params = {
         requestId: Math.random()
