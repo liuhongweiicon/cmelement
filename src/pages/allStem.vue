@@ -1,7 +1,7 @@
 <template>
     <div id="allStem">
         
-        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="1" timeHtml="0分0秒" @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
+        <cm-all-stem ref="allStem" :paperDetails="paperDetails" :paperState="2" timeHtml="0分0秒" @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
 
         <!-- <div @click="getAnswer">作答卡</div> -->
 
@@ -29,13 +29,13 @@ export default {
          */
         async gerPaper() {
             const params = {
-                appKey: "string",
-                paperId: "62e8a8303add4555b401ac2c1af9dfcb",
+                // appKey: "string",
+                // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
                 
-                // evaluationRecordCode : "BDBF44BD0A674252AEA5615BD037EFA3",
+                evaluationRecordCode : "68FB5D6292DE4A49843CAAD77A6C4EC4",
 
                 // paperId: "ff91d49d23504ce7a8c44f33bc159a31",
-                token: "string",
+                // token: "string",
             };
             const paperInfo = await $http.getPaper(params);
             if (paperInfo.code == '000000') {
@@ -59,7 +59,6 @@ export default {
          * 提交作答
          */
         submitHandler(item) {
-            debugger
         },
 
         /**

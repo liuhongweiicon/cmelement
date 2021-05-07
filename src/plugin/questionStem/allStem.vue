@@ -453,7 +453,7 @@ export default {
               if (nowSmallQuestion.answerKeys != null) {
                 let smallAnswer = JSON.parse(nowSmallQuestion.answerKeys);
                 for (let f = 0; f < smallAnswer.length; f++) {
-                  smallAnswer[f].answerValue = null;
+                  smallAnswer[f].answerValue = '';
                 }
                 let blankArr = [];
                 smallAnswer.forEach((val) => {

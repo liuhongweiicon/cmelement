@@ -477,13 +477,16 @@ export default {
         if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
-            console.log(888888, obj);
             if (_this.paperState == 2) {
-              var useranswerArr = this.questionDetailsInfo.userAnswer ? JSON.parse(this.questionDetailsInfo.userAnswer) : [];
+              if (this.questionDetailsInfo.userAnswer) {
+                    const userAnswer = JSON.parse(this.questionDetailsInfo.userAnswer)
+                    const allAnswer = userAnswer.filter(item => !!item);
+                   var useranswerArr = allAnswer.length ? userAnswer : '';
+              }
             }
             for (var i = 0; i < obj.length; i++) {
               if (_this.paperState == 1) {
-                obj[i].userValue = null;
+                obj[i].userValue = '';
               }
               if (_this.paperState == 2 && useranswerArr.length) {
                 if (obj[i].answerValue == useranswerArr[i].answerValue) {
