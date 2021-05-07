@@ -581,6 +581,7 @@ export default {
      * 获取提交内容
      */
     getSubmitCon() {
+      console.log(this.submitCon, 'questionListquestionList');
       this.$emit('submit', this.submitCon);
       return this.submitCon;
     },
