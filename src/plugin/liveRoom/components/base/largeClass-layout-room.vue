@@ -104,21 +104,20 @@ export default {
      */
     playerStateUpdate() {
       
-      const _this = this;
-      // 监听开始共享
-      this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {
-        _this.share = true;
-          
-      });
+        const _this = this;
+        // 监听开始共享
+        this.zegoLiveRoom.shareClient.on('playerStateUpdate', (result) => {
+          _this.share = true;
+        });
 
-      // 监听停止共享
-      this.zegoLiveRoom.shareClient.on('screenSharingEnded', () => {
-          _this.zegoLiveRoom.shareClient.stopPublishingStream(_this.streamID);
-          _this.zegoLiveRoom.shareClient.stopPlayingStream(_this.streamID);
-          const dom = document.querySelector('.main-mid');
-          _this.zegoLiveRoom.shareClient.removeElementVideo(dom);
-          _this.share = false;
-      });
+        // 监听停止共享
+        this.zegoLiveRoom.shareClient.on('screenSharingEnded', () => {
+            _this.zegoLiveRoom.shareClient.stopPublishingStream(_this.streamID);
+            _this.zegoLiveRoom.shareClient.stopPlayingStream(_this.streamID);
+            const dom = document.querySelector('.main-mid');
+            _this.zegoLiveRoom.shareClient.removeElementVideo(dom);
+            _this.share = false;
+        });
     },
 
     /**

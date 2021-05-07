@@ -450,11 +450,10 @@ export default {
             obj.rightAnswer = nowSmallQuestion.answer;
 
             if (nowSmallQuestion.smallType == "4") {
-              //
               if (nowSmallQuestion.answerKeys != null) {
                 let smallAnswer = JSON.parse(nowSmallQuestion.answerKeys);
                 for (let f = 0; f < smallAnswer.length; f++) {
-                  smallAnswer[f].answerValue = "";
+                  smallAnswer[f].answerValue = null;
                 }
                 let blankArr = [];
                 smallAnswer.forEach((val) => {
@@ -467,6 +466,7 @@ export default {
               obj.userAnswer = "";
             }
             _this.submitCon.questionList.push(obj);
+            // debugger
           }
         }
       }

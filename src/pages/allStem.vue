@@ -59,6 +59,7 @@ export default {
          * 提交作答
          */
         submitHandler(item) {
+            debugger
         },
 
         /**
