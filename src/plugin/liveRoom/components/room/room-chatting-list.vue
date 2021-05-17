@@ -182,7 +182,7 @@ export default {
      */    
     async sendMessage(message){
       try {
-        await this.zegoLiveRoom.sendBarrageMessage(message);
+        await this.zegoLiveRoom.sendBroadcastMessage(message);
       } catch (e) {
         this.showToast('消息发送失败')
       }

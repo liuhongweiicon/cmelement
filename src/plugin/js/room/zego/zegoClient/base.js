@@ -94,7 +94,7 @@ export class ZegoClient {
 
   // 正式环境请调用自己的后台接口，token 生成方法请参考 ZEGO 开发者中心
   getToken = (appID, userID, tokenUrl) => {
-    const url = `${tokenUrl}?app_id=${appID}&id_name=${userID}&tokenType=OAUTH_TOKEN`
+    const url = `${tokenUrl}?app_id=${appID}&id_name=${userID}&tokenType=OAUTH_TOKEN` //  tokenType后端使用，区别token生成方式
     return new Promise((resolve, reject) => {
       const xmlhttp = new XMLHttpRequest();
       xmlhttp.onreadystatechange = e => {

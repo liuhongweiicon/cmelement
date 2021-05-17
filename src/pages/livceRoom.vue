@@ -16,7 +16,7 @@ export default {
             request: window.$axios,
             screenCap: null,
             endTime: { // 延长上课时间配置
-                endLiveTime: "1620545128000", // 课程预定截止时间
+                endLiveTime: "1623403919000", // 课程预定截止时间
                 spaceTipsTime: 30, // 延长上课时长
             }
         }

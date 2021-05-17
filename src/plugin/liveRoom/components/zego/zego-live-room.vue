@@ -393,7 +393,7 @@ export default {
       })
       
       // 监听IM消息接收（弹幕消息）
-      this.client.on('IMRecvBarrageMessage', (roomID, chatData) => {
+      this.client.on('IMRecvBroadcastMessage', (roomID, chatData) => {
         let data = {
           userID: chatData[0].fromUser.userID,
           messageCategory: 1,
@@ -681,7 +681,7 @@ export default {
      * @param {*} message
      * @return {*}
      */
-    async sendBarrageMessage(message) {
+    async sendBroadcastMessage(message) {
       let data = {
         userID: this.user.userID,
         messageCategory: 1,
@@ -694,7 +694,7 @@ export default {
       // 用户自身发送消息默认发送中状态，后续消息状态更新根据回调重置
       this.setRoomMessage(1, data)
       try {
-        let res = await this.client.express('sendBarrageMessage', message)
+        let res = await this.client.express('sendBroadcastMessage', message)
          var num = 0,
           max = 5,
           intervalId = null;

@@ -37,7 +37,7 @@ export class LiveHelper {
       'stopPlayingStream',
       'stopPublishingStream',
       'setRoomExtraInfo',
-      'sendBarrageMessage',
+      'sendBroadcastMessage',
     ]
   }
 
@@ -225,7 +225,7 @@ export class LiveHelper {
     this._client.setRoomExtraInfo(this.room_id, key, value)
   }
 
-  async sendBarrageMessage(message) {
-    return await this._client.sendBarrageMessage(this.room_id, message)
+  async sendBroadcastMessage(message) {
+    return await this._client.sendBroadcastMessage(this.room_id, message)
   }
 }

@@ -2,8 +2,8 @@
     <div class="cm-live-room">
 
         <zego-live-room v-if="isLogin">
-            <page-layout-room v-if="liveRoomParams.classScene == 1"/>
-            <large-class-layout-room v-else/>
+            <page-layout-room/>
+            <!-- <large-class-layout-room v-else/> -->
         </zego-live-room>
 
         
@@ -49,7 +49,6 @@ export default {
         }
     },
     created() {
-        this.we = haha;
         this.$http = new $HTTP(this.request, this.liveRoomParams);
         this.loginRoomBiz()
         // if (window.performance.navigation.type === 0) { // 首次被加载
