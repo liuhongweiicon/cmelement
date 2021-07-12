@@ -1,5 +1,5 @@
 <template>
-  <div class="cmAnswerPanel" :class="{answerSheet_comp: questionType == 6}">
+  <div class="cmAnswerPanel" :class="{answerSheet_comp: questionType > 5}">
     <!--答题板组件  主观题 复合题-->
     <div class="answerSheet" v-if="questionType == 5">
       <div class="top-img" draggable="true" @touchmove="move" @click="toggle">
@@ -17,7 +17,7 @@
         ></textarea>
       </div>
     </div>
-    <div class="answerSheet " v-if="questionType == 6">
+    <div class="answerSheet " v-if="questionType == 6 || (questionType == 7 && !getSmallBtn)">
 		<div
 			v-show="gestaltShow == false"
 			class="start"
@@ -116,7 +116,13 @@ export default {
 		orderNum: {
 			type: String | Number,
 			default: '0',
-		}
+		},
+		
+		// 自判题是否展示获取小题按钮 false == 展示，true == 不展示
+		getSmallBtn: {
+		  type: Boolean,
+		  default: false
+		},
 	},
 	components: {
 		baseTypeStem,
@@ -135,7 +141,7 @@ export default {
 	watch: {
 		gestaltShow(val) {
 			const _this = this;
-			if (val && this.questionType == 6) {
+			if (val && this.questionType > 5) {
 				_this.swiperInfo = new Swiper(".top-index" + this.orderNum, {
 					slidesPerView: "auto",
 					loop: false,

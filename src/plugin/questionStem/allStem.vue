@@ -8,45 +8,67 @@
     <slot name="head" v-if="headerShow">
       <!-- PC端头部样式 -->
       <div class="cm-allStem-head">
-        <div class="cm-allStem-head-title">{{paperDetails.paperName}}</div>
-          <div class="cm-allStem-head-time" >
-            <i class="iconfont">&#xe618;</i>
-            <span>{{timeHtml}}</span>
-          </div>
-          <div class="cm-allStem-head-card" @click.stop="answerCardHandler" v-if="paperState == 1">
-            {{`展开答题卡(${nowquesIndex}/${totalTopic})`}}
-            
-            <!-- 答题卡组件 -->
-            <answer-card 
-              v-if="answerCardOpen" 
-              :paperDetails="paperDetails.bigQuestions" 
-              @switch="switchHandler"
-              @submit="getSubmitCon"></answer-card>
-          </div>
+        <div class="cm-allStem-head-title">{{ paperDetails.paperName }}</div>
+        <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
+          <i class="iconfont">&#xe618;</i>
+          <span>{{`考试时间：${timeHtml}`}}</span>
+        </div>
+        <div
+          class="cm-allStem-head-card"
+          @click.stop="answerCardHandler"
+          v-if="paperState == 1"
+        >
+          {{ `展开答题卡(${nowquesIndex}/${totalTopic})` }}
+
+          <!-- 答题卡组件 -->
+          <answer-card
+            v-if="answerCardOpen"
+            :paperDetails="paperDetails.bigQuestions"
+            @switch="switchHandler"
+            @submit="submitConHandler"
+          ></answer-card>
+        </div>
       </div>
 
       <!-- 移动端头部样式 -->
-      <div class="cm-allStem-mhead" :class="{'cm-allStem-mheadOpen': answerCardOpen}">
+      <div
+        class="cm-allStem-mhead"
+        :class="{ 'cm-allStem-mheadOpen': answerCardOpen }"
+      >
         <div class="allStem-mhead-top">
-          
           <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen">
             <i class="iconfont">&#xe605;</i>
           </div>
-          <div class="mhead-top-name">{{paperDetails.paperName}}</div>
-          <div class="mhead-top-btn" v-if="paperState == 1" @click.stop="answerCardHandler">{{answerCardOpen ? '答题卡[返回]' : '答题卡[提交]'}}</div>
+          <div class="mhead-top-name">{{ paperDetails.paperName }}</div>
+          <div
+            class="mhead-top-btn"
+            v-if="paperState == 1"
+            @click.stop="answerCardHandler"
+          >
+            {{ answerCardOpen ? "答题卡[返回]" : "答题卡[提交]" }}
+          </div>
         </div>
 
         <div class="allStem-mhead-bot">
-          <div class="mhead-bot-time">{{`考试时间：${timeHtml}`}}</div>
-          <div class="mhead-bot-order">{{paperState == 1 ? `${nowquesIndex}/${totalTopic}` : `总分：${paperDetails.totalScore}分`}}</div>
+          <div class="mhead-bot-time" v-if="isTimeHtml && getSmallBtn ">
+            {{ `考试时间：${timeHtml}`}}
+          </div>
+          <div class="mhead-bot-order">
+            {{
+              paperState == 1
+                ? `${nowquesIndex}/${totalTopic}`
+                : `总分：${paperDetails.totalScore}分`
+            }}
+          </div>
         </div>
-        
-          <!-- 答题卡组件 -->
-          <answer-card 
-            v-if="answerCardOpen" 
-            :paperDetails="paperDetails.bigQuestions" 
-            @switch="switchHandler"
-            @submit="getSubmitCon"></answer-card>
+
+        <!-- 答题卡组件 -->
+        <answer-card
+          v-if="answerCardOpen"
+          :paperDetails="paperDetails.bigQuestions"
+          @switch="switchHandler"
+          @submit="submitConHandler"
+        ></answer-card>
       </div>
     </slot>
 
@@ -70,10 +92,10 @@
               </div>
               <div
                 class="swiper-slide_content"
-                :class="item.type != 6 ? 'slide_content_slide' : ''"
+                :class="item.type < 6 ? 'slide_content_slide' : ''"
               >
                 <base-type-stem
-                  v-if="item.bigType != 6"
+                  v-if="item.bigType < 6"
                   @onceChoice="onceChoice"
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
@@ -87,6 +109,7 @@
                   @beginGestalt="beginGestalt"
                   v-else
                   @twoChoice="twoChoice"
+				  :getSmallBtn="getSmallBtn"
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
@@ -104,10 +127,32 @@
     <!-- 作答时footer -->
     <slot name="footer">
       <div class="cm-allStem-footer" v-if="paperState == 1">
-        <div class="cm-allStem-footer-item" v-if="nowquesIndex - 1" @click="slidePrevHandler">上一题</div>
-        <div class="cm-allStem-footer-item"  @click="slideNextHandler">{{isEnd || submitCon.questionList.length < 2 ? '提交' : '下一题'}}</div>
+        <div
+          class="cm-allStem-footer-item"
+          v-if="nowquesIndex - 1"
+          @click="slidePrevHandler"
+        >
+          上一题
+        </div>
+        <div class="cm-allStem-footer-item" @click="slideNextHandler">
+          {{ isEnd || submitCon.questionList.length < 2 ? "提交" : "下一题" }}
+        </div>
       </div>
     </slot>
+
+	<slot name="popup">
+		<el-dialog
+			title="提示"
+			class="allStem-dialog"
+			:visible.sync="isPopupTips"
+			width="30%">
+			<span>{{tipsText}}</span>
+			<div slot="footer" class="dialog-footer">
+				<div class="footer-cell" @click.stop="isPopupTips = false">取 消</div>
+				<div class="footer-cell" @click.stop="tipsDefine">确 定</div>
+			</div>
+		</el-dialog>
+	</slot>
   </div>
 </template>
 
@@ -125,7 +170,7 @@ export default {
     compoundTypeStem,
     tipsPage,
     answerSheet,
-    answerCard
+    answerCard,
   },
   props: {
     // 试卷状态，0 预览  1 做答中 2 作答完成
@@ -141,9 +186,9 @@ export default {
       },
     },
     // 试卷作答或预览倒计时
-    timeHtml: {
-      type: String,
-      default: '0分0秒',
+    isTimeHtml: {
+      type: Boolean,
+      default: true,
     },
     // 是否隐藏head, ,默认显示
     headerShow: {
@@ -161,27 +206,48 @@ export default {
      */
     showBlock: {
       type: String | Number,
-      default: ''
+      default: "",
     },
     // 是否展示知识点
     showKnowledgePoint: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+
+	// 用户信息
+	userInfo: {
+		type: Object,
+		default: () => {
+			return {}
+		}
+	}
   },
   watch: {
     /**
      * 监听试卷作答状态, 作答状态时设置sweiper对象
      */
-    paperState(val) {
-      if (val == 1 && !this.mySwiper) {
-        // 设置sweiper对象
-        this.setSweiper();
-      } else if (val != 1 && this.mySwiper) {
-        this.mySwiper.destroy(); //销毁Swiper对象。
-        this.mySwiper = null;
-      }
-    },
+	paperState: {
+		handler(val) {
+			
+			if (val == 1 && !this.mySwiper) {
+				//开始做题 时间开始
+				this.nowTime = new Date().getTime();
+				this.countDown();
+				// 设置sweiper对象
+				this.setSweiper();
+			} else if (val != 1 && this.mySwiper) {
+				
+				this.mySwiper.destroy(); //销毁Swiper对象。
+				this.mySwiper = null;
+			} else if (val == 0) {
+				// 开始预览时间
+				this.enterTime = new Date().getTime();
+			}
+		},
+		immediate: true,
+		deep: true,
+
+	},
 
     /**
      * 监听试卷信息变化, 处理试卷提交数据
@@ -189,6 +255,9 @@ export default {
     paperDetails: {
       handler(val) {
         if (val.bigQuestions && !this.submitCon.paperId) {
+			this.topicname = this.paperDetails.standardTime * 60;
+			//做题时间
+			this.timeHtml = this.paperDetails.standardTime + "分钟";
           this.setsubmitCon(val);
         }
       },
@@ -199,10 +268,20 @@ export default {
   data() {
     return {
       mySwiper: null, // swiper对象
+	  isPopupTips: false, // 提示框
+	  tipsText: '', // 提示文案
+	  getSmallBtn: true, // 自判题是否展示获取小题按钮 false == 展示，true == 不展示
 
       submitCon: {
         //提交内容
-        paperId: "", //试卷code 
+        paperId: "", //试卷code
+        questionList: [], //试题作答数组
+      },
+
+      oldSubmitCon: {
+        // 有自判题时，存储其他题型作答数据
+        //提交内容
+        paperId: "", //试卷code
         questionList: [], //试题作答数组
       },
 
@@ -210,15 +289,23 @@ export default {
       nowTime: null, // 进入作答题时间
       nowquesIndex: 1, // 当前题目下标
       totalTopic: 0, // 题总数
+	  
+      enterTime: 0, // 开始预览试卷时间
+	  timeHtml: '', // 作答倒计时
+	  topicname: 0, //做卷时间
+	  timeInfo: null, // 作答倒计时
+	  judgeSelf: false, // 子判题作答， true => 自判题作答
 
       answerCardOpen: false, //是否打开答题卡， => true 打开
       isEnd: false, // 是否是最后一题， => true 最后一题
     };
   },
-  created() {},
+  created() {
+  },
+  beforeDestroy() {
+	clearInterval(this.timeInfo);
+  },
   mounted() {
-    // 设置sweiper对象
-    this.setSweiper();
   },
   methods: {
     // 设置sweiper对象
@@ -245,18 +332,41 @@ export default {
               _this.nowTime = new Date().getTime();
 
               _this.nowquesIndex = swiper.activeIndex + 1;
-              _this.$emit('slideChangeEnd', swiper)
+              _this.$emit("slideChangeEnd", swiper);
             },
           });
         }, 500);
       }
     },
+	
+	/**
+	 * 倒计时
+	 */
+	countDown() {
+		this.timeInfo = setInterval(() => {
+			this.topicname -= 1;
+			this.timeHtml = this.formatSeconds(this.topicname);
+			
+			if (this.topicname <= 0) {
+				this.topicname = 0;
+				this.answerCardHandler()
+				uni.showToast({
+				    title: '作答时间已到，请交卷！',
+				    duration: 4000,
+					icon: 'none'
+				});
+				this.answerCardOpen = true;
+				clearInterval(this.timeInfo);
+			}
+		}, 1000);
+	},
+    
 
     /**
      * 点击返回
      */
     goBack() {
-      this.$emit('goBack');
+      this.$emit("goBack");
     },
 
     /**
@@ -268,8 +378,11 @@ export default {
       for (let i = 0; i < this.submitCon.questionList.length; i++) {
         let nowSubmitCon = this.submitCon.questionList[i];
         if (nowSubmitCon.questionCode == item.smallId) {
-          this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(item, question);
-        };
+          this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(
+            item,
+            question
+          );
+        }
       }
     },
 
@@ -281,10 +394,12 @@ export default {
       for (let i = 0; i < this.submitCon.questionList.length; i++) {
         let nowSubmitCon = this.submitCon.questionList[i];
         if (nowSubmitCon.questionCode == item.componentId) {
-          this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(item, question);
+          this.submitCon.questionList[i].userAnswer = this.updataSetsubmitCon(
+            item,
+            question
+          );
         }
       }
-
     },
 
     /**
@@ -296,37 +411,25 @@ export default {
         return question.optionKey;
       } else if (item.type == 2) {
         //多选
-        let answerArr = item.userAnswer;
-        //第一次添加
-        if (answerArr == null || answerArr == "") {
-          answerArr = [];
-          if (question.active == true) {
-            answerArr.push(question.optionKey);
-          }
-        } else {
-          answerArr = answerArr.split("");
-          if (question.active == true) {
-            answerArr.push(question.optionKey);
-          } else {
-            for (let c = 0; c < answerArr.length; c++) {
-              if (answerArr[c] == question.optionKey) {
-                answerArr.splice(c, 1);
-              }
-            }
-          }
-        }
-        return answerArr.join("");
+        let answerArr = [];
+		question.forEach(ele => {
+			if (ele.active) {
+				answerArr.push(ele.optionKey)
+			}
+		});
+        return answerArr.join('');
       } else if (item.type == 4) {
         //填空
         let blanks = [];
         for (let d = 0; d < question.length; d++) {
-          blanks.push(question[d].userValue);
+		  const a = question[d].userValue == '' ? null : question[d].userValue
+          blanks.push(a);
         }
-        return JSON.stringify(blanks);
+        return question.length ? JSON.stringify(blanks) : '';
       } else if (item.type == 3) {
         //判断
         return question;
-      }else if (item.smallType == 5) {
+      } else if (item.smallType == 5) {
         //主观
         return question;
       }
@@ -373,18 +476,32 @@ export default {
      */
     setsubmitCon(data) {
       const _this = this;
-      data.bigQuestions.forEach(item => {
+	  _this.submitCon = {
+		  paperId: data.paperId, //试卷code 
+		  questionList: [], //试题作答数组
+		  gradeCode: data.gradeCode, //学年
+		  paperName: data.paperName, //试卷name
+		  paperScore: data.totalScore, //试卷分数
+		  subjectCode: data.subjectCode, //学科code
+		  userId: '', //用户id
+		  userName: '', //用户name
+		  mobile: '', //用户手机号
+		  useTime: null, //答题总时间
+		  readTime: null, // 阅读时间
+	  }
+      data.bigQuestions.forEach((item) => {
+		item.type = item.type || item.bigType;
+
         this.totalTopic += item.smallQuestions.length;
       });
       //试卷code
       _this.submitCon.paperId = data.paperId;
 
       for (let i = 0; i < data.bigQuestions.length; i++) {
-        
         for (let j = 0; j < data.bigQuestions[i].smallQuestions.length; j++) {
           let nowSmallQuestion = data.bigQuestions[i].smallQuestions[j];
           //复合题
-          if (nowSmallQuestion.smallType == "6") {
+          if (nowSmallQuestion.smallType > 5) {
             for (
               let y = 0;
               y < nowSmallQuestion.componentQuestionModels.length;
@@ -394,6 +511,7 @@ export default {
                 answerQuestionsTime: 0, //答题时间
                 complexQuestionCode: "", //所属复合题code ,
                 isComplexQuestion: 0, //是否是复合题
+				type: nowSmallQuestion.smallType, // 大题类型，下面处理自判题时使用 
                 questionCode: "", //试题code
                 questionScore: 0, //试题分值
                 questionSn: 0, //试题题号
@@ -403,8 +521,10 @@ export default {
                 userAnswer: "", //用户答案
               };
               obj.isComplexQuestion = "1";
-              let nowComponentQuestion = nowSmallQuestion.componentQuestionModels[y];
+              let nowComponentQuestion =
+                nowSmallQuestion.componentQuestionModels[y];
               obj.complexQuestionCode = nowComponentQuestion.smallId;
+			  
               obj.questionType = nowComponentQuestion.componentType;
               obj.questionCode = nowComponentQuestion.componentId;
               obj.questionScore = nowComponentQuestion.componentScore;
@@ -420,9 +540,11 @@ export default {
                 }
                 let blankArrr = [];
                 componentAnswer.forEach((val) => {
-                  blankArrr.push(val.answerValue);
+				  const a = val.userValue == '' ? null : val.userValue
+                  blankArrr.push(a);
                 });
                 // obj.userAnswer = JSON.stringify(componentAnswer);
+
                 obj.userAnswer = JSON.stringify(blankArrr);
               } else {
                 obj.userAnswer = "";
@@ -453,11 +575,12 @@ export default {
               if (nowSmallQuestion.answerKeys != null) {
                 let smallAnswer = JSON.parse(nowSmallQuestion.answerKeys);
                 for (let f = 0; f < smallAnswer.length; f++) {
-                  smallAnswer[f].answerValue = '';
+                  smallAnswer[f].answerValue = "";
                 }
                 let blankArr = [];
                 smallAnswer.forEach((val) => {
-                  blankArr.push(val.answerValue);
+				  const a = val.userValue == '' ? null : val.userValue
+                  blankArr.push(a);
                 });
                 // obj.userAnswer = JSON.stringify(smallAnswer);
                 obj.userAnswer = JSON.stringify(blankArr);
@@ -466,13 +589,11 @@ export default {
               obj.userAnswer = "";
             }
             _this.submitCon.questionList.push(obj);
-            // debugger
           }
         }
       }
     },
 
-    
     /**
      * 点击上一题
      */
@@ -486,10 +607,10 @@ export default {
     slideNextHandler() {
       this.mySwiper.slideNext(true, 300);
       if (this.isEnd) {
-        this.getSubmitCon();
+        this.submitConHandler();
       }
     },
-    
+
     /**
      * 答题卡做题情况
      */
@@ -498,34 +619,35 @@ export default {
         this.answerCardOpen = false;
         return;
       }
-      this.paperDetails.bigQuestions.forEach(item => {
-          // 记录没道大题下小题的作答题数量
-          item.anserNum = 0;
-          if (item.bigType != 6) { // 非复合题
-              item.smallQuestions.forEach(ele => {
-                this.handlerPaper(ele, item);
-                if (ele.hasAnswer) {
-                  item.anserNum++;
-                }
-              });
-          } else { // 复合题
-            item.smallQuestions.forEach(ele => {
-              ele.hasAnswer = false;
-              let hasAnswer = true;
-              ele.componentQuestionModels.forEach((nape) => {
-                const ii = this.handlerPaper(nape, item, ele);
-                if (!ii) {
-                  hasAnswer = false;
-                }
-              });
-              if (hasAnswer) {
-                ele.hasAnswer = true;
-                item.anserNum++;
+      this.paperDetails.bigQuestions.forEach((item) => {
+        // 记录没道大题下小题的作答题数量
+        item.anserNum = 0;
+        if (item.bigType < 6) {
+          // 非复合题
+          item.smallQuestions.forEach((ele) => {
+            this.handlerPaper(ele, item);
+            if (ele.hasAnswer) {
+              item.anserNum++;
+            }
+          });
+        } else if (item.bigType == 6 || (item.bigType == 7 && !this.getSmallBtn)) {
+          // 复合题
+          item.smallQuestions.forEach((ele) => {
+            ele.hasAnswer = false;
+            let hasAnswer = true;
+            ele.componentQuestionModels.forEach((nape) => {
+              const ii = this.handlerPaper(nape, item, ele);
+              if (!ii) {
+                hasAnswer = false;
               }
             });
-          }
+            if (hasAnswer) {
+              ele.hasAnswer = true;
+              item.anserNum++;
+            }
+          });
+        }
       });
-
 
       this.answerCardOpen = true;
       return this.paperDetails;
@@ -534,28 +656,33 @@ export default {
     /**
      * 处理答题卡做题情况数据
      */
-    handlerPaper(ele,item, parent) {
+    handlerPaper(ele, item, parent) {
       let parentHasAnswer = true; // 复合题下分支题是否全部作答标识
-      this.submitCon.questionList.forEach(ele2 => {
+      this.submitCon.questionList.forEach((ele2) => {
         const type = ele.componentType || ele.smallType;
         const smallId = ele.componentId || ele.smallId;
 
-        if (ele2.questionCode == smallId && type != 4) { // 非填空题
-          ele.hasAnswer = parentHasAnswer = ele2.userAnswer != '' ? true : false; // 记录该题是否作答
+        if (ele2.questionCode == smallId && type != 4 && type != 7) {
+          // 非填空题
+          ele.hasAnswer = parentHasAnswer =
+            ele2.userAnswer != "" ? true : false; // 记录该题是否作答
         }
 
-        if (ele2.questionCode == smallId && type == 4) { // 填空题
+        if (ele2.questionCode == smallId && type == 4) {
+          // 填空题
 
           let isFour = ele2.userAnswer;
-          let t = JSON.parse(isFour).every(val => {return !!val;});  //判断填空题是否一道没做
+          let t = JSON.parse(isFour).every((val) => {
+            return !!val;
+          }); //判断填空题是否一道没做
 
           // 记录该题是否作答
-          if (t == "" || !t) { 
-            ele.hasAnswer = parentHasAnswer = false; 
+          if (t == "" || !t) {
+            ele.hasAnswer = parentHasAnswer = false;
           } else {
             let fourAnswer = true;
-            JSON.parse(ele2.userAnswer).forEach(ele3 => {
-              if (ele3.answerValue == '') {
+            JSON.parse(ele2.userAnswer).forEach((ele3) => {
+              if (ele3.answerValue == "") {
                 fourAnswer = parentHasAnswer = false;
               }
             });
@@ -581,9 +708,114 @@ export default {
      * 获取提交内容
      */
     getSubmitCon() {
-      console.log(this.submitCon, 'questionListquestionList');
-      this.$emit('submit', this.submitCon);
+      console.log(this.submitCon, "questionListquestionList");
+      this.$emit("submit", this.submitCon);
       return this.submitCon;
+    },
+
+    /**
+     * 提交作答
+     */
+    submitConHandler() {
+      // 预览和作答试卷时间
+      if (!this.submitCon.readTime) {
+        this.submitCon.readTime = Math.ceil(
+          (this.nowTime - this.enterTime) / 1000
+        );
+        this.submitCon.useTime =
+          this.paperDetails.standardTime * 60 - this.topicname;
+
+        this.submitCon.userId = this.userInfo.userId; //用户id
+        this.submitCon.userName = this.userInfo.student.realname; //用户name
+        this.submitCon.mobile = this.userInfo.mobile; //用户手机号
+      }
+
+      const list = this.submitCon.questionList.filter((item) => !item.type || item.type != 7 );
+	  console.log(list, 'list')
+
+	  const isAnswer = list.some((item) => item.userAnswer === "");
+	  const blankArr = this.submitCon.questionList.filter((item) => item.questionType == 4 );
+	  let allBlankArr = false;
+	  blankArr.forEach(item => {
+		if (!allBlankArr) {
+			allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "" || ele == null)
+		}
+	  })
+	
+      const allAnswer = isAnswer || allBlankArr;
+      const kk = this.oldSubmitCon.paperId
+        ? false
+        : this.paperDetails.bigQuestions.find((item) => item.type == 7);
+      this.isPopupTips = true;
+      if (!allAnswer && !kk) {
+        this.tipsText =
+          this.topicname <= 0 ? "确认交卷吗？" : "题目已全部完成，确认交卷吗？";
+        return;
+      } else if (allAnswer && !kk) {
+        this.tipsText =
+          this.topicname <= 0
+            ? "确认交卷吗？"
+            : "您有未做答的题目，提交后不可继续做题。确认交卷吗？";
+        return;
+      } else if (allAnswer && kk) {
+        this.judgeSelf = true;
+        this.tipsText =
+          this.topicname <= 0
+            ? "提交后请自行判断部分试题正误，确认交卷吗？"
+            : "您有未做答的题目，提交后不可继续做题，并在提交后自行判断部分试题正误，确认交卷吗？";
+        return;
+      } else if (!allAnswer && kk) {
+        this.judgeSelf = true;
+        this.tipsText =
+          this.topicname <= 0
+            ? "提交后需自行判断部分试题正误，确认交卷吗？"
+            : "题目已全部完成，提交后需自行判断部分试题正误，确认交卷吗？";
+        return;
+      }
+    },
+    /**
+     * 提示框确认按钮触发
+     */
+    tipsDefine() {
+      this.isPopupTips = false;
+
+      if (this.judgeSelf) {
+        
+		this.judgeSelf = false;
+		this.nextTime = null; // 离开作答题时间
+		this.nowTime = null; // 进入作答题时间
+		this.oldSubmitCon = this.submitCon;
+		const paperInfo = JSON.parse(JSON.stringify(this.paperDetails));
+		paperInfo.bigQuestions = [paperInfo.bigQuestions.find(item => item.type == 7)];
+		this.submitCon =  {
+			//提交内容
+			paperId: "", //试卷code 
+			questionList: [], //试题作答数组
+		},
+		this.totalTopic = 0;
+		this.getSmallBtn = false;
+		this.answerCardOpen = false;
+		this.nowquesIndex = 1;
+		this.paperDetails.bigQuestions = paperInfo.bigQuestions;
+		// this.$emit('update:paperDetails', paperInfo);
+      } else {
+        let newSubmitCon;
+        if (this.oldSubmitCon.paperId) {
+          this.oldSubmitCon.questionList.forEach((item) => {
+            delete item.type;
+            this.submitCon.questionList.forEach((ele) => {
+              if (item.questionCode == ele.questionCode) {
+                delete ele.type;
+                item = ele;
+              }
+            });
+          });
+          newSubmitCon = this.oldSubmitCon;
+        } else {
+          newSubmitCon = this.submitCon;
+        }
+        this.$emit("submit", newSubmitCon);
+      }
     },
   },
 };
@@ -598,6 +830,7 @@ export default {
   touch-action: none;
   display: flex;
   flex-direction: column;
+  user-select: none;
   .swiper-container {
     flex: 1;
     .swiper-slide {
@@ -617,7 +850,33 @@ export default {
   .cm-allStem-mhead {
     display: none;
   }
-  
+  .allStem-dialog {
+	.dialog-footer {
+		display: flex;
+		justify-content: flex-end;
+		user-select: none;
+		.footer-cell {
+			height: 40px;
+			width: 80px;
+			line-height: 40px;
+			text-align: center;
+			border-radius: 10px;
+			border: 1px solid var(--color1);
+			background-color: #FFFFFF;
+			box-sizing: border-box;
+			color: var(--color1);
+			&:last-child {
+				margin-left: 20px;
+				border: none;
+				background-color: var(--color1);
+				color: #FFFFFF;
+			}
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+  }
 }
 /*作答试题样式*/
 .paper {
@@ -677,7 +936,6 @@ export default {
 }
 
 @media screen and (min-width: 1024px) {
-
   .cm-allStem {
     .swiper-container {
       .swiper-slide {
@@ -685,18 +943,18 @@ export default {
           .big-name {
             padding: 14px 0;
             font-size: 16px;
-            color: #3C3C3C;
+            color: #3c3c3c;
             font-weight: bold;
           }
         }
       }
     }
-    
+
     .cm-allStem-footer {
       height: 56px;
       margin: auto;
-      border-top: 1px solid #E8E8E8;
-      display: flex;    
+      border-top: 1px solid #e8e8e8;
+      display: flex;
       justify-content: flex-end;
       align-items: center;
       width: 100%;
@@ -704,22 +962,22 @@ export default {
         width: 100px;
         height: 28px;
         line-height: 28px;
-        background: #FFFFFF;
-        border: 1px solid #E8E8E8;
+        background: #ffffff;
+        border: 1px solid #e8e8e8;
         border-radius: 14px;
         text-align: center;
         font-size: 14px;
         font-weight: 400;
-        color: #5E5E5E;
+        color: #5e5e5e;
         user-select: none;
         &:last-child {
           margin-left: 30px;
         }
         &:hover {
           cursor: pointer;
-          background: #F2F8FF;
-          border: 1px solid #237DEC;
-          color: #237DEC;
+          background: #f2f8ff;
+          border: 1px solid var(--color1);
+          color: var(--color1);
         }
       }
     }
@@ -727,7 +985,7 @@ export default {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      border-bottom: 1px solid #E8E8E8;
+      border-bottom: 1px solid #e8e8e8;
       height: 56px;
       margin: auto;
       position: relative;
@@ -742,14 +1000,13 @@ export default {
         white-space: nowrap;
         font-size: 16px;
         font-weight: 400;
-        color: #3C3C3C;
-          text-align: center;
+        color: #3c3c3c;
+        text-align: center;
       }
       .cm-allStem-head-time {
-        
         font-size: 14px;
         font-weight: 400;
-        color: #5E5E5E;
+        color: #5e5e5e;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -764,30 +1021,26 @@ export default {
         padding: 0 20px;
         line-height: 36px;
         text-align: center;
-        background: #F2F8FF;
+        background: #f2f8ff;
         border-radius: 18px;
         font-size: 14px;
         font-weight: 400;
-        color: #237DEC;
+        color: #237dec;
         margin-left: 30px;
         user-select: none;
         position: relative;
         &:hover {
           cursor: pointer;
-
         }
       }
     }
-
   }
   /*作答试题样式*/
   .paper {
-
   }
-  
+
   /** 预览样式 */
   .preview {
-
   }
 }
 
@@ -809,16 +1062,16 @@ export default {
           align-items: center;
         }
         .mhead-top-name {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 45%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #3C3C3C;
-            font-size: 16px;
-            text-align: center;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 45%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: #3c3c3c;
+          font-size: 16px;
+          text-align: center;
         }
         .mhead-top-btn {
           position: absolute;
@@ -832,13 +1085,13 @@ export default {
         }
       }
       .allStem-mhead-bot {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 14px;
-          color: #5E5E5E;
-          height: 40px;
-          background: #f7f7f7f7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #5e5e5e;
+        height: 40px;
+        background: #f7f7f7f7;
       }
       .cm-answerCard {
         height: calc(100% - 90px);

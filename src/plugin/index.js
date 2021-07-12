@@ -20,9 +20,9 @@ import cmTipspage from './tipsPage/index.vue'; // 无数据提示页
 import cmTopicDrt from './topicDrt/index.vue'; // 题干
 import cmAnswerCard from './answerCard/index.vue'; // 答题卡
 
-import cmLiveRoom from './liveRoom/index.vue'; // 直播间
+// import cmLiveRoom from './liveRoom/index.vue'; // 直播间
 
-import screenCap from './js/room/screencap/index'
+// import screenCap from './js/room/screencap/index' // 直播间方法
 
 let cmelement = {};
 
@@ -36,7 +36,7 @@ cmelement.install = (Vue, options) => {
     }
     window.BUS = new Vue();
     
-    window.screenCap = screenCap;
+    // window.screenCap = screenCap;
     window.Message = Vue.prototype.$message;
     Vue.prototype.showToast = function(msg = '', duration = 3000) {
       this.$message.closeAll()
@@ -57,7 +57,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmTipspage.name, cmTipspage);
     Vue.component(cmTopicDrt.name, cmTopicDrt);
     Vue.component(cmAnswerCard.name, cmAnswerCard);
-    Vue.component(cmLiveRoom.name, cmLiveRoom);
+    // Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 
 export default cmelement;

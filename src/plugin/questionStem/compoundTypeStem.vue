@@ -24,13 +24,14 @@
         <!--答题板-->
         
         <slot name="answerSheet" :scope="compoundDetails">
-            <div v-if="paperState == 1 && compoundDetails.type == 6 " class="compoundTypeStem-answerSheet">
+            <div v-if="paperState == 1 && compoundDetails.type > 5 " class="compoundTypeStem-answerSheet">
                 <answer-sheet
-                    questionType="6"
+                    :questionType="compoundDetails.type"
                     :orderNum="orderNum"
                     @beginGestalt="beginGestalt"
                     @getnowIndex="getnowIndex" 
-                    @twoChoice="twoChoice" 
+                    @twoChoice="twoChoice"
+                    :getSmallBtn="getSmallBtn"
                     :componentQuestion="compoundDetails.componentQuestionModels" 
                     :paperState="paperState">
                 </answer-sheet>
@@ -84,7 +85,13 @@
             showKnowledgePoint: {
                 type: Boolean,
                 default: false
-            }
+            },
+            
+			// 自判题是否展示获取小题按钮 false == 展示，true == 不展示
+			getSmallBtn: {
+			  type: Boolean,
+			  default: false
+			},
 
         },
         components: {

@@ -302,6 +302,7 @@ export default {
       
       // 监听房间用户变化
       _this.client.on('roomUserUpdate', (roomID, updateType, userList) => {
+        debugger
         console.log(updateType, userList, '监听房间用户变化')
         if (updateType === 'ADD' && userList && userList.length) {
           // 去重
@@ -353,6 +354,7 @@ export default {
       
       // 监听房间状态
       this.client.on('roomStateUpdate', (roomID, state) => {
+        debugger
         this.roomState = state
         
         switch (state) {
@@ -406,10 +408,12 @@ export default {
       
 
       window.addEventListener('offline', () => {
+        debugger
         this.offlineHandle()
       })
 
       window.addEventListener('online', () => {
+        debugger
         // this.initLoadingTimerHandle()
         window.location.reload()
       })

@@ -416,7 +416,7 @@ export default {
             this.questionDetailsInfo.quesOption[index].active = true;
           }
 
-          emitoption = this.questionDetailsInfo.quesOption[index];
+          emitoption = this.questionDetailsInfo.quesOption;
         } else if (this.questionDetailsInfo.type == 4) { //填空
           emitoption = this.questionDetailsInfo.answer;
         } else if (this.questionDetailsInfo.type == 3) { //判断
@@ -488,7 +488,7 @@ export default {
               if (_this.paperState == 1) {
                 obj[i].userValue = '';
               }
-              if (_this.paperState == 2 && useranswerArr.length) {
+              if (_this.paperState == 2 && useranswerArr && useranswerArr.length) {
                 if (obj[i].answerValue == useranswerArr[i].answerValue) {
                   // useranswerArr[i].ok = 'ok';
                 } else {

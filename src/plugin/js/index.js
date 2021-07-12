@@ -467,29 +467,27 @@ const banUserReviseFontSize = () => {
 
 // 将秒转化为时分秒
 const formatSeconds = (value, val) => {
-  let result = parseInt(value);
-  let h =
-    Math.floor(result / 3600) < 10
-      ? "0" + Math.floor(result / 3600)
-      : Math.floor(result / 3600);
-  let m =
-    Math.floor((result / 60) % 60) < 10
-      ? "0" + Math.floor((result / 60) % 60)
-      : Math.floor((result / 60) % 60);
-  let s =
-    Math.floor(result % 60) < 10
-      ? "0" + Math.floor(result % 60)
-      : Math.floor(result % 60);
-  // 　　result = `${h}:${m}:${s}`
-  if (Number(h) <= 0 && Number(m) > 0) {
-    result = `${m}分${s}秒`;
-  } else if (Number(h) <= 0 && Number(m) <= 0) {
-    result = `${s}秒`;
+  let result = parseInt(value)
+  let d = Math.floor(result / 86400) < 10 ? '0' + Math.floor(result / 86400) : Math.floor(result / 86400);
+
+  let h = Math.floor(result / 3600 % 24) < 10 ? '0' + Math.floor(result / 3600 % 24) : Math.floor(result / 3600 % 24);
+
+  let m = Math.floor((result / 60 % 60)) < 10 ? '0' + Math.floor((result / 60 % 60)) : Math.floor((result / 60 % 60));
+
+  let s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
+ 
+  if (Number(d) <= 0 && Number(h) <= 0 && Number(m) <= 0) {
+    result = `${s}秒`
+  } else if (Number(d) <= 0 && Number(h) <= 0 && Number(m) > 0) {
+    result = `${m}分${s}秒`
+  } else if (Number(d) <= 0 && Number(h) > 0) {
+    result = `${h}时${m}分${s}秒`
   } else {
-    result = `${h}时${m}分${s}秒`;
+    result = `${d}天${h}时${m}分${s}秒`
   }
-  return result;
-};
+  
+  return result
+}
 
 //解决临界（顶部或底部）页面回弹后卡顿问题
 let lastY = 0;

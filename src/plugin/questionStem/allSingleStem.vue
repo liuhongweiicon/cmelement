@@ -1,7 +1,7 @@
 <template>
     <div>
         <baseTypeStem 
-            v-if="questionData.type != 6" 
+            v-if="questionData.type < 6" 
             :questionDetails="questionData" 
             :paperState="paperState" 
             :orderNum="orderNum" 
@@ -9,7 +9,7 @@
             :showKnowledgePoint="showKnowledgePoint"
         ></baseTypeStem>
         <compoundTypeStem 
-            v-if="questionData.type == 6" 
+            v-else
             :compoundDetails="questionData" 
             :paperState="paperState" 
             :orderNum="orderNum" 
