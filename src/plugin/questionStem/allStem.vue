@@ -1,7 +1,6 @@
 <template>
   <div
     class="cm-allStem"
-    @click.stop="answerCardOpen = false"
     :class="{ paper: paperState == 1, preview: paperState != 1 }"
   >
     <!-- 作答时head -->
@@ -73,6 +72,7 @@
     </slot>
 
     <div
+	  @click.stop="answerCardOpen = false"
       class="swiper-container small answerpaperList"
       style="touch-action: none;"
       v-if="paperDetails.bigQuestions"
@@ -126,7 +126,7 @@
 
     <!-- 作答时footer -->
     <slot name="footer">
-      <div class="cm-allStem-footer" v-if="paperState == 1">
+      <div class="cm-allStem-footer" v-if="paperState == 1" @click.stop="answerCardOpen = false">
         <div
           class="cm-allStem-footer-item"
           v-if="nowquesIndex - 1"
@@ -143,12 +143,15 @@
 	<slot name="popup">
 		<el-dialog
 			title="提示"
+			:close-on-press-escape="false"
+			:show-close="false"
+			:close-on-click-modal="false"
 			class="allStem-dialog"
 			:visible.sync="isPopupTips"
 			width="30%">
 			<span>{{tipsText}}</span>
 			<div slot="footer" class="dialog-footer">
-				<div class="footer-cell" @click.stop="isPopupTips = false">取 消</div>
+				<div class="footer-cell" v-if="topicname > 0" @click.stop="isPopupTips = false">取 消</div>
 				<div class="footer-cell" @click.stop="tipsDefine">确 定</div>
 			</div>
 		</el-dialog>
@@ -254,11 +257,14 @@ export default {
      */
     paperDetails: {
       handler(val) {
-        if (val.bigQuestions && !this.submitCon.paperId) {
-			this.topicname = this.paperDetails.standardTime * 60;
+        if (val.bigQuestions) {
+			if (!this.oldSubmitCon.paperId) {
+				this.topicname = this.paperDetails.standardTime * 60;
+			}
+			
 			//做题时间
 			this.timeHtml = this.paperDetails.standardTime + "分钟";
-          this.setsubmitCon(val);
+          	this.setsubmitCon(val);
         }
       },
       immediate: true,
@@ -349,13 +355,10 @@ export default {
 			
 			if (this.topicname <= 0) {
 				this.topicname = 0;
-				this.answerCardHandler()
-				uni.showToast({
-				    title: '作答时间已到，请交卷！',
-				    duration: 4000,
-					icon: 'none'
-				});
+				this.timeHtml = this.formatSeconds(this.topicname);
+				this.answerCardHandler();
 				this.answerCardOpen = true;
+				this.submitConHandler();
 				clearInterval(this.timeInfo);
 			}
 		}, 1000);
@@ -373,7 +376,7 @@ export default {
      * 基础题型,作答答案处理
      */
     onceChoice(item, question) {
-      item.userAnswer = this.updataSetsubmitCon(item, question);
+    //   item.userAnswer = this.updataSetsubmitCon(item, question);
       // 更新提交内容值
       for (let i = 0; i < this.submitCon.questionList.length; i++) {
         let nowSubmitCon = this.submitCon.questionList[i];
@@ -422,10 +425,9 @@ export default {
         //填空
         let blanks = [];
         for (let d = 0; d < question.length; d++) {
-		  const a = question[d].userValue == '' ? null : question[d].userValue
-          blanks.push(a);
+          blanks.push(question[d].userValue || '');
         }
-        return question.length ? JSON.stringify(blanks) : '';
+        return JSON.stringify(blanks);
       } else if (item.type == 3) {
         //判断
         return question;
@@ -540,8 +542,7 @@ export default {
                 }
                 let blankArrr = [];
                 componentAnswer.forEach((val) => {
-				  const a = val.userValue == '' ? null : val.userValue
-                  blankArrr.push(a);
+                  blankArrr.push(val.answerValue);
                 });
                 // obj.userAnswer = JSON.stringify(componentAnswer);
 
@@ -579,8 +580,7 @@ export default {
                 }
                 let blankArr = [];
                 smallAnswer.forEach((val) => {
-				  const a = val.userValue == '' ? null : val.userValue
-                  blankArr.push(a);
+                  blankArr.push(val.answerValue);
                 });
                 // obj.userAnswer = JSON.stringify(smallAnswer);
                 obj.userAnswer = JSON.stringify(blankArr);
@@ -592,6 +592,7 @@ export default {
           }
         }
       }
+
     },
 
     /**
@@ -615,7 +616,7 @@ export default {
      * 答题卡做题情况
      */
     answerCardHandler() {
-      if (this.answerCardOpen) {
+      if (this.answerCardOpen && this.topicname > 0) {
         this.answerCardOpen = false;
         return;
       }
@@ -708,7 +709,6 @@ export default {
      * 获取提交内容
      */
     getSubmitCon() {
-      console.log(this.submitCon, "questionListquestionList");
       this.$emit("submit", this.submitCon);
       return this.submitCon;
     },
@@ -731,14 +731,13 @@ export default {
       }
 
       const list = this.submitCon.questionList.filter((item) => !item.type || item.type != 7 );
-	  console.log(list, 'list')
 
 	  const isAnswer = list.some((item) => item.userAnswer === "");
 	  const blankArr = this.submitCon.questionList.filter((item) => item.questionType == 4 );
 	  let allBlankArr = false;
 	  blankArr.forEach(item => {
 		if (!allBlankArr) {
-			allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "" || ele == null)
+			allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "")
 		}
 	  })
 	
@@ -802,9 +801,15 @@ export default {
         let newSubmitCon;
         if (this.oldSubmitCon.paperId) {
           this.oldSubmitCon.questionList.forEach((item) => {
+			if (!item.userAnswer) {
+				item.userAnswer = null;
+			}
             delete item.type;
             this.submitCon.questionList.forEach((ele) => {
               if (item.questionCode == ele.questionCode) {
+				if (!ele.userAnswer) {
+					ele.userAnswer = null;
+				}
                 delete ele.type;
                 item = ele;
               }

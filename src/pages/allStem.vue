@@ -31,11 +31,11 @@ export default {
         async gerPaper() {
             const params = {
                 // appKey: "string",
-                paperId: "62e8a8303add4555b401ac2c1af9dfcb",
+                // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
                 
                 // evaluationRecordCode : "68FB5D6292DE4A49843CAAD77A6C4EC4",
 
-                // paperId: "2aa445c21ceb473fb0830c04c33ead7a",
+                paperId: "2aa445c21ceb473fb0830c04c33ead7a",
                 token: "string",
             };
             const paperInfo = await $http.getPaper(params);
