@@ -57,7 +57,7 @@
                 type: String | Number,
                 default: ''
             },
-            // 是否展示知识点
+            // 是否展示产生式
             showKnowledgePoint: {
                 type: Boolean,
                 default: false

@@ -173,10 +173,10 @@
         </div>
       </div>
     </div>
-    <!-- 知识点 -->
+    <!-- 产生式 -->
     <div v-if="paperState == 2 && isShowBlock('5') && showKnowledgePoint">
       <div class="result answer">
-				<span class="name">知识点：</span>
+				<span class="name">产生式：</span>
         <span class="value" v-if="questionDetailsInfo.baseKnowledgeModels && questionDetailsInfo.baseKnowledgeModels.length > 0">
           <span v-for="(know, k) in questionDetailsInfo.baseKnowledgeModels" :key="k">
             {{ know.baseProductionName }}
@@ -293,7 +293,7 @@ export default {
       type: String | Number,
       default: ''
     },
-    // 是否展示知识点
+    // 是否展示产生式
     showKnowledgePoint: {
       type: Boolean,
       default: false

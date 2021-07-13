@@ -1,8 +1,14 @@
 <template>
     <div class="topicDrt">
-        
-        <span>{{ orderNum }}、</span>
-        <span v-html="strToUrl(stem)"></span>
+        <div class="topicDrt-content">
+            <span>{{ orderNum }}、</span>
+            <span v-html="strToUrl(stem)"></span>
+        </div>
+        <!-- <div class="topicDrt-audio-visual">
+            <audio controls src="horse.mp3"></audio>
+
+            <video src="movie.ogg" controls="controls">您的浏览器不支持 video 标签。</video>
+        </div> -->
     </div>
 </template>
 
@@ -39,32 +45,35 @@ export default {
     white-space: pre-wrap;
     word-break: break-word;
     padding: 7.5px 12px 0;
-    display: flex;
-    align-items: baseline;
+    // display: flex;
+    // align-items: baseline;
     color: #3C3C3C;
-     /deep/ span {
-        font-size: 15px !important;
-        font-weight: 400 !important;
-        line-height: 24px !important;
-        color: #3C3C3C!important;
-    }
-     /deep/p {
-        font-size: 15px !important;
-        font-weight: 400 !important; 
-        line-height: 24px !important;
-        color: #3C3C3C!important;
-    }
-    &>span {
-        word-wrap: break-word;
-        line-height: 24px;
-        img{
-            width:100%!important;
-            display: block;
+    .topicDrt-content {
+        /deep/ span {
+            font-size: 15px !important;
+            font-weight: 400 !important;
+            line-height: 24px !important;
+            color: #3C3C3C!important;
         }
-    }
+        /deep/p {
+            font-size: 15px !important;
+            font-weight: 400 !important; 
+            line-height: 24px !important;
+            color: #3C3C3C!important;
+        }
+        &>span {
+            word-wrap: break-word;
+            line-height: 24px;
+            img{
+                width:100%!important;
+                display: block;
+            }
+        }
 
-    &>span:first-child {
-        white-space: nowrap;
+        &>span:first-child {
+            white-space: nowrap;
+        }
+
     }
 }
 @media screen and (min-width: 1024px) {
@@ -74,31 +83,35 @@ export default {
         white-space: pre-wrap !important;
         word-break: break-word !important;
         padding: 15px 24px 0 !important;
-        display: flex !important;
-        align-items: baseline !important;
-        /deep/ span {
-            font-size: 14px !important;
-            font-weight: 400 !important;
-            line-height: 23px !important;
-        }
-        /deep/p {
-            font-size: 14px !important;
-            font-weight: 400 !important;
-            line-height: 23px !important;
-            margin: 0 !important;
-        }
-        &>span {
-            word-wrap: break-word;
-            line-height: 23px;
-            img{
-                width:100% ;
-                display: block;
+        // display: flex !important;
+        // align-items: baseline !important;
+        .topicDrt-content {
+            /deep/ span {
+                font-size: 14px !important;
+                font-weight: 400 !important;
+                line-height: 23px !important;
             }
+            /deep/p {
+                font-size: 14px !important;
+                font-weight: 400 !important;
+                line-height: 23px !important;
+                margin: 0 !important;
+            }
+            &>span {
+                word-wrap: break-word;
+                line-height: 23px;
+                img{
+                    width:100% ;
+                    display: block;
+                }
+            }
+
+            &>span:first-child {
+                white-space: nowrap;
+            }
+
         }
 
-        &>span:first-child {
-            white-space: nowrap;
-        }
     }
 }
 </style>
