@@ -801,17 +801,17 @@ export default {
         let newSubmitCon;
         if (this.oldSubmitCon.paperId) {
           this.oldSubmitCon.questionList.forEach((item) => {
-			if (!item.userAnswer) {
-				item.userAnswer = null;
-			}
+            if (!item.userAnswer) {
+              item.userAnswer = null;
+            }
             delete item.type;
             this.submitCon.questionList.forEach((ele) => {
               if (item.questionCode == ele.questionCode) {
-				if (!ele.userAnswer) {
-					ele.userAnswer = null;
-				}
+                if (!ele.userAnswer) {
+                  ele.userAnswer = null;
+                }
                 delete ele.type;
-                item = ele;
+                item.userAnswer = ele.userAnswer;
               }
             });
           });
