@@ -146,6 +146,7 @@
 			:close-on-press-escape="false"
 			:show-close="false"
 			:close-on-click-modal="false"
+      :modal="true"
 			class="allStem-dialog"
       :append-to-body="true"
 			:visible.sync="isPopupTips"
