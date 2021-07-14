@@ -7,7 +7,7 @@
     <slot name="head" v-if="headerShow">
       <!-- PC端头部样式 -->
       <div class="cm-allStem-head">
-        <div class="cm-allStem-head-title">{{ paperDetails.paperName }}</div>
+        <div class="cm-allStem-head-title">{{ paperDetails.productName || paperDetails.paperName }}</div>
         <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
           <i class="iconfont">&#xe64b;</i>
           <span>{{`考试时间：${timeHtml}`}}</span>
