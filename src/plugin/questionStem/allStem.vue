@@ -217,14 +217,6 @@ export default {
       type: Boolean,
       default: false,
     },
-
-	// 用户信息
-	userInfo: {
-		type: Object,
-		default: () => {
-			return {}
-		}
-	}
   },
   watch: {
     /**
@@ -486,9 +478,6 @@ export default {
 		  paperName: data.paperName, //试卷name
 		  paperScore: data.totalScore, //试卷分数
 		  subjectCode: data.subjectCode, //学科code
-		  userId: '', //用户id
-		  userName: '', //用户name
-		  mobile: '', //用户手机号
 		  useTime: null, //答题总时间
 		  readTime: null, // 阅读时间
 	  }
@@ -725,10 +714,6 @@ export default {
         );
         this.submitCon.useTime =
           this.paperDetails.standardTime * 60 - this.topicname;
-
-        this.submitCon.userId = this.userInfo.userId; //用户id
-        this.submitCon.userName = this.userInfo.student.realname; //用户name
-        this.submitCon.mobile = this.userInfo.mobile; //用户手机号
       }
 
       const list = this.submitCon.questionList.filter((item) => !item.type || item.type != 7 );
