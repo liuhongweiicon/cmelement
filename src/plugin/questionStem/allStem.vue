@@ -109,7 +109,7 @@
                   @beginGestalt="beginGestalt"
                   v-else
                   @twoChoice="twoChoice"
-				  :getSmallBtn="getSmallBtn"
+				          :getSmallBtn="getSmallBtn"
                   :compoundDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
@@ -216,6 +216,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    // 自判题预览默认是否展示小题 true => 不展示
+    showSmallJudgeSelf: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     /**
@@ -271,7 +276,7 @@ export default {
       mySwiper: null, // swiper对象
       isPopupTips: false, // 提示框
       tipsText: '', // 提示文案
-      getSmallBtn: true, // 自判题是否展示获取小题按钮 false == 展示，true == 不展示
+      getSmallBtn: this.showSmallJudgeSelf, // 自判题是否展示获取小题按钮 false == 展示，true == 不展示
       answerPaperDetails: null, // 答题卡组件数据
 
       submitCon: {
