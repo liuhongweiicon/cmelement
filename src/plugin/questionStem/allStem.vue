@@ -147,6 +147,7 @@
 			:show-close="false"
 			:close-on-click-modal="false"
 			class="allStem-dialog"
+      :append-to-body="true"
 			:visible.sync="isPopupTips"
 			width="30%">
 			<span>{{tipsText}}</span>
