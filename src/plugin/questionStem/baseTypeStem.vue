@@ -50,7 +50,7 @@
             :key="index"
           >
             <div class="blank" :class="{'compound-blank': !questionDetailsInfo.componentId}">
-              <span class="index">{{ index + 1 }}</span>
+              <span class="index">{{ `空${index + 1}` }}</span>
               <span class="line"></span>
               <div class="cont">
                 <textarea
@@ -77,8 +77,8 @@
           >
          
             <div :class="['blank', answertem]">
+              <span class="index">{{ `空${index + 1}` }}</span>
               <span class="line"></span>
-              <span class="index">{{ index + 1 }}</span>
               <div class="cont">
                 <textarea
                 type="textarea"

@@ -716,18 +716,19 @@ export default {
           this.paperDetails.standardTime * 60 - this.topicname;
       }
 
-      const list = this.submitCon.questionList.filter((item) => !item.type || item.type != 7 );
+      const list = this.oldSubmitCon.paperId ? this.submitCon.questionList : this.submitCon.questionList.filter((item) => !item.type || item.type != 7 );
 
-	  const isAnswer = list.some((item) => item.userAnswer === "");
-	  const blankArr = this.submitCon.questionList.filter((item) => item.questionType == 4 );
-	  let allBlankArr = false;
-	  blankArr.forEach(item => {
-		if (!allBlankArr) {
-			allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "")
-		}
-	  })
+      const isAnswer = list.some((item) => item.userAnswer === "");
+      const blankArr = this.submitCon.questionList.filter((item) => item.questionType == 4 );
+      let allBlankArr = false;
+      blankArr.forEach(item => {
+        if (!allBlankArr) {
+          allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "")
+        }
+      })
 	
       const allAnswer = isAnswer || allBlankArr;
+      console.log(isAnswer, allBlankArr)
       const kk = this.oldSubmitCon.paperId
         ? false
         : this.paperDetails.bigQuestions.find((item) => item.type == 7);
@@ -766,22 +767,22 @@ export default {
 
       if (this.judgeSelf) {
         
-		this.judgeSelf = false;
-		this.nextTime = null; // 离开作答题时间
-		this.nowTime = null; // 进入作答题时间
-		this.oldSubmitCon = this.submitCon;
-		const paperInfo = JSON.parse(JSON.stringify(this.paperDetails));
-		paperInfo.bigQuestions = [paperInfo.bigQuestions.find(item => item.type == 7)];
-		this.submitCon =  {
-			//提交内容
-			paperId: "", //试卷code 
-			questionList: [], //试题作答数组
-		},
-		this.totalTopic = 0;
-		this.getSmallBtn = false;
-		this.answerCardOpen = false;
-		this.nowquesIndex = 1;
-		this.paperDetails.bigQuestions = paperInfo.bigQuestions;
+        this.judgeSelf = false;
+        this.nextTime = null; // 离开作答题时间
+        this.nowTime = null; // 进入作答题时间
+        this.oldSubmitCon = this.submitCon;
+        const paperInfo = JSON.parse(JSON.stringify(this.paperDetails));
+        paperInfo.bigQuestions = [paperInfo.bigQuestions.find(item => item.type == 7)];
+        this.submitCon =  {
+          //提交内容
+          paperId: "", //试卷code 
+          questionList: [], //试题作答数组
+        },
+        this.totalTopic = 0;
+        this.getSmallBtn = false;
+        this.answerCardOpen = false;
+        this.nowquesIndex = 1;
+        this.paperDetails.bigQuestions = paperInfo.bigQuestions;
 		// this.$emit('update:paperDetails', paperInfo);
       } else {
         let newSubmitCon;
