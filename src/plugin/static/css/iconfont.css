@@ -1,12 +1,10 @@
 @font-face {
-  font-family: 'iconfont';  /* project id 2300810 */
-  src: url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.eot');
-  src: url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.eot?#iefix') format('embedded-opentype'),
-  url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.woff2') format('woff2'),
-  url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.woff') format('woff'),
-  url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.ttf') format('truetype'),
-  url('https://at.alicdn.com/t/font_2300810_hxiemgs8tb.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* Project id 2300810 */
+  src: url('https://at.alicdn.com/t/font_2300810_vorg1y9q96.woff2?t=1626229706332') format('woff2'),
+       url('https://at.alicdn.com/t/font_2300810_vorg1y9q96.woff?t=1626229706332') format('woff'),
+       url('https://at.alicdn.com/t/font_2300810_vorg1y9q96.ttf?t=1626229706332') format('truetype');
 }
+
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -14,12 +12,3 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.iconfanhui:before {
-  content: "\e605";
-}
-
-.iconshalou:before {
-  content: "\e618";
-}
-

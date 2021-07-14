@@ -9,7 +9,7 @@
       <div class="cm-allStem-head">
         <div class="cm-allStem-head-title">{{ paperDetails.paperName }}</div>
         <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
-          <i class="iconfont">&#xe618;</i>
+          <i class="iconfont">&#xe64b;</i>
           <span>{{`考试时间：${timeHtml}`}}</span>
         </div>
         <div
