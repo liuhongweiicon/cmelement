@@ -250,6 +250,9 @@ export default {
     paperDetails: {
       handler(val) {
         if (val.bigQuestions) {
+          
+          this.isEnd = val.bigQuestions.length < 2 && true;
+          
           if (!this.oldSubmitCon.paperId) {
             this.topicname = this.paperDetails.standardTime * 60;
           }
