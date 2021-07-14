@@ -22,7 +22,7 @@
           <!-- 答题卡组件 -->
           <answer-card
             v-if="answerCardOpen"
-            :paperDetails="paperDetails.bigQuestions"
+            :paperDetails="answerPaperDetails.bigQuestions"
             @switch="switchHandler"
             @submit="submitConHandler"
           ></answer-card>
@@ -64,7 +64,7 @@
         <!-- 答题卡组件 -->
         <answer-card
           v-if="answerCardOpen"
-          :paperDetails="paperDetails.bigQuestions"
+          :paperDetails="answerPaperDetails.bigQuestions"
           @switch="switchHandler"
           @submit="submitConHandler"
         ></answer-card>
@@ -250,13 +250,13 @@ export default {
     paperDetails: {
       handler(val) {
         if (val.bigQuestions) {
-			if (!this.oldSubmitCon.paperId) {
-				this.topicname = this.paperDetails.standardTime * 60;
-			}
-			
-			//做题时间
-			this.timeHtml = this.paperDetails.standardTime + "分钟";
-          	this.setsubmitCon(val);
+          if (!this.oldSubmitCon.paperId) {
+            this.topicname = this.paperDetails.standardTime * 60;
+          }
+          
+          //做题时间
+          this.timeHtml = this.paperDetails.standardTime + "分钟";
+          this.setsubmitCon(val);
         }
       },
       immediate: true,
@@ -266,9 +266,10 @@ export default {
   data() {
     return {
       mySwiper: null, // swiper对象
-	  isPopupTips: false, // 提示框
-	  tipsText: '', // 提示文案
-	  getSmallBtn: true, // 自判题是否展示获取小题按钮 false == 展示，true == 不展示
+      isPopupTips: false, // 提示框
+      tipsText: '', // 提示文案
+      getSmallBtn: true, // 自判题是否展示获取小题按钮 false == 展示，true == 不展示
+      answerPaperDetails: null, // 答题卡组件数据
 
       submitCon: {
         //提交内容
@@ -289,10 +290,10 @@ export default {
       totalTopic: 0, // 题总数
 	  
       enterTime: 0, // 开始预览试卷时间
-	  timeHtml: '', // 作答倒计时
-	  topicname: 0, //做卷时间
-	  timeInfo: null, // 作答倒计时
-	  judgeSelf: false, // 子判题作答， true => 自判题作答
+      timeHtml: '', // 作答倒计时
+      topicname: 0, //做卷时间
+      timeInfo: null, // 作答倒计时
+      judgeSelf: false, // 子判题作答， true => 自判题作答
 
       answerCardOpen: false, //是否打开答题卡， => true 打开
       isEnd: false, // 是否是最后一题， => true 最后一题
@@ -407,11 +408,11 @@ export default {
       } else if (item.type == 2) {
         //多选
         let answerArr = [];
-		question.forEach(ele => {
-			if (ele.active) {
-				answerArr.push(ele.optionKey)
-			}
-		});
+        question.forEach(ele => {
+          if (ele.active) {
+            answerArr.push(ele.optionKey)
+          }
+        });
         return answerArr.join('');
       } else if (item.type == 4) {
         //填空
@@ -609,7 +610,8 @@ export default {
         this.answerCardOpen = false;
         return;
       }
-      this.paperDetails.bigQuestions.forEach((item) => {
+      this.answerPaperDetails = JSON.parse(JSON.stringify(this.paperDetails))
+      this.answerPaperDetails.bigQuestions.forEach((item) => {
         // 记录没道大题下小题的作答题数量
         item.anserNum = 0;
         if (item.bigType < 6) {
@@ -640,7 +642,6 @@ export default {
       });
 
       this.answerCardOpen = true;
-      return this.paperDetails;
     },
 
     /**
@@ -680,7 +681,7 @@ export default {
           }
         }
       });
-
+      
       return parentHasAnswer;
     },
 
@@ -785,20 +786,21 @@ export default {
       } else {
         let newSubmitCon;
         if (this.oldSubmitCon.paperId) {
-          this.oldSubmitCon.questionList.forEach((item) => {
+          this.submitCon.questionList.forEach(item => {
             if (!item.userAnswer) {
               item.userAnswer = null;
             }
-            delete item.type;
-            this.submitCon.questionList.forEach((ele) => {
-              if (item.questionCode == ele.questionCode) {
-                if (!ele.userAnswer) {
-                  ele.userAnswer = null;
-                }
-                delete ele.type;
-                item.userAnswer = ele.userAnswer;
+            delete item.type
+            this.oldSubmitCon.questionList.forEach(ele => {
+              if (!ele.userAnswer) {
+                ele.userAnswer = null;
               }
-            });
+              delete ele.type
+              if (item.questionCode == ele.questionCode) {
+                ele.userAnswer = item.userAnswer;
+                
+              }
+            })
           });
           newSubmitCon = this.oldSubmitCon;
         } else {
