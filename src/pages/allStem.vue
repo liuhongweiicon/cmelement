@@ -33,10 +33,10 @@ export default {
                 // appKey: "string",
                 // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
                 
-                // evaluationRecordCode : "68FB5D6292DE4A49843CAAD77A6C4EC4",
+                evaluationRecordCode : "d6c5d6351a284e08b1e02d03165d73b3",
 
-                paperId: "2aa445c21ceb473fb0830c04c33ead7a",
-                token: "string",
+                // paperId: "2aa445c21ceb473fb0830c04c33ead7a",
+                // token: "string",
             };
             const paperInfo = await $http.getPaper(params);
             if (paperInfo.code == '000000') {

@@ -70,12 +70,11 @@
         <!-- 作答完毕 -->
         <div v-if="paperState == 2">
           <div
-            
             class="blanks"
             v-for="(answertem, index) in questionDetailsInfo.userAnswer"
             :key="index"
           >
-         
+            
             <div :class="['blank', answertem]">
               <span class="index">{{ `空${index + 1}` }}</span>
               <span class="line"></span>
@@ -473,15 +472,16 @@ export default {
           this.questionDetailsInfo.quesOption = obj;
         }
       } else if (this.questionDetailsInfo.type == "4") {
-        // console.log(typeof this.questionDetailsInfo.answerKeys != "object");
+        // console.log(typeof this.questionDetailsInfo.answerKeys != "object");\
+        // debugger
         if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
             if (_this.paperState == 2) {
               if (this.questionDetailsInfo.userAnswer) {
-                    const userAnswer = JSON.parse(this.questionDetailsInfo.userAnswer)
-                    const allAnswer = userAnswer.filter(item => !!item);
-                   var useranswerArr = allAnswer.length ? userAnswer : '';
+                    var  useranswerArr = JSON.parse(this.questionDetailsInfo.userAnswer)
+                    // const allAnswer = userAnswer.filter(item => !!item);
+                  //  var useranswerArr = allAnswer.length ? userAnswer : '';
               }
             }
             for (var i = 0; i < obj.length; i++) {
