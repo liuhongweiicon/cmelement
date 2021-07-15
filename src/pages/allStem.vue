@@ -1,7 +1,7 @@
 <template>
     <div id="allStem">
         
-        <cm-all-stem ref="allStem" :userInfo="userInfo" :paperDetails="paperDetails" :showKnowledgePoint="true" :paperState="2"  @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
+        <cm-all-stem ref="allStem" :userInfo="userInfo" :paperDetails="paperDetails" :showKnowledgePoint="true" :paperState="0"  @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
 
         <!-- <div @click="getAnswer">作答卡</div> -->
 
@@ -33,9 +33,9 @@ export default {
                 // appKey: "string",
                 // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
                 
-                evaluationRecordCode : "d6c5d6351a284e08b1e02d03165d73b3",
+                // evaluationRecordCode : "d6c5d6351a284e08b1e02d03165d73b3",
 
-                // paperId: "2aa445c21ceb473fb0830c04c33ead7a",
+                paperId: "2aa445c21ceb473fb0830c04c33ead7a",
                 // token: "string",
             };
             const paperInfo = await $http.getPaper(params);

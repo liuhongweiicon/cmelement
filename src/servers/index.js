@@ -1,7 +1,7 @@
 import $http from '../utils/http'
 // 测试
 const getPaper = (data) => {
-    // return $http.post($http.submitUrl + 'paper/getPaper', data)
+    return $http.post($http.submitUrl + 'paper/getPaper', data)
     return $http.post('http://lantiantest.e-edusky.com/diagnosis/resource/evaluation/getEvaluationAnswer', data)
 
 }
