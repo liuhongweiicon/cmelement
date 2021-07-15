@@ -86,6 +86,7 @@ export default {
         // display: flex !important;
         // align-items: baseline !important;
         .topicDrt-content {
+            display: flex;
             /deep/ span {
                 font-size: 14px !important;
                 font-weight: 400 !important;

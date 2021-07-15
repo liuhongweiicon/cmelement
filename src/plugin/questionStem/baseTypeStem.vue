@@ -615,6 +615,7 @@ export default {
             font-size: 13px;
             color: #3C3C3C;
             padding-left: 13.5px;
+            width: 30px;
           }
           .line {
             display: inline-block;
