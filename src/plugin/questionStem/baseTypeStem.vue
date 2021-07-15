@@ -132,7 +132,7 @@
           </div>
           <div
           :class="
-            questionDetailsInfo.userAnswer == 0
+            (questionDetailsInfo.userAnswer + '') === '0'
             ? questionDetailsInfo.answer == 0
               ? 'ok'
               : 'err'
