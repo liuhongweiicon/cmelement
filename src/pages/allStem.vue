@@ -1,7 +1,7 @@
 <template>
     <div id="allStem">
         
-        <cm-all-stem ref="allStem" :userInfo="userInfo" :paperDetails="paperDetails" :showKnowledgePoint="true" :paperState="0"  @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
+        <cm-all-stem ref="allStem" :userInfo="userInfo" :paperDetails="paperDetails" :showKnowledgePoint="true" :paperState="1"  @slideChangeEnd="slideChangeEndHnadler" @submit="submitHandler" @goBack="goBackHandler"></cm-all-stem>
 
         <!-- <div @click="getAnswer">作答卡</div> -->
 

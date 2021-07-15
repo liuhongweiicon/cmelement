@@ -5,7 +5,7 @@
         <!-- 题干 -->
         <topic-drt :orderNum="orderNum" :stem="compoundDetails.stem"></topic-drt>
         <!-- 预览使用 -->
-        <div v-if="(paperState == 0 && !getSmallBtn) || paperState == 2">
+        <div v-if="paperState != 1 && (compoundDetails.type != 7 || !getSmallBtn)">
             <div 
             v-for="(item4,index4) in compoundDetails.componentQuestionModels"
             :key="index4" 
