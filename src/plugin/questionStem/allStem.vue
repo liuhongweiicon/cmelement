@@ -7,25 +7,34 @@
     <slot name="head" v-if="headerShow">
       <!-- PC端头部样式 -->
       <div class="cm-allStem-head">
-        <div class="cm-allStem-head-title">{{ paperDetails.productName || paperDetails.paperName }}</div>
-        <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
-          <i class="iconfont">&#xe64b;</i>
-          <span>{{`考试时间：${timeHtml}`}}</span>
+        
+        <div class="head-time-icon" @click="goBack">
+          <i class="iconfont">&#xe605;</i>
+          <span>{{paperState != 1 ? '返回' : '结束作答'}}</span>
         </div>
-        <div
-          class="cm-allStem-head-card"
-          @click.stop="answerCardHandler"
-          v-if="paperState == 1"
-        >
-          {{ `展开答题卡(${nowquesIndex}/${totalTopic})` }}
+        <div class="cm-allStem-head-title">{{ paperDetails.productName || paperDetails.paperName }}</div>
 
-          <!-- 答题卡组件 -->
-          <answer-card
-            v-if="answerCardOpen"
-            :paperDetails="answerPaperDetails.bigQuestions"
-            @switch="switchHandler"
-            @submit="submitConHandler"
-          ></answer-card>
+        <div class="cm-allStem-head-r">
+          <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
+            <i class="iconfont">&#xe64b;</i>
+            <span>{{`考试时间：${timeHtml}`}}</span>
+          </div>
+          <div
+            class="cm-allStem-head-card"
+            @click.stop="answerCardHandler"
+            v-if="paperState == 1"
+          >
+            {{ `答题卡/提交(${nowquesIndex}/${totalTopic})` }}
+
+            <!-- 答题卡组件 -->
+            <answer-card
+              v-if="answerCardOpen"
+              :paperDetails="answerPaperDetails.bigQuestions"
+              @switch="switchHandler"
+              @submit="submitConHandler"
+            ></answer-card>
+          </div>
+
         </div>
       </div>
 
@@ -346,24 +355,24 @@ export default {
       }
     },
 	
-	/**
-	 * 倒计时
-	 */
-	countDown() {
-		this.timeInfo = setInterval(() => {
-			this.topicname -= 1;
-			this.timeHtml = this.formatSeconds(this.topicname);
-			
-			if (this.topicname <= 0) {
-				this.topicname = 0;
-				this.timeHtml = this.formatSeconds(this.topicname);
-				this.answerCardHandler();
-				this.answerCardOpen = true;
-				this.submitConHandler();
-				clearInterval(this.timeInfo);
-			}
-		}, 1000);
-	},
+    /**
+     * 倒计时
+     */
+    countDown() {
+      this.timeInfo = setInterval(() => {
+        this.topicname -= 1;
+        this.timeHtml = this.formatSeconds(this.topicname);
+        
+        if (this.topicname <= 0) {
+          this.topicname = 0;
+          this.timeHtml = this.formatSeconds(this.topicname);
+          this.answerCardHandler();
+          this.answerCardOpen = true;
+          this.submitConHandler();
+          clearInterval(this.timeInfo);
+        }
+      }, 1000);
+    },
     
 
     /**
@@ -942,7 +951,7 @@ export default {
       .swiper-slide {
         .swiper-slideAnswer {
           .big-name {
-            padding: 14px 0;
+            padding: 0px 0px 20px 0;
             font-size: 16px;
             color: #3c3c3c;
             font-weight: bold;
@@ -984,15 +993,31 @@ export default {
     }
     .cm-allStem-head {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #e8e8e8;
       height: 56px;
       margin: auto;
       position: relative;
       width: 100%;
+      font-size: 14px;
+      font-weight: 400;
+      color: #5e5e5e;
+      margin-bottom: 20px;
+      .head-time-icon {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        .iconfont {
+          font-size: 14px;
+          margin-right: 5px;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
       .cm-allStem-head-title {
-        width: 610px;
+        width: 430px;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
@@ -1004,34 +1029,34 @@ export default {
         color: #3c3c3c;
         text-align: center;
       }
-      .cm-allStem-head-time {
-        font-size: 14px;
-        font-weight: 400;
-        color: #5e5e5e;
+      .cm-allStem-head-r {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        .iconfont {
-          height: 14px;
-          width: 14px;
-          margin-right: 5px;
+        .cm-allStem-head-time {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .iconfont {
+            height: 14px;
+            width: 14px;
+            margin-right: 5px;
+          }
         }
-      }
-      .cm-allStem-head-card {
-        height: 36px;
-        padding: 0 20px;
-        line-height: 36px;
-        text-align: center;
-        background: #f2f8ff;
-        border-radius: 18px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #237dec;
-        margin-left: 30px;
-        user-select: none;
-        position: relative;
-        &:hover {
-          cursor: pointer;
+        .cm-allStem-head-card {
+          height: 36px;
+          padding: 0 20px;
+          line-height: 36px;
+          text-align: center;
+          background: #f2f8ff;
+          border-radius: 18px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #237dec;
+          margin-left: 30px;
+          user-select: none;
+          position: relative;
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
     }

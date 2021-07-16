@@ -2,7 +2,7 @@
     <div class="topicDrt">
         <div class="topicDrt-content">
             <span>{{ orderNum }}、</span>
-            <span v-html="strToUrl(stem)"></span>
+            <div v-html="strToUrl(stem)"></div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
             <audio controls src="horse.mp3"></audio>
@@ -82,11 +82,12 @@ export default {
         line-height: 23px !important;
         white-space: pre-wrap !important;
         word-break: break-word !important;
-        padding: 15px 24px 0 !important;
+        padding: 0px 24px 0 !important;
         // display: flex !important;
         // align-items: baseline !important;
         .topicDrt-content {
             display: flex;
+                align-items: center;
             /deep/ span {
                 font-size: 14px !important;
                 font-weight: 400 !important;

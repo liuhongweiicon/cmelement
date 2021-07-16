@@ -1,6 +1,6 @@
 <template>
 	<!--简单题型组件-->
-	<div class="baseTypeStem" :class="{baseTypeStem_voice: questionDetailsInfo.type == 5}">
+	<div class="baseTypeStem" :class="{baseTypeStem_voice: questionDetailsInfo.type == 5}" :style="{paddingBottom:  paperState != 1 ? '36px' : '0'}">
     <!-- 题干 -->
     <topic-drt :orderNum="orderNum" :stem="questionDetailsInfo.stem" v-if="isShowBlock('1')"></topic-drt>
   
@@ -175,7 +175,7 @@
     <!-- 产生式 -->
     <div v-if="paperState == 2 && isShowBlock('5') && showKnowledgePoint">
       <div class="result answer">
-				<span class="name">产生式：</span>
+				<span class="name baseKnowledgeModels">产生式：</span>
         <span class="value" v-if="questionDetailsInfo.baseKnowledgeModels && questionDetailsInfo.baseKnowledgeModels.length > 0">
           <span v-for="(know, k) in questionDetailsInfo.baseKnowledgeModels" :key="k">
             {{ know.baseProductionName }}
@@ -863,6 +863,7 @@ export default {
 
 @media screen and (min-width: 1024px) {
   .baseTypeStem {
+    
     .topicDrt {
       flex: none;
     }
@@ -965,6 +966,9 @@ export default {
     /*答案 解析*/
     .result{
       padding: 5px 24px;
+      .baseKnowledgeModels {
+        padding-top: 10px;
+      }
       .name,.value{
         font-size: 14px;
         line-height: 23px;
