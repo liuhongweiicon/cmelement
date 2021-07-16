@@ -150,7 +150,7 @@
           上一题
         </div>
         <div class="cm-allStem-footer-item" @click="slideNextHandler">
-          {{ isEnd || submitCon.questionList.length < 2 ? "提交" : "下一题" }}
+          {{ isEnd || totalTopic == 1 ? "提交" : "下一题" }}
         </div>
       </div>
     </slot>
@@ -276,7 +276,6 @@ export default {
       handler(val) {
         if (val.bigQuestions) {
           
-          this.isEnd = val.bigQuestions.length < 2 && true;
           
           if (!this.oldSubmitCon.paperId) {
             this.topicname = this.paperDetails.standardTime * 60;

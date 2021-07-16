@@ -8,7 +8,7 @@ import { tryHideFullScreenLoading, showFullScreenLoading } from './pageLoading';
 
 const isDev = process.env.NODE_ENV === 'development' ? true : false;
 
-let URL_PREFIX = 'http://tjtest.xinguoren.cn';
+let URL_PREFIX = 'http://tj.xinguoren.cn';
 
 let LAN_TIAN_URL = 'http://lantiantest.e-edusky.com/diagnosis/resource'
 
