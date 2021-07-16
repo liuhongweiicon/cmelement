@@ -9,14 +9,14 @@
       <div class="cm-allStem-head">
         
         <div class="head-time-icon" @click="goBack">
-          <i class="iconfont">&#xe605;</i>
+          <img class="iconfont" src="../static/img/back.png" alt="">
           <span>{{paperState != 1 ? '返回' : '结束作答'}}</span>
         </div>
         <div class="cm-allStem-head-title">{{ paperDetails.productName || paperDetails.paperName }}</div>
 
         <div class="cm-allStem-head-r">
           <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
-            <i class="iconfont">&#xe64b;</i>
+            <img class="iconfont" src="../static/img/time.png" alt="">
             <span>{{`考试时间：${timeHtml}`}}</span>
           </div>
           <div
@@ -24,7 +24,7 @@
             @click.stop="answerCardHandler"
             v-if="paperState == 1"
           >
-            {{ `答题卡/提交(${nowquesIndex}/${totalTopic})` }}
+            {{ `答题卡【${answerCardOpen ? '返回' : '提交'}】(${nowquesIndex}/${totalTopic})` }}
 
             <!-- 答题卡组件 -->
             <answer-card
@@ -51,7 +51,7 @@
       >
         <div class="allStem-mhead-top">
           <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen">
-            <i class="iconfont">&#xe605;</i>
+            <img class="iconfont" src="../static/img/back.png" alt="">
           </div>
           <div class="mhead-top-name">{{ paperDetails.paperName }}</div>
           <div
@@ -1026,8 +1026,8 @@ export default {
         height: 100%;
         display: flex;
         align-items: center;
+        line-height: 14px;
         .iconfont {
-          font-size: 14px;
           margin-right: 5px;
         }
         &:hover {
@@ -1053,9 +1053,8 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
+          line-height: 14px;
           .iconfont {
-            height: 14px;
-            width: 14px;
             margin-right: 5px;
           }
         }
@@ -1105,6 +1104,7 @@ export default {
         display: flex;
         align-items: center;
         height: 50px;
+        position: relative;
         .head-time-icon {
           position: absolute;
           left: 0;
