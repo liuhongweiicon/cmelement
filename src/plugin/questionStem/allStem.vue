@@ -389,7 +389,7 @@ export default {
      * 点击开始作答
      */
     startHandler() {
-      this.$emit('update:paperState', 1);
+      this.$emit('paperState');
     },
     
 
