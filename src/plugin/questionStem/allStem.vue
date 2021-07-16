@@ -35,6 +35,12 @@
             ></answer-card>
           </div>
 
+          
+
+          <div class="cm-allStem-head-start cm-allStem-head-card" v-if="paperState == 0 && showStart" @click="startHandler">
+            开始作答
+          </div>
+
         </div>
       </div>
 
@@ -230,6 +236,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 开始作答按钮是都展示，默认展示
+    showStart: {
+      type: Boolean,
+      default: true,
+    },
   },
   watch: {
     /**
@@ -372,6 +383,13 @@ export default {
           clearInterval(this.timeInfo);
         }
       }, 1000);
+    },
+
+    /**
+     * 点击开始作答
+     */
+    startHandler() {
+      this.$emit('update:paperState', 1);
     },
     
 
@@ -1057,6 +1075,14 @@ export default {
           &:hover {
             cursor: pointer;
           }
+        }
+        .cm-allStem-head-start {
+          background: linear-gradient(to left, var(--color5), var(--color7)) ;
+          color: #ffffff;
+          &:hover {
+            cursor: pointer;
+          }
+
         }
       }
     }
