@@ -1,7 +1,7 @@
 <template>
     <div class="topicDrt">
         <div class="topicDrt-content">
-            <span>{{ orderNum }}、</span>
+            <span v-if="orderNum">{{ orderNum }}、</span>
             <div v-html="strToUrl(stem)"></div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
