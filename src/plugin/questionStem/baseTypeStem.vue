@@ -32,6 +32,10 @@
 
 
               </div>
+              <slot name="op">
+                <slot name="optionitem" v-bind:optionitem="{questionDetailsInfo, index}">
+                </slot>
+              </slot>
             </div>
           </div>
           
@@ -160,7 +164,7 @@
           </div>
         </slot>
         <div
-          v-if="paperState == 2"
+          v-if="paperState == 2&& isShowBlock('6')"
           class="answer-wrap"
         >
           我的作答：
@@ -172,6 +176,7 @@
         </div>
       </div>
     </div>
+
     <!-- 产生式 -->
     <div v-if="paperState == 2 && isShowBlock('5') && showKnowledgePoint">
       <div class="result answer">
@@ -240,9 +245,9 @@
                 v-for="(item, inx) in JSON.parse(questionDetails.quesAnalyze)" 
                 :key="inx"
                 class="value" >
-                <span>{{`${item.analyzeKey ? item.analyzeKey + ':' : ''}`}}</span>
+                <span class="analyzeKey">{{`${item.analyzeKey ? item.analyzeKey + ':' : ''}`}}</span>
                 
-                <span v-html="strUrlChange(item.analyzeValue)"></span>
+                <span class="analyzeValue" v-html="strUrlChange(item.analyzeValue)"></span>
               </div>
               
             </div>
@@ -287,6 +292,7 @@ export default {
      * 3 => 只展示答案
      * 4 => 只展示解析
      * 5 => 只展示知识点
+     * 6 => 只隐藏我的作答
      */
     showBlock: {
       type: String | Number,
@@ -309,6 +315,7 @@ export default {
      * 3 => 只展示答案
      * 4 => 只展示解析
      * 5 => 只展示知识点
+     * 6 => 只隐藏我的作答
      */
     isShowBlock() {
       /**
@@ -321,19 +328,22 @@ export default {
         if (!this.showBlock) return true;
         switch(val) {
           case '1':
-            return this.showBlock == 1 || this.showBlock == 2;
+            return this.showBlock == 1 || this.showBlock == 2|| this.showBlock == 6;
             break;
           case '2':
-            return this.showBlock == 2;
+            return this.showBlock == 2 || this.showBlock == 6;
             break;
           case '3':
-            return this.showBlock == 3;
+            return this.showBlock == 3|| this.showBlock == 6;
             break;
           case '4':
-            return this.showBlock == 4;
+            return this.showBlock == 4|| this.showBlock == 6;
             break;
           case '5':
-            return this.showBlock == 5;
+            return this.showBlock == 5|| this.showBlock == 6;
+            break;
+          case '6':
+            return !this.showBlock;
             break;
         }
       }
@@ -538,6 +548,7 @@ export default {
         .op-item {
           box-sizing: border-box;
           padding: 13px;
+          flex: 2;
           border: 1px solid #cccccc;
           border-radius: 10px;
           display: flex;
@@ -795,12 +806,12 @@ export default {
             display: flex;
             
             color: #808080;
-            /deep/ span {
-              font-size: 15px!important;
-              font-weight: 400 !important;
-              line-height: 24px!important;
-              font-family: "微软雅黑"!important;
-              color: #808080 !important;
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 15px;
+              font-weight: 400 ;
+              line-height: 24px;
+              font-family: "微软雅黑";
+              color: #808080 ;
             }
             span:first-child {
               margin-right: 10px;
@@ -976,10 +987,10 @@ export default {
       &.analysis {
         .analysis_info {
           .value {
-            /deep/ span {
-              font-size: 14px !important;
-              font-weight: 400 !important;
-              line-height: 23px !important;
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 14px ;
+              font-weight: 400 ;
+              line-height: 23px ;
             }
             span:first-child {
               margin-right: 0;
@@ -989,9 +1000,9 @@ export default {
       }
       &.answer .value{
         /deep/ span {
-          font-size: 14px !important;
-          font-weight: 400 !important;
-          line-height: 23px !important;
+          font-size: 14px ;
+          font-weight: 400 ;
+          line-height: 23px ;
         }
       }
     }

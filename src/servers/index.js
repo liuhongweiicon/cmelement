@@ -11,7 +11,10 @@ const getTestQuestion = (data) => {
     return $http.post($http.LAN_TIAN_URL + '/resource/question/getQuestionByKnowledgeCodes', data)
 }
 
-
+// 测试接口
+const getQuestionByKnowledge = (data) => {
+    return $http.post($http.lantianUrl1 + '/class/classroomTask/getTaskTeacherReportAnswerAnalysis', data)
+}
 
 // 上传文件
 const liveUpload = (data) => {
@@ -21,5 +24,6 @@ const liveUpload = (data) => {
 export default {
     getPaper,
     getTestQuestion,
+    getQuestionByKnowledge,
     liveUpload
 }

@@ -17,6 +17,10 @@
                     :orderNum="orderNum + '.' + (index4 + 1)"
                     :showBlock="showBlock"
                     :showKnowledgePoint="showKnowledgePoint">
+                        <template v-slot:optionitem="{optionitem:{questionDetailsInfo,index}}">
+                            <slot name="bases" v-bind:bases="{questionDetailsInfo,index}">
+                            </slot>
+                        </template>
                 </base-type-stem>
             </div>
 
@@ -77,6 +81,7 @@
              * 3 => 只展示答案
              * 4 => 只展示解析
              * 5 => 只展示知识点
+            * 6 => 只隐藏我的作答
              */
             showBlock: {
                 type: String | Number,

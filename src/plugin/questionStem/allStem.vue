@@ -158,6 +158,7 @@
 	<slot name="popup">
 		<el-dialog
 			title="提示"
+      :modal-append-to-body="false"
 			:close-on-press-escape="false"
 			:show-close="false"
 			:close-on-click-modal="false"
@@ -221,6 +222,7 @@ export default {
      * 3 => 只展示答案
      * 4 => 只展示解析
      * 5 => 只展示知识点
+     * 6 => 只隐藏我的作答
      */
     showBlock: {
       type: String | Number,

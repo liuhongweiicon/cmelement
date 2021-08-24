@@ -9,8 +9,8 @@ var router =  new VueRouter({
     routes: [
       {
          path: '/',
-        redirect: '/allStem',
-        name: 'allStem'
+        redirect: '/allSingleStem',
+        name: 'allSingleStem'
       },
       {
         path: '/allStem',
