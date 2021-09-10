@@ -184,7 +184,7 @@ function StorageSet(storageString) {
 }
 
 /*图片*/
-var strToUrl = (str) => {
+var strToUrlCmelement = (str) => {
   if (!str || typeof str != "string") return "";
   str = str.toString();
   //如果已经是html格式  直接返回
@@ -193,6 +193,7 @@ var strToUrl = (str) => {
   string = str.replace(/[\r\n]{1,}/g, "");
   string = string.replace(/[\r\n]*$/g, "");
   string = string.replace(/[\r\n]/g, "<br>");
+  string = string.replace(/http:\/\//g, "https:\/\/");
 
   return string.replace(
     /(http:\/\/|https:\/\/).*?\.(mp3|jpg|jpeg|png|gif)/gi,
@@ -208,7 +209,7 @@ var strToUrl = (str) => {
   );
 };
 /*图片解析*/
-var strUrlChange = (str) => {
+var strUrlChangeCmelement = (str) => {
   if (!str || typeof str != "string") return "";
   str = str.toString();
   //如果已经是html格式  直接返回
@@ -219,6 +220,7 @@ var strUrlChange = (str) => {
   string = string.replace(/&nbsp;/g, " ");
   string = string.replace(/[\r\n]*$/g, "");
   string = string.replace(/[\r\n]/g, "<br>");
+  string = string.replace(/http:\/\//g, "https:\/\/");
 
   return string.replace(
     /(http:\/\/|https:\/\/).*?\.(mp3|jpg|jpeg|png|gif)/gi,
@@ -622,8 +624,8 @@ export {
   setWxConfig,
   is_weixn,
   commonSubject,
-  strToUrl,
-  strUrlChange,
+  strToUrlCmelement,
+  strUrlChangeCmelement,
   formatSeconds,
   getDiagnosisStatus,
   gradeToStage,

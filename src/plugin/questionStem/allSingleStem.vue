@@ -75,6 +75,8 @@
             }
 
         },
+        watch: {
+        },
         components: {baseTypeStem, compoundTypeStem}
     }
 </script>

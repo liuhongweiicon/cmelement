@@ -14,6 +14,8 @@ import cmAnswerPanel from './answerPanel/index.vue'; // 作答面板组件
 import cmBaseTypeStem from './questionStem/baseTypeStem'; // 基础题型组件
 import cmCompoundTypeStem from './questionStem/compoundTypeStem'; // 复合题型组件
 import cmAllStem from './questionStem/allStem'; // 试卷组件
+
+import allDoubleStem from './questionStem/allDoubleStem'; // 单试题试卷组件
 import allSingleStem from './questionStem/allSingleStem.vue'; // 试卷组件
 import cmTipspage from './tipsPage/index.vue'; // 无数据提示页
 import cmTopicDrt from './topicDrt/index.vue'; // 题干
@@ -56,6 +58,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmTipspage.name, cmTipspage);
     Vue.component(cmTopicDrt.name, cmTopicDrt);
     Vue.component(cmAnswerCard.name, cmAnswerCard);
+    Vue.component(allDoubleStem.name, allDoubleStem);
     // Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 

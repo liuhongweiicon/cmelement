@@ -2,7 +2,7 @@
     <div class="topicDrt">
         <div class="topicDrt-content">
             <span>{{ orderNum }}、</span>
-            <div v-html="strToUrl(stem)"></div>
+            <div v-html="strToUrlCmelement(stem)"></div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
             <audio controls src="horse.mp3"></audio>
@@ -35,6 +35,11 @@ export default {
         return {
         }
     },
+    watch: {
+        stem(val) {
+            console.log(val, 'val--------')
+        }
+    }
 }
 </script>
 
@@ -49,6 +54,7 @@ export default {
     // align-items: baseline;
     color: #3C3C3C;
     .topicDrt-content {
+        display: flex;
         /deep/ span {
             font-size: 15px !important;
             font-weight: 400 !important;

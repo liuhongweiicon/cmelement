@@ -4,7 +4,7 @@
             <all-single-stem 
                 :questionData="item"  
                 :orderNum="''" 
-                :showBlock="'2'" 
+                :showBlock="'6'" 
                 :paperState="2"
                 :showKnowledgePoint="false"
             >
@@ -51,20 +51,22 @@
                         classCode: 4514,
 taskCode: "d78b45c5b736416f99ef29980b28e6a5"
                     }
-                const res = await $http.getQuestionByKnowledge(data);
-                this.questionList = []
-                res.result.forEach(val => {
-                        this.questionList.push( {
-                      'answer':val.rightAnswer,
-                  'stem':val.baseName,
-                  'quesAnalyze':val.questionAnalyze,
-                  'quesOption':val.questionOption,
-                  'type':val.questionType,
-                  'isShowBase': true,
-                      isAdd:false,
-                      ...val
-                  })
-                })
+
+                const parmas = {"booktypeCode":"b9a8320392c04661bfcee5117ba53260","difficultStar":null,"gradeCode":33,"knowledgeCodes":["88900001","88900002"],"pageNum":1,"pageSize":10,"stem":null,"subjectCode":2}
+                const res = await $http.getPaper(parmas);
+                this.questionList = res.result.list
+                // res.result.forEach(val => {
+                //         this.questionList.push( {
+                //       'answer':val.rightAnswer,
+                //   'stem':val.baseName,
+                //   'quesAnalyze':val.questionAnalyze,
+                //   'quesOption':val.questionOption,
+                //   'type':val.questionType,
+                //   'isShowBase': true,
+                //       isAdd:false,
+                //       ...val
+                //   })
+                // })
                 console.log(this.questionList);
             }
         },

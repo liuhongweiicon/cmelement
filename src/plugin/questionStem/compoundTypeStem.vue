@@ -140,7 +140,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-
+    text-align: left;
     .topicDrt {
         font-size: 14px;
         line-height: 20px;

@@ -26,7 +26,7 @@
                 <div class="value_wrap">
                   <span
                     class="value"
-                    v-html="strToUrl(optionitem.optionValue)"
+                    v-html="strToUrlCmelement(optionitem.optionValue)"
                     ></span>
                 </div>
 
@@ -220,7 +220,7 @@
           <span v-if="answeritem.answerKeys && answeritem.answerKeys.length > 0">
             <span class="value-child" v-for="(a, b) in answeritem.answerKeys" :key="b">
               <span v-if="answeritem.answerKeys.length > 1">{{`（${b+1}）`}}</span>
-              <span v-html="strUrlChange(a)" ></span>
+              <span v-html="strUrlChangeCmelement(a)" ></span>
             </span>
           </span>
           <span v-else>略</span>
@@ -231,7 +231,7 @@
       <!-- 主观题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 5">
 				<span class="name">答案：</span>
-				<span class="value" v-html="strUrlChange(questionDetailsInfo.answer)"></span>
+				<span class="value" v-html="strUrlChangeCmelement(questionDetailsInfo.answer)"></span>
 			</div>
 		</div>
 
@@ -247,7 +247,7 @@
                 class="value" >
                 <span class="analyzeKey">{{`${item.analyzeKey ? item.analyzeKey + ':' : ''}`}}</span>
                 
-                <span class="analyzeValue" v-html="strUrlChange(item.analyzeValue)"></span>
+                <span class="analyzeValue" v-html="strUrlChangeCmelement(item.analyzeValue)"></span>
               </div>
               
             </div>
@@ -414,6 +414,7 @@ export default {
             this.questionDetailsInfo.quesOption[i].active = false;
           }
           this.questionDetailsInfo.quesOption[index].active = true;
+          this.questionDetailsInfo.quesOption.splice(index, 1, this.questionDetailsInfo.quesOption[index])
 
           emitoption = this.questionDetailsInfo.quesOption[index];
         } else if (this.questionDetailsInfo.type == 2) { //多选
@@ -424,7 +425,7 @@ export default {
           } else {
             this.questionDetailsInfo.quesOption[index].active = true;
           }
-
+          this.questionDetailsInfo.quesOption.splice(index, 1, this.questionDetailsInfo.quesOption[index])
           emitoption = this.questionDetailsInfo.quesOption;
         } else if (this.questionDetailsInfo.type == 4) { //填空
           emitoption = this.questionDetailsInfo.answer;
@@ -627,6 +628,7 @@ export default {
             color: #3C3C3C;
             padding-left: 13.5px;
             width: 30px;
+            min-width: 50px;
           }
           .line {
             display: inline-block;
@@ -950,6 +952,7 @@ export default {
             line-height: inherit;
             font-size: 14px;
             padding-left: 18px;
+            width: 50px;
           }
           .line {
             height: 14px;
@@ -968,6 +971,7 @@ export default {
         }
         .compound-blank {
           width: 50%;
+          min-width: 264px;
         }
       }
 
