@@ -67,7 +67,6 @@ taskCode: "d78b45c5b736416f99ef29980b28e6a5"
                 //       ...val
                 //   })
                 // })
-                console.log(this.questionList);
             }
         },
     }

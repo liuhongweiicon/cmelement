@@ -37,7 +37,6 @@ export default {
     },
     watch: {
         stem(val) {
-            console.log(val, 'val--------')
         }
     }
 }

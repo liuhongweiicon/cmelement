@@ -147,6 +147,14 @@ export default {
 					loop: false,
 				});
 			}
+		},
+
+		questionDetails: {
+			handler(val) {
+				this.textCon = val.userAnswer || '';
+			},
+			deep: true,
+			immediate: true
 		}
 	},
 	created() {

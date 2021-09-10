@@ -764,7 +764,6 @@ export default {
       })
 	
       const allAnswer = isAnswer || allBlankArr;
-      console.log(isAnswer, allBlankArr)
       const kk = this.oldSubmitCon.paperId
         ? false
         : this.paperDetails.bigQuestions.find((item) => item.type == 7);

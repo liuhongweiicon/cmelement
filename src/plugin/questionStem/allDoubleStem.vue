@@ -118,11 +118,9 @@ export default {
       }
     },
     selectAnswer (optionitem, emitoption) {
-      // console.log('allDoubleStem selectAnswer', optionitem, emitoption)
       this.$emit("selectAnswer", optionitem, emitoption);
     },
     twoChoice (optionitem, emitoption, index) {
-      // console.log('allDoubleStem twoChoice', optionitem, emitoption, index)
       this.$emit("twoChoice", optionitem, emitoption, index);
     }
   },
