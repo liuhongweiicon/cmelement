@@ -11,6 +11,7 @@
       <compoundTypeStem v-else
                         :compoundDetails="questionData"
                         :paperState="paperState"
+                        :gainBtnShow="gainBtnShow"
                         :orderNum="orderNum"
                         @twoChoice="twoChoice"
                         :showBlock="showBlock"
@@ -79,6 +80,15 @@ export default {
     showKnowledgePoint: {
       type: Boolean,
       default: false
+    },
+    
+            
+    /**
+     * 获取试题按钮是否展示 true = 不展示
+     */
+    gainBtnShow: {
+        type: Boolean,
+        default: false
     }
 
   },

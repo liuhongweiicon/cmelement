@@ -123,6 +123,14 @@ export default {
 		  type: Boolean,
 		  default: false
 		},
+
+		/**
+		 * 获取试题按钮是否展示 true = 不展示
+		 */
+		gainBtnShow: {
+		  type: Boolean,
+		  default: false
+		}
 	},
 	components: {
 		baseTypeStem,
@@ -139,6 +147,13 @@ export default {
 		};
 	},
 	watch: {
+		gainBtnShow: {
+			handler(val) {
+				this.gestaltShow = val
+			},
+			deep: true,
+			immediate: true
+		},
 		gestaltShow(val) {
 			const _this = this;
 			if (val && this.questionType > 5) {

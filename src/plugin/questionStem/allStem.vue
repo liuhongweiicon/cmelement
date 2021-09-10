@@ -123,6 +123,7 @@
                   @getnowIndex="getnowIndex"
                   @beginGestalt="beginGestalt"
                   v-else
+                  :gainBtnShow="gainBtnShow"
                   @twoChoice="twoChoice"
 				          :getSmallBtn="getSmallBtn"
                   :compoundDetails="paperDataHandler(item2)"
@@ -243,6 +244,14 @@ export default {
       type: Boolean,
       default: true,
     },
+            
+    /**
+     * 获取试题按钮是否展示 true = 不展示
+     */
+    gainBtnShow: {
+        type: Boolean,
+        default: false
+    }
   },
   watch: {
     /**

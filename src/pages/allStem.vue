@@ -46,13 +46,13 @@ export default {
                 
                 // evaluationRecordCode : "d6c5d6351a284e08b1e02d03165d73b3",
 
-                paperId: "d28a0d1daa684302812fe6404fa0a835",
+                paperId: "63dd523421e3423bb0532c5e96e730d1",
                 // token: "string",
             };
             const paperInfo = await $http.getPaper(params);
             if (paperInfo.code == '000000') {
                 
-                this.paperDetails = paperInfo;
+                this.paperDetails = paperInfo.result;
             }
         },
         

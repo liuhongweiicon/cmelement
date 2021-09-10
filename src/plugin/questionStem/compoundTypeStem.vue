@@ -33,6 +33,7 @@
                 <answer-sheet
                     :questionType="compoundDetails.type"
                     :orderNum="orderNum"
+                    :gainBtnShow="gainBtnShow"
                     @beginGestalt="beginGestalt"
                     @getnowIndex="getnowIndex" 
                     @twoChoice="twoChoice"
@@ -98,6 +99,14 @@
 			  type: Boolean,
 			  default: false
 			},
+            
+            /**
+             * 获取试题按钮是否展示 true = 不展示
+             */
+            gainBtnShow: {
+                type: Boolean,
+                default: false
+            }
 
         },
         components: {

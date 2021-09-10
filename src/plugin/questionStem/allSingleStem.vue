@@ -15,6 +15,8 @@
         </baseTypeStem>
         <compoundTypeStem 
             v-else
+            
+            :gainBtnShow="gainBtnShow"
             :compoundDetails="questionData" 
             :paperState="paperState" 
             :orderNum="orderNum" 
@@ -70,6 +72,14 @@
             },
             // 是否展示产生式
             showKnowledgePoint: {
+                type: Boolean,
+                default: false
+            },
+            
+            /**
+             * 获取试题按钮是否展示 true = 不展示
+             */
+            gainBtnShow: {
                 type: Boolean,
                 default: false
             }
