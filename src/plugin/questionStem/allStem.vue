@@ -342,6 +342,9 @@ export default {
       if (this.paperState == 1) {
         setTimeout(() => {
           this.mySwiper = new Swiper(".answerpaperList", {
+            speed: 100,
+            // touchRatio : 0.2,
+            shortSwipes : false,
             loop: false,
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true, //修改swiper的父元素时，自动初始化swiper
@@ -625,14 +628,14 @@ export default {
      * 点击上一题
      */
     slidePrevHandler() {
-      this.mySwiper.slidePrev(true, 300);
+      this.mySwiper.slidePrev(true, 100);
     },
 
     /**
      * 点击下一题或提交
      */
     slideNextHandler() {
-      this.mySwiper.slideNext(true, 300);
+      this.mySwiper.slideNext(true, 100);
       if (this.isEnd) {
         this.submitConHandler();
       }
