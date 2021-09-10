@@ -71,7 +71,7 @@ export default {
 
             if (paperInfo.httpCode == '200') {
                 
-                this.data.questionList = paperInfo.result.result;
+                this.data.questionList = paperInfo.result;
             }
         },
         
