@@ -12,10 +12,18 @@ var router =  new VueRouter({
         redirect: '/allSingleStem',
         name: 'allSingleStem'
       },
+      
       {
         path: '/allStem',
         name: 'allStem',
         component: () => import('@/pages/allStem.vue'),
+        meta: { title: "全题型" }
+      },
+      
+      {
+        path: '/allDoubleStem',
+        name: 'allDoubleStem',
+        component: () => import('@/pages/allDoubleStem.vue'),
         meta: { title: "全题型" }
       },
       {

@@ -484,7 +484,11 @@ export default {
         }
       } else if (this.questionDetailsInfo.type == "4") {
         // console.log(typeof this.questionDetailsInfo.answerKeys != "object");\
-        // debugger
+        
+        if (!this.questionDetailsInfo.answerKeys && this.questionDetailsInfo.rightAnswer) {
+          this.questionDetailsInfo.answerKeys = this.questionDetailsInfo.rightAnswer
+        }
+
         if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);

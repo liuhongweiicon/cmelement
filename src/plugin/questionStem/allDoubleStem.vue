@@ -12,6 +12,7 @@
                         :compoundDetails="questionData"
                         :paperState="paperState"
                         :gainBtnShow="gainBtnShow"
+				                :getSmallBtn="showKnowledgePoint"
                         :orderNum="orderNum"
                         @twoChoice="twoChoice"
                         :showBlock="showBlock"
@@ -89,7 +90,12 @@ export default {
     gainBtnShow: {
         type: Boolean,
         default: false
-    }
+    },
+    // 自判题预览默认是否展示小题 true => 不展示
+    showSmallJudgeSelf: {
+      type: Boolean,
+      default: true,
+    },
 
   },
   computed: {

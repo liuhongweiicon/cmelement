@@ -1,6 +1,7 @@
 import $http from '../utils/http'
 // 测试
 const getPaper = (data) => {
+    // return $http.post('http://lantiantest.e-edusky.com/diagnosis/protal/class/test/getTaskQuestionsByTaskCode', data)
     // return $http.post($http.submitUrl + 'paper/getPaper', data)
     return $http.post('http://lantiantest.e-edusky.com/diagnosis/resource/evaluation/distributePaper', data)
     // return $http.post('http://tetest.e-edusky.com/diagnosis/manager/question/bank/getQuestionByKnowledge', data)

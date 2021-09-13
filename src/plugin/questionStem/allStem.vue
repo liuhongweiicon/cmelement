@@ -891,31 +891,31 @@ export default {
     display: none;
   }
   .allStem-dialog {
-	.dialog-footer {
-		display: flex;
-		justify-content: flex-end;
-		user-select: none;
-		.footer-cell {
-			height: 40px;
-			width: 80px;
-			line-height: 40px;
-			text-align: center;
-			border-radius: 10px;
-			border: 1px solid var(--color1);
-			background-color: #FFFFFF;
-			box-sizing: border-box;
-			color: var(--color1);
-			&:last-child {
-				margin-left: 20px;
-				border: none;
-				background-color: var(--color1);
-				color: #FFFFFF;
-			}
-			&:hover {
-				cursor: pointer;
-			}
-		}
-	}
+    .dialog-footer {
+      display: flex;
+      justify-content: flex-end;
+      user-select: none;
+      .footer-cell {
+        height: 40px;
+        width: 80px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 10px;
+        border: 1px solid var(--color1);
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        color: var(--color1);
+        &:last-child {
+          margin-left: 20px;
+          border: none;
+          background-color: var(--color1);
+          color: #FFFFFF;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
 }
 /*作答试题样式*/
@@ -1163,6 +1163,12 @@ export default {
     }
     .cm-allStem-mheadOpen {
       height: 100%;
+    }
+    /deep/ .allStem-dialog {
+      .el-dialog {
+        width: 90% !important;
+        margin-top: 50% !important;
+      }
     }
   }
 }
