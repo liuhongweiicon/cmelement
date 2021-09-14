@@ -17,7 +17,7 @@ const getTestQuestion = (data) => {
 
 // 单题试卷
 const getTaskQuestionsByTaskCode = (data) => {
-    return $http.post('http://tetest.e-edusky.com/diagnosis/protal/class/test/getTaskQuestionsByTaskCode', data)
+    return $http.post('http://tetest.e-edusky.com/diagnosis/protal/class/test/getTaskQuestionsByTaskCode?requestId=0.5794041683778774', data)
 }
 
 // 测试接口

@@ -491,7 +491,7 @@ export default {
         if (!this.questionDetailsInfo.answerKeys && this.questionDetailsInfo.rightAnswer) {
           this.questionDetailsInfo.answerKeys = this.questionDetailsInfo.rightAnswer
         }
-
+        
         if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
           if (_this.paperState == 2 || _this.paperState == 1) {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
@@ -520,7 +520,7 @@ export default {
             this.$set(this.questionDetailsInfo, "answer", obj);
           }
         }else {
-          const answer = this.questionDetailsInfo.answer
+          const answer = this.questionDetailsInfo.answer;
           if(answer && typeof answer != "object"){
             const obj = JSON.parse(answer)
             if(obj.length > 0){

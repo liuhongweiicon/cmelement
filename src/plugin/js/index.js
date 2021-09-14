@@ -202,7 +202,7 @@ var strToUrlCmelement = (str) => {
         return "<audio src=" + w + " controls />";
       } else {
         return (
-          "<img style=max-width:100%;vertical-align:middle;  src=" + w + " />"
+          "<img style= max-width:100%;vertical-align:middle; max-width: 100%; src=" + w + " />"
         );
       }
     }
@@ -229,7 +229,7 @@ var strUrlChangeCmelement = (str) => {
         return '<audio src="' + w + '" controls/>';
       } else {
         return (
-          '<img class="media-middle" style="vertical-align: middle;max-width: 100%;" src="' +
+          '<img class="media-middle" style="vertical-align: middle; max-width: 100%;" src="' +
           w +
           '"/>'
         );

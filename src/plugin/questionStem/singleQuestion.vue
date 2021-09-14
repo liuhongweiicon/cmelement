@@ -1,7 +1,7 @@
 <template>
   <div
     class="cm-singleQuestion"
-    :class="{ paper: paperState == 1}"
+    :class="{ paper: paperState == 1, preview: paperState != 1 }"
   >
     <!-- 作答时head -->
     <slot name="head" v-if="headerShow">
@@ -17,7 +17,7 @@
           <div class="mhead-top-name">{{ paperDetails.paperName }}</div>
           <div
             class="mhead-top-btn"
-            v-if="paperState == 1"
+            v-if="paperState == 1 && showCard"
             @click.stop="answerCardHandler"
           >
             {{ answerCardOpen ? "答题卡[返回]" : "答题卡[提交]" }}
@@ -74,7 +74,7 @@
             :key="item.smallId"
           >
             <div class="swiper-slideAnswer">
-              <slot name="big-name">
+              <slot name="bigName" >
                 <div class="big-name" v-if="!index || paperState == 1">
                     {{ ArabelToCN(index + 1) }}、{{ item.bigTitle }}
                 </div>
@@ -92,7 +92,13 @@
                   :orderNum="showNum ? index + 1 : ''"
                   :showBlock="showBlock"
                   :showKnowledgePoint="showKnowledgePoint"
-                ></base-type-stem>
+                >
+                
+                <template v-slot:optionitem="{optionitem}">
+                  <slot name="optionScope" v-bind:optionScope="optionitem">
+                  </slot>
+                </template>
+              </base-type-stem>
 
                 <compound-type-stem
                   v-else
@@ -105,6 +111,12 @@
                   :showBlock="showBlock"
                   :showKnowledgePoint="showKnowledgePoint"
                 >
+                
+                  <template v-slot:bases="{bases}">
+                    <slot name="optionScope" v-bind:optionScope="bases">
+
+                    </slot>
+                  </template>
                 </compound-type-stem>
               </div>
             </div>
@@ -211,6 +223,14 @@ export default {
     showNum: {
         type: Boolean,
         default: false
+    },
+
+    /**
+     * 是否展示答题卡按钮
+     */
+    showCard: {
+        type: Boolean,
+        default: true
     },
     
   },
@@ -633,6 +653,24 @@ export default {
   }
 }
 
+/** 预览样式 */
+.preview {
+  .singleAnswerpaperList {
+    .swiper-wrapper {
+      flex-direction: column;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      .swiper-slide {
+        height: initial;
+        &:last-child {
+          padding-bottom: 20px;
+        }
+      }
+    }
+  }
+}
 
 @media screen and (min-width: 1024px) {
   .cm-singleQuestion {
@@ -861,4 +899,5 @@ export default {
     }
   }
 }
+
 </style>
