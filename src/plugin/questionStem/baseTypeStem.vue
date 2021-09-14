@@ -115,7 +115,7 @@
           </div>
           <div
             @click="onceChoice(questionDetailsInfo, '0')"
-            :class="{ active: questionDetailsInfo.userAnswer == 0 }"
+            :class="{ active: (questionDetailsInfo.userAnswer + '') === '0' }"
             >
             ×
           </div>
@@ -137,7 +137,7 @@
           <div
           :class="
             (questionDetailsInfo.userAnswer + '') === '0'
-            ? questionDetailsInfo.answer == 0
+            ? (questionDetailsInfo.answer + '') === '0'
               ? 'ok'
               : 'err'
             : ''
@@ -404,6 +404,7 @@ export default {
   },
   methods: {
     onceChoice: function(optionitem, index) {
+        console.log(optionitem, emitoption)
       //要传的选中值
       var emitoption = null;
 
@@ -632,7 +633,6 @@ export default {
             color: #3C3C3C;
             padding-left: 13.5px;
             width: 30px;
-            min-width: 50px;
           }
           .line {
             display: inline-block;
@@ -957,6 +957,7 @@ export default {
             font-size: 14px;
             padding-left: 18px;
             width: 50px;
+            min-width: 50px;
           }
           .line {
             height: 14px;

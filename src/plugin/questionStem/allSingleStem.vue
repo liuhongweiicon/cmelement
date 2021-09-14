@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="all-single-stem">
         <baseTypeStem 
             v-if="questionData.type < 6" 
             :questionDetails="questionData" 
@@ -7,6 +7,7 @@
             :orderNum="orderNum" 
             :showBlock="showBlock"
             :showKnowledgePoint="showKnowledgePoint"
+            @onceChoice="onceChoice"
         >
         <template v-slot:optionitem="{optionitem:{questionDetailsInfo,index}}">
             <slot name="optionScope" v-bind:optionScope="{questionDetailsInfo,index}">
@@ -15,13 +16,13 @@
         </baseTypeStem>
         <compoundTypeStem 
             v-else
-            
             :gainBtnShow="gainBtnShow"
             :compoundDetails="questionData" 
             :paperState="paperState" 
             :orderNum="orderNum" 
             :showBlock="showBlock"
             :showKnowledgePoint="showKnowledgePoint"
+            @twoChoice="twoChoice"
         >
             <template v-slot:bases="{bases:{questionDetailsInfo,index}}">
             <slot name="optionScope" v-bind:optionScope="{questionDetailsInfo,index}">
@@ -87,10 +88,30 @@
         },
         watch: {
         },
-        components: {baseTypeStem, compoundTypeStem}
+        components: {baseTypeStem, compoundTypeStem},
+
+        methods: {
+            /**
+             * 基础题型,作答答案处理
+             */
+            onceChoice(item, question) {
+                // 更新提交内容值
+                this.$emit('onceChoice', {item, question})
+            },
+
+            /**
+             * 复合题型答案处理
+             */
+            twoChoice(item, question, index) {
+                // 更新提交内容值
+                this.$emit('twoChoice', {item, question, index})
+            },
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-
+.all-single-stem {
+    height: 100%;
+}
 </style>

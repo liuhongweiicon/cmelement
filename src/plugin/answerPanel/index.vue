@@ -32,7 +32,7 @@
 			<div class="bottom-gestalt" :style="{ height: heightNum + 'px' }" @touchmove.stop>
 				<div class="bottom-gestalt-wrap">
 					<div class="swiper-container top-index"
-						:class="'top-index' + orderNum">
+						:class="'top-index' + random">
 						<div class="swiper-wrapper" >
 							<div
 								class="swiper-slide"
@@ -49,7 +49,7 @@
 					
 					<div
 						class="bottom-topic"
-						:class="'bottom-topic' + orderNum"
+						:class="'bottom-topic' + random"
 						:style="{ height: heightNum - 1 + 'px' }"
 						>
 						<div
@@ -144,6 +144,7 @@ export default {
 			gestaltShow: false, //复合题答题板是否显示
 			swiperInfo: null, // swiper对象
 			screenWidth: false, // 屏幕宽度大于1024标识PC， 否则是移动端
+			random: this.guid(), // 随机数
 		};
 	},
 	watch: {
@@ -157,7 +158,7 @@ export default {
 		gestaltShow(val) {
 			const _this = this;
 			if (val && this.questionType > 5) {
-				_this.swiperInfo = new Swiper(".top-index" + this.orderNum, {
+				_this.swiperInfo = new Swiper(".top-index" + this.random, {
 					slidesPerView: "auto",
 					loop: false,
 				});
@@ -187,7 +188,7 @@ export default {
 		},
 		//复合题中点击下方小题
 		getnowIndex(item, index) {
-			document.querySelector('.bottom-topic' + this.orderNum).scrollTop = 0;
+			document.querySelector('.bottom-topic' + this.random).scrollTop = 0;
 			if (index >= 3) {
 				this.swiperInfo.slideNext();
 			}

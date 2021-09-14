@@ -530,7 +530,7 @@ export default {
 		  readTime: null, // 阅读时间
 	  }
       data.bigQuestions.forEach((item) => {
-		item.type = item.type || item.bigType;
+		    item.type = item.type || item.bigType;
 
         this.totalTopic += item.smallQuestions.length;
       });

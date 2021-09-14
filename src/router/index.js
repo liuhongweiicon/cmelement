@@ -32,6 +32,12 @@ var router =  new VueRouter({
         component: () => import('@/pages/allSingleStem.vue'),
         meta: { title: "单题组合" }
       },
+      {
+        path: '/singleQuestion',
+        name: 'singleQuestion',
+        component: () => import('@/pages/singleQuestion.vue'),
+        meta: { title: "单题组合" }
+      },
       // 进入直播间等待页面
       {
         path: '/livceRoom',

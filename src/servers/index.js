@@ -14,6 +14,12 @@ const getTestQuestion = (data) => {
     return $http.post($http.LAN_TIAN_URL + '/resource/question/getQuestionByKnowledgeCodes', data)
 }
 
+
+// 单题试卷
+const getTaskQuestionsByTaskCode = (data) => {
+    return $http.post('http://tetest.e-edusky.com/diagnosis/protal/class/test/getTaskQuestionsByTaskCode', data)
+}
+
 // 测试接口
 const getQuestionByKnowledge = (data) => {
     return $http.post($http.lantianUrl1 + '/class/classroomTask/getTaskTeacherReportAnswerAnalysis', data)
@@ -28,5 +34,6 @@ export default {
     getPaper,
     getTestQuestion,
     getQuestionByKnowledge,
-    liveUpload
+    liveUpload,
+    getTaskQuestionsByTaskCode
 }

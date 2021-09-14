@@ -21,6 +21,8 @@ import cmTipspage from './tipsPage/index.vue'; // 无数据提示页
 import cmTopicDrt from './topicDrt/index.vue'; // 题干
 import cmAnswerCard from './answerCard/index.vue'; // 答题卡
 
+import cmSingleQuestion from './questionStem/singleQuestion.vue'; // 移动端单题试卷作答组件
+
 // import cmLiveRoom from './liveRoom/index.vue'; // 直播间
 
 // import screenCap from './js/room/screencap/index' // 直播间方法
@@ -59,6 +61,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmTopicDrt.name, cmTopicDrt);
     Vue.component(cmAnswerCard.name, cmAnswerCard);
     Vue.component(allDoubleStem.name, allDoubleStem);
+    Vue.component(cmSingleQuestion.name, cmSingleQuestion);
     // Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 
