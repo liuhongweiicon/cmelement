@@ -17,8 +17,9 @@
                     :orderNum="orderNum + '.' + (index4 + 1)"
                     :showBlock="showBlock"
                     :showKnowledgePoint="showKnowledgePoint">
-                        <template v-slot:optionitem="{optionitem:{questionDetailsInfo,index}}">
-                            <slot name="bases" v-bind:bases="{questionDetailsInfo,index}">
+                        <template v-slot:optionitem="{optionitem}">
+                            <slot name="bases" v-bind:bases="optionitem">
+
                             </slot>
                         </template>
                 </base-type-stem>

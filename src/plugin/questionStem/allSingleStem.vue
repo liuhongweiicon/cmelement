@@ -9,8 +9,8 @@
             :showKnowledgePoint="showKnowledgePoint"
             @onceChoice="onceChoice"
         >
-        <template v-slot:optionitem="{optionitem:{questionDetailsInfo,index}}">
-            <slot name="optionScope" v-bind:optionScope="{questionDetailsInfo,index}">
+        <template v-slot:optionitem="{optionitem}">
+            <slot name="optionScope" v-bind:optionScope="optionitem">
             </slot>
             </template>
         </baseTypeStem>
@@ -24,8 +24,9 @@
             :showKnowledgePoint="showKnowledgePoint"
             @twoChoice="twoChoice"
         >
-            <template v-slot:bases="{bases:{questionDetailsInfo,index}}">
-            <slot name="optionScope" v-bind:optionScope="{questionDetailsInfo,index}">
+           <template v-slot:bases="{bases}">
+            <slot name="optionScope" v-bind:optionScope="bases">
+
             </slot>
             </template>
         </compoundTypeStem>

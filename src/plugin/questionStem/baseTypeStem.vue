@@ -33,7 +33,7 @@
 
               </div>
               <slot name="op">
-                <slot name="optionitem" v-bind:optionitem="{questionDetailsInfo, index}">
+                 <slot name="optionitem" v-bind:optionitem="{...questionDetailsInfo,index}">
                 </slot>
               </slot>
             </div>
@@ -123,28 +123,30 @@
         
         <!-- 作答完毕 -->
         <div class="judge" v-if="paperState == 2">
-          <div
-          :class="
-            questionDetailsInfo.userAnswer == 1
-            ? questionDetailsInfo.answer == 1
-              ? 'ok'
-              : 'err'
-            : ''
-          "
-          >
-          √
-          </div>
-          <div
-          :class="
-            (questionDetailsInfo.userAnswer + '') === '0'
-            ? (questionDetailsInfo.answer + '') === '0'
-              ? 'ok'
-              : 'err'
-            : ''
-          "
-          >
-          ×
-          </div>
+          <slot name="optionitem" v-bind:optionitem="{...questionDetailsInfo,index:0}">
+            <div
+            :class="
+              questionDetailsInfo.userAnswer == 1
+              ? questionDetailsInfo.answer == 1
+                ? 'ok'
+                : 'err'
+              : ''
+            "
+            >
+            √
+            </div>
+            <div
+            :class="
+              (questionDetailsInfo.userAnswer + '') === '0'
+              ? (questionDetailsInfo.answer + '') === '0'
+                ? 'ok'
+                : 'err'
+              : ''
+            "
+            >
+            ×
+            </div>
+          </slot>
         </div>
       </div>
 
