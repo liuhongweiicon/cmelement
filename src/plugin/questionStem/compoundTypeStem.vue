@@ -14,7 +14,8 @@
                 <base-type-stem
                     :questionDetails="paperDataHandler(item4)"
                     :paperState="paperState"
-                    :orderNum="orderNum + '.' + (index4 + 1)"
+                    :orderNum="(index4 + 1)"
+                    :topicSmall="true"
                     :showBlock="showBlock"
                     :showKnowledgePoint="showKnowledgePoint">
                         <template v-slot:optionitem="{optionitem}">

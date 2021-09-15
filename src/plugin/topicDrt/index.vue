@@ -1,7 +1,7 @@
 <template>
     <div class="topicDrt">
         <div class="topicDrt-content">
-            <span v-if="orderNum">{{ orderNum }}、</span>
+            <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
             <div v-html="strToUrlCmelement(stem)"></div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
@@ -30,6 +30,13 @@ export default {
             type: String | Number,
             default: 1
         },
+        /**
+         * 是否是小题
+         */
+        topicSmall: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
