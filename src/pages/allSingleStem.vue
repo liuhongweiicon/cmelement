@@ -4,15 +4,15 @@
             <all-single-stem 
                 :questionData="item"  
                 :orderNum="''" 
-                :showBlock="'6'" 
+                :showBlock="''" 
                 :paperState="2"
                 :showKnowledgePoint="false"
             >
-            <template v-slot:optionScope="{optionScope:{questionDetailsInfo,index}}">
+            <!-- <template v-slot:optionScope="{optionScope}">
                 
-                    <!-- <span>============={{questionDetailsInfo}}</span>
-                    <span>-----------{{index}}</span> -->
-            </template>
+                    <span>============={{optionScope}}</span>
+                    <span>-----------{{optionScope.index}}</span>
+            </template> -->
             </all-single-stem>
         </div>
     </div>
@@ -49,24 +49,25 @@
                         // "saveLock":false,
                         // "typeId":"6"
                         classCode: 4514,
-taskCode: "d78b45c5b736416f99ef29980b28e6a5"
+taskCode: "9ecfe2012e4f433b86464b867f1a7682"
                     }
 
-                const parmas = {"booktypeCode":"b9a8320392c04661bfcee5117ba53260","difficultStar":null,"gradeCode":33,"knowledgeCodes":["88900001","88900002"],"pageNum":1,"pageSize":10,"stem":null,"subjectCode":2}
-                const res = await $http.getPaper(parmas);
-                this.questionList = res.result.list
-                // res.result.forEach(val => {
-                //         this.questionList.push( {
-                //       'answer':val.rightAnswer,
-                //   'stem':val.baseName,
-                //   'quesAnalyze':val.questionAnalyze,
-                //   'quesOption':val.questionOption,
-                //   'type':val.questionType,
-                //   'isShowBase': true,
-                //       isAdd:false,
-                //       ...val
-                //   })
-                // })
+                // const parmas = {"booktypeCode":"b9a8320392c04661bfcee5117ba53260","difficultStar":null,"gradeCode":33,"knowledgeCodes":["88900001","88900002"],"pageNum":1,"pageSize":10,"stem":null,"subjectCode":2}
+                const res = await $http.getTaskQuestionsByTaskCode(data);
+                // this.questionList = res.result
+                res.result.forEach(val => {
+                        this.questionList.push( {
+                      'answer':val.rightAnswer,
+                  'stem':val.baseName,
+                  'quesAnalyze':val.questionAnalyze,
+                  'quesOption':val.questionOption,
+                  'isShowBase': true,
+                      isAdd:false,
+                      ...val,
+                  'type':val.questionType,
+                  })
+                })
+                console.log('this.questionList',this.questionList)
             }
         },
     }

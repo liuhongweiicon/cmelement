@@ -525,19 +525,42 @@ export default {
      * 提交作答
      */
     submitConHandler() {
+      console.log(this.submitCon, 'this.submitCon')
+      // const isAnswer = this.submitCon.some((item) => item.userAnswer === "");
 
-      const isAnswer = this.submitCon.some((item) => item.userAnswer === "");
+      // const blankArr = this.submitCon.filter((item) => item.type == 4 );
 
-      const blankArr = this.submitCon.filter((item) => item.type == 4 );
-
-      let allBlankArr = false;
-      blankArr.forEach(item => {
-        if (!allBlankArr) {
-          allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "")
+      let allAnswer = false;
+      // blankArr.forEach(item => {
+      //   if (!allBlankArr) {
+      //     allBlankArr = JSON.parse(item.userAnswer).some((ele) => ele == "")
+      //   }
+      // })
+      // debugger
+      this.submitCon.forEach(item => {
+        if (item.type < 6) {
+          if (item.type == 4) {
+            if (!allAnswer) {
+              allAnswer = JSON.parse(item.userAnswer).some((ele) => ele == "")
+            }
+          } else if (item.userAnswer == "") {
+            allAnswer = true
+          }
+        } else {
+          item.componentQuestionModels.forEach(ele => {
+            
+            if (ele.type == 4) {
+              if (!allAnswer) {
+                allAnswer = JSON.parse(ele.userAnswer).some((ele) => ele == "")
+              }
+            } else if (ele.userAnswer == "") {
+              allAnswer = true
+            }
+          });
         }
-      })
+      });
+
 	
-      const allAnswer = isAnswer || allBlankArr;
 
       this.isPopupTips = true;
       if (allAnswer) {

@@ -123,7 +123,6 @@
         
         <!-- 作答完毕 -->
         <div class="judge" v-if="paperState == 2">
-          <slot name="optionitem" v-bind:optionitem="{...questionDetailsInfo,index:0}">
             <div
             :class="
               questionDetailsInfo.userAnswer == 1
@@ -146,6 +145,7 @@
             >
             ×
             </div>
+          <slot name="optionitem" v-bind:optionitem="{...questionDetailsInfo,index:0}">
           </slot>
         </div>
       </div>

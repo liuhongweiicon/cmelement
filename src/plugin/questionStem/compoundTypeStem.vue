@@ -19,7 +19,6 @@
                     :showKnowledgePoint="showKnowledgePoint">
                         <template v-slot:optionitem="{optionitem}">
                             <slot name="bases" v-bind:bases="optionitem">
-
                             </slot>
                         </template>
                 </base-type-stem>

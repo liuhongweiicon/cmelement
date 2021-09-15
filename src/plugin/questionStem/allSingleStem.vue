@@ -24,9 +24,8 @@
             :showKnowledgePoint="showKnowledgePoint"
             @twoChoice="twoChoice"
         >
-           <template v-slot:bases="{bases}">
+            <template v-slot:bases="{bases}">
             <slot name="optionScope" v-bind:optionScope="bases">
-
             </slot>
             </template>
         </compoundTypeStem>
