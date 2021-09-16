@@ -159,7 +159,7 @@ export default {
 			const _this = this;
 			if (val && this.questionType > 5) {
 				_this.swiperInfo = new Swiper(".top-index" + this.random, {
-					slidesPerView: "auto",
+					slidesPerView: 'auto',
 					loop: false,
 				});
 			}
