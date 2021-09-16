@@ -3,7 +3,7 @@
         <div v-for="(item, index) in questionList" :key="index">
             <all-single-stem 
                 :questionData="item"  
-                :orderNum="''" 
+                :orderNum="index" 
                 :showBlock="'6'" 
                 :paperState="2"
                 :showKnowledgePoint="false"
