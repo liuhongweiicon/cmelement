@@ -145,6 +145,7 @@ export default {
 			swiperInfo: null, // swiper对象
 			screenWidth: false, // 屏幕宽度大于1024标识PC， 否则是移动端
 			random: this.guid(), // 随机数
+			isnextTick: false,
 		};
 	},
 	watch: {
@@ -157,12 +158,17 @@ export default {
 		},
 		gestaltShow(val) {
 			const _this = this;
-			if (val && this.questionType > 5) {
-				_this.swiperInfo = new Swiper(".top-index" + this.random, {
-					slidesPerView: 'auto',
-					loop: false,
-				});
-			}
+			this.isnextTick = true;
+			this.$nextTick(() => {
+				if (val && this.questionType > 5) {
+					_this.swiperInfo = new Swiper(".top-index" + this.random, {
+						slidesPerView: "auto",
+						loop: false,
+					});
+				}
+				
+				_this.isnextTick = false;
+			})
 		},
 
 		questionDetails: {
