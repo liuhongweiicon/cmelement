@@ -224,6 +224,8 @@ export default {
      * 4 => 只展示解析
      * 5 => 只展示知识点
      * 6 => 只隐藏我的作答
+     * 
+      * 7 => 只展示答案和解析
      */
     showBlock: {
       type: String | Number,

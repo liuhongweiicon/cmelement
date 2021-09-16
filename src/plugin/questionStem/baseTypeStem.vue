@@ -295,6 +295,7 @@ export default {
      * 4 => 只展示解析
      * 5 => 只展示知识点
      * 6 => 只隐藏我的作答
+     * 7 => 只展示答案和解析
      */
     showBlock: {
       type: String | Number,
@@ -325,6 +326,7 @@ export default {
      * 4 => 只展示解析
      * 5 => 只展示知识点
      * 6 => 只隐藏我的作答
+     * 7 => 只展示答案和解析
      */
     isShowBlock() {
       /**
@@ -332,6 +334,7 @@ export default {
        *     => 2 作答
        *     => 3 答案
        *     => 4 解析
+       *     => 5 产生式
        */
       return function(val) {
         if (!this.showBlock) return true;
@@ -343,13 +346,13 @@ export default {
             return this.showBlock == 2 || this.showBlock == 6;
             break;
           case '3':
-            return this.showBlock == 3|| this.showBlock == 6;
+            return this.showBlock == 3|| this.showBlock == 6 || this.showBlock == 7;
             break;
           case '4':
-            return this.showBlock == 4|| this.showBlock == 6;
+            return this.showBlock == 4|| this.showBlock == 6 || this.showBlock == 7;
             break;
           case '5':
-            return this.showBlock == 5|| this.showBlock == 6;
+            return this.showBlock == 5 || this.showBlock == 6;
             break;
           case '6':
             return !this.showBlock;
