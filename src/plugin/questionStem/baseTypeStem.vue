@@ -769,7 +769,7 @@ export default {
             /*正确情况*/
             .ok {
               color: var(--color3);
-              background: var(--color4);
+              background: var(--color3);
             }
             /*错误情况*/
             .err {
@@ -794,7 +794,7 @@ export default {
         }
         /*正确情况*/
         .ok {
-          color: var(--color4);
+          color: var(--color3);
         }
         /*错误情况*/
         .err {
