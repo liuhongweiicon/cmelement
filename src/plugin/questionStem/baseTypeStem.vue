@@ -171,7 +171,7 @@
         >
           我的作答：
           <span
-          :class="questionDetailsInfo.userAnswer == questionDetailsInfo.answer ? 'ok' : 'err'"
+          :class="Number(questionDetailsInfo.isRight) === 1 ? 'ok' : 'err'"
           >
             {{ questionDetailsInfo.userAnswer }}
           </span>
