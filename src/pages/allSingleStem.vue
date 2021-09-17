@@ -4,7 +4,7 @@
             <all-single-stem 
                 :questionData="item"  
                 :orderNum="index" 
-                :showBlock="'6'" 
+                :showBlock="'7'" 
                 :paperState="2"
                 :showKnowledgePoint="false"
             >

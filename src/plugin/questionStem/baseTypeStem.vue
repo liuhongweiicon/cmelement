@@ -198,12 +198,12 @@
 				class="result answer"
 				v-if="questionDetailsInfo.type == 1 || questionDetailsInfo.type == 2"
 			>
-				<span class="name">答案：</span>
+				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
 				<span class="value">{{ questionDetailsInfo.answer }}</span>
 			</div>
       <!-- 判断题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 3">
-				<span class="name">答案：</span>
+				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
 				<span class="value">{{ questionDetailsInfo.answer == 0 ? "×" : "√" }}</span>
 			</div>
       <!-- 填空题 -->
@@ -211,7 +211,7 @@
 				class="result answer blanks-answer"
 				v-if="questionDetailsInfo.type == 4"
 			>
-				<span class="name">答案：</span>
+				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
 				<div v-if="questionDetailsInfo.answer && questionDetailsInfo.answer.length > 0">
           <p
             class="value value-4"
@@ -232,7 +232,7 @@
 			</div>
       <!-- 主观题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 5">
-				<span class="name">答案：</span>
+				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
 				<span class="value" v-html="strUrlChangeCmelement(questionDetailsInfo.answer)"></span>
 			</div>
 		</div>
@@ -240,7 +240,7 @@
 		<div v-if="paperState == 2 && isShowBlock('4')">
 			<div class="result analysis 2132">
         
-            <span class="name">解析：</span>
+            <span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题解析：` : '解析：'}}</span>
             <span class="value" v-if="!questionDetails.quesAnalyze || !JSON.parse(questionDetails.quesAnalyze).length">暂无解析</span>
             <div v-else class="analysis_info"> 
               <div 
