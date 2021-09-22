@@ -11,7 +11,7 @@
         :class="{ 'cm-singleQuestion-mheadOpen': answerCardOpen }"
       >
         <div class="allStem-mhead-top">
-          <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen">
+          <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen && isGoBack">
             <img class="iconfont" src="../static/img/back.png" alt="">
           </div>
           <div class="mhead-top-name">{{ paperDetails.paperName }}</div>
@@ -233,6 +233,14 @@ export default {
         type: Boolean,
         default: true
     },
+    /**
+     * 是否展示返回按钮 true = 展示
+     */
+    isGoBack: {
+      type: Boolean,
+      default: true,
+
+    }
     
   },
   watch: {

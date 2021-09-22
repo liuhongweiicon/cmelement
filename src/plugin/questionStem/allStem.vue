@@ -8,7 +8,7 @@
       <!-- PC端头部样式 -->
       <div class="cm-allStem-head">
         
-        <div class="head-time-icon" @click="goBack">
+        <div class="head-time-icon" @click="goBack" v-if="isGoBack">
           <img class="iconfont" src="../static/img/back.png" alt="">
           <span>{{paperState != 1 ? '返回' : '结束作答'}}</span>
         </div>
@@ -50,7 +50,7 @@
         :class="{ 'cm-allStem-mheadOpen': answerCardOpen }"
       >
         <div class="allStem-mhead-top">
-          <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen">
+          <div class="head-time-icon" @click="goBack" v-if="!answerCardOpen && isGoBack">
             <img class="iconfont" src="../static/img/back.png" alt="">
           </div>
           <div class="mhead-top-name">{{ paperDetails.paperName }}</div>
@@ -253,6 +253,14 @@ export default {
     gainBtnShow: {
         type: Boolean,
         default: false
+    },
+    /**
+     * 是否展示返回按钮 true = 展示
+     */
+    isGoBack: {
+      type: Boolean,
+      default: true,
+
     }
   },
   watch: {
