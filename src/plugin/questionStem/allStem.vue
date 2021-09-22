@@ -783,26 +783,26 @@ export default {
       this.isPopupTips = true;
       if (!allAnswer && !kk) {
         this.tipsText =
-          this.topicname <= 0 ? "确认交卷吗？" : "题目已全部完成，确认交卷吗？";
+          this.topicname <= 0 ? "考试时间已结束，请交卷！" : "题目已全部完成，确认交卷吗？";
         return;
       } else if (allAnswer && !kk) {
         this.tipsText =
           this.topicname <= 0
-            ? "确认交卷吗？"
+            ? "考试时间已结束，请交卷！"
             : "您有未做答的题目，提交后不可继续做题。确认交卷吗？";
         return;
       } else if (allAnswer && kk) {
         this.judgeSelf = true;
         this.tipsText =
           this.topicname <= 0
-            ? "提交后请自行判断部分试题正误，确认交卷吗？"
+            ? "考试时间已结束，提交后请自行判断部分试题正误，请交卷！"
             : "您有未做答的题目，提交后不可继续做题，并在提交后自行判断部分试题正误，确认交卷吗？";
         return;
       } else if (!allAnswer && kk) {
         this.judgeSelf = true;
         this.tipsText =
           this.topicname <= 0
-            ? "提交后需自行判断部分试题正误，确认交卷吗？"
+            ? "考试时间已结束，提交后需自行判断部分试题正误，请交卷！"
             : "题目已全部完成，提交后需自行判断部分试题正误，确认交卷吗？";
         return;
       }
