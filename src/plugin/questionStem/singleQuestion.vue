@@ -250,7 +250,7 @@ export default {
 	paperState: {
 		handler(val) {
 			
-			if (val == 1 && !this.mySwiper) {
+			if (val == 1) {
 				// 设置sweiper对象
 				this.setSweiper();
 			} else if (val != 1 && this.mySwiper) {

@@ -508,6 +508,11 @@ export default {
             if (_this.paperState == 2) {
               if (this.questionDetailsInfo.userAnswer) {
                     var  useranswerArr = JSON.parse(this.questionDetailsInfo.userAnswer)
+                    useranswerArr.forEach(ele => {
+                      if (!isNaN(ele)) {
+                        ele = toString(ele)
+                      }
+                    });
                     // const allAnswer = userAnswer.filter(item => !!item);
                   //  var useranswerArr = allAnswer.length ? userAnswer : '';
               }
