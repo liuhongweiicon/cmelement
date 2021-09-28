@@ -88,9 +88,25 @@ export default {
 
     }
 }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .topicDrt {
+        font-size: 18px !important;
+        .topicDrt-content {
+            display: flex;
+            /deep/ span {
+                font-size: 18px !important;
+            }
+            /deep/p {
+                font-size: 18px !important;
+            }
+
+        }
+
+    }
+}
 @media screen and (min-width: 1024px) {
     .topicDrt {
-        font-size: 14px !important;
+        font-size: 14px ;
         line-height: 23px !important;
         white-space: pre-wrap !important;
         word-break: break-word !important;
@@ -100,12 +116,12 @@ export default {
         .topicDrt-content {
             display: flex;
             /deep/ span {
-                font-size: 14px !important;
+                font-size: 14px ;
                 font-weight: 400 !important;
                 line-height: 23px !important;
             }
             /deep/p {
-                font-size: 14px !important;
+                font-size: 14px ;
                 font-weight: 400 !important;
                 line-height: 23px !important;
                 margin: 0 !important;

@@ -507,7 +507,7 @@ export default {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
             if (_this.paperState == 2) {
               if (this.questionDetailsInfo.userAnswer) {
-                    var  useranswerArr = JSON.parse(this.questionDetailsInfo.userAnswer)
+                    var  useranswerArr = JSON.parse(this.questionDetailsInfo.userAnswer);
                     useranswerArr.forEach(ele => {
                       if (!isNaN(ele)) {
                         ele = toString(ele)
@@ -894,7 +894,70 @@ export default {
       }
     }
 }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+   .baseTypeStem {
+    .baseTypeStem_key {
+      .written {
+          font-size: 18px !important;
+      }
+      .op {
+        .op-item {
+          .value_wrap {
+            .value {
+              font-size: 18px !important;
+            }
+          }
+          .key {
+            font-size: 18px !important;
+            
+          }
 
+        }
+      }
+      .blanks {
+        .blank {
+          .index {
+            font-size: 18px !important;
+          }
+          .cont {
+            textarea {
+              font-size: 18px !important;
+              &::-webkit-input-placeholder {
+                font-size: 18px !important;
+              }
+            }
+          }
+        }
+      }
+
+    }
+    
+    
+    /*答案 解析*/
+    .result{
+      .name,.value{
+        font-size: 18px !important;
+      }
+      &.analysis {
+        .analysis_info {
+          .value {
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 18px !important;
+            }
+          }
+        }
+      }
+      &.answer {
+          margin-top: 20px;
+      }
+      &.answer .value{
+        /deep/ span {
+          font-size: 18px !important;
+        }
+      }
+    }
+  } 
+}
 @media screen and (min-width: 1024px) {
   .baseTypeStem {
     

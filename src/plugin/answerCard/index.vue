@@ -116,7 +116,22 @@ export default {
         text-align: center;
     }
 }
-
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .cm-answerCard {
+    .cm-answerCard-stem {
+        .answerCard-stem-cell {
+            .stem-cell-title {
+                font-size: 18px !important;
+                .cell-title-order {
+                    .cell-title-order-item {
+                        font-size: 18px !important;
+                    }
+                }
+            }
+        }
+    }
+}
+}
 @media screen and (max-width: 1024px) {
     .cm-answerCard {
         margin-top: 0px;

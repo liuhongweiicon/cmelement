@@ -983,7 +983,61 @@ export default {
     }
   }
 }
-
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .cm-allStem {
+    .swiper-container {
+      .swiper-slide {
+        .swiper-slideAnswer {
+          .big-name {
+            font-size: 20px !important;
+          }
+        }
+      }
+    }
+    .cm-allStem-mhead {
+        .allStem-mhead-bot {
+            font-size: 18px !important;
+        }
+        .mhead-bot-order {
+            font-size: 18px !important;
+        }
+    }
+    .cm-allStem-footer {
+      .cm-allStem-footer-item {
+        font-size: 18px !important;
+      }
+    }
+    .allStem-mhead-top {
+        .mhead-top-name {
+                font-size: 20px !important;
+          }
+          .mhead-top-btn {
+                font-size: 18px !important;
+          }
+    }
+    .cm-allStem-head {
+      font-size: 18px !important;
+          .mhead-top-name {
+                font-size: 20px !important;
+          }
+          .mhead-top-btn {
+                font-size: 18px !important;
+                padding: 5px !important;
+          }
+      .cm-allStem-head-title {
+        font-size: 20px;
+      }
+      .cm-allStem-head-r {
+        .cm-allStem-head-card {
+          font-size: 18px !important;
+        }
+        .cm-allStem-head-time {
+          font-size: 18px !important;
+        }
+      }
+    }
+  }
+}
 @media screen and (min-width: 1024px) {
   .cm-allStem {
     .swiper-container {

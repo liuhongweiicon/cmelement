@@ -349,7 +349,24 @@ export default {
     }
   }
 }
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .cmAnswerPanel {
+		.answerSheet {
+			.start {
+				font-size: 20px !important;
+			}
+			.bottom-written {
+				textarea {
+					font-size: 18px !important;
+					&::-webkit-input-placeholder {
+						font-size: 18px !important;
+					}
+				}
+			}
 
+		}
+	}
+}
 @media screen and (min-width: 1024px) {
 	.cmAnswerPanel {
 		// margin-top: 20px;
