@@ -101,8 +101,8 @@
         
         <!-- 预览状态 -->
         <div class="judge" v-if="paperState == 0">
-          <div>√</div>
-          <div>×</div>
+          <div>✓</div>
+          <div>✘</div>
         </div>
         
         <!-- 作答状态 -->
@@ -111,13 +111,13 @@
             @click="paperState == 1 ? onceChoice(questionDetailsInfo, '1') : null"
             :class="{ active: questionDetailsInfo.userAnswer == 1 }"
             >
-            √
+            ✓
           </div>
           <div
             @click="onceChoice(questionDetailsInfo, '0')"
             :class="{ active: (questionDetailsInfo.userAnswer + '') === '0' }"
             >
-            ×
+            ✘
           </div>
         </div>
         
@@ -132,7 +132,7 @@
               : ''
             "
             >
-            √
+            ✓
             </div>
             <div
             :class="
@@ -143,7 +143,7 @@
               : ''
             "
             >
-            ×
+            ✘
             </div>
           <slot name="optionitem" v-bind:optionitem="{...questionDetailsInfo,index:0}">
           </slot>
@@ -204,7 +204,7 @@
       <!-- 判断题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 3">
 				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
-				<span class="value">{{ questionDetailsInfo.answer == 0 ? "×" : "√" }}</span>
+				<span class="value">{{ questionDetailsInfo.answer == 0 ? "✘" : "✓" }}</span>
 			</div>
       <!-- 填空题 -->
 			<div
@@ -707,7 +707,6 @@ export default {
       .judge {
         
         margin: 13px 12px 0;
-        font-family: "微软雅黑";
         &>div {
           border: 1px solid #ccc;
           font-size: 16px;
@@ -720,6 +719,7 @@ export default {
           margin-top: 15px;
           padding-left: 20px;
           box-sizing: border-box;
+          color: #5E5E5E;
           /*点击情况*/
           &.active {
             border: 1px solid var(--color1);
@@ -986,6 +986,7 @@ export default {
           min-width: 30%;
           width: initial;
           min-height: 40px;
+          flex: none;
           &:hover {
             cursor: pointer;
           }

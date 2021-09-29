@@ -5,7 +5,7 @@
                 :questionData="item"  
                 :orderNum="index" 
                 :showBlock="''" 
-                :paperState="2"
+                :paperState="1"
                 :showKnowledgePoint="false"
             >
             <!-- <template v-slot:optionScope="{optionScope}">
