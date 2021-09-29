@@ -101,7 +101,7 @@
         
         <!-- 预览状态 -->
         <div class="judge" v-if="paperState == 0">
-          <div>✓</div>
+          <div>✔</div>
           <div>✘</div>
         </div>
         
@@ -111,7 +111,7 @@
             @click="paperState == 1 ? onceChoice(questionDetailsInfo, '1') : null"
             :class="{ active: questionDetailsInfo.userAnswer == 1 }"
             >
-            ✓
+            ✔
           </div>
           <div
             @click="onceChoice(questionDetailsInfo, '0')"
@@ -132,7 +132,7 @@
               : ''
             "
             >
-            ✓
+            ✔
             </div>
             <div
             :class="
@@ -204,7 +204,7 @@
       <!-- 判断题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 3">
 				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
-				<span class="value">{{ questionDetailsInfo.answer == 0 ? "✘" : "✓" }}</span>
+				<span class="value">{{ questionDetailsInfo.answer == 0 ? "✘" : "✔" }}</span>
 			</div>
       <!-- 填空题 -->
 			<div

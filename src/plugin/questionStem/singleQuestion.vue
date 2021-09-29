@@ -250,9 +250,9 @@ export default {
 	paperState: {
 		handler(val) {
 			
-			if (val == 1) {
-				// 设置sweiper对象
-				this.setSweiper();
+			if (val == 1 && !this.mySwiper) {
+        // 设置sweiper对象
+        this.setSweiper();
 			} else if (val != 1 && this.mySwiper) {
 				
 				this.mySwiper.destroy(); //销毁Swiper对象。
@@ -462,53 +462,59 @@ export default {
      */
     setsubmitCon(val) {
       val = JSON.parse(JSON.stringify(val))
-        val.questionList.forEach(item => {
-          
-            if (item.type < 6) {
-                if (item.type == "4") {
-                    const answer = item.answer || item.answerKeys
-                    if (answer != null) {
-                        let smallAnswer = JSON.parse(answer);
-                        for (let f = 0; f < smallAnswer.length; f++) {
-                            smallAnswer[f].answerValue = "";
-                        }
-                        let blankArr = [];
-                        smallAnswer.forEach((ele2) => {
-                            blankArr.push(ele2.answerValue);
-                        });
-                        // obj.userAnswer = JSON.stringify(smallAnswer);
-                        // item.userAnswer = JSON.stringify(blankArr);
-                        this.$set(item, 'userAnswer', JSON.stringify(blankArr))
-                    }
-                } else {
-                    // item.userAnswer = "";
-                    this.$set(item, 'userAnswer', "")
-                }
-            } else {
-                item.componentQuestionModels.forEach(ele => {
-                    if (ele.type == "4") {
-                        const answer = ele.answer || ele.answerKeys
-                        if (answer != null) {
-                            let smallAnswer = JSON.parse(answer);
-                            for (let f = 0; f < smallAnswer.length; f++) {
-                                smallAnswer[f].answerValue = "";
-                            }
-                            let blankArr = [];
-                            smallAnswer.forEach((val) => {
-                                blankArr.push(val.answerValue);
-                            });
-                            // obj.userAnswer = JSON.stringify(smallAnswer);
-                            // ele.userAnswer = JSON.stringify(blankArr);
-                            this.$set(ele, 'userAnswer', JSON.stringify(blankArr))
-                        }
-                    } else {
-                        // ele.userAnswer = "";
-                        this.$set(ele, 'userAnswer', "")
-                    }
-                });
-            }
-        });
-        this.submitCon = val.questionList;
+      val.questionList.forEach(item => {
+        
+          if (item.type < 6) {
+              if (item.type == "4") {
+                  const answer = item.answer || item.answerKeys
+                  if (answer != null) {
+                      let smallAnswer = JSON.parse(answer);
+                      for (let f = 0; f < smallAnswer.length; f++) {
+                          smallAnswer[f].answerValue = "";
+                      }
+                      let blankArr = [];
+                      smallAnswer.forEach((ele2) => {
+                          blankArr.push(ele2.answerValue);
+                      });
+                      // obj.userAnswer = JSON.stringify(smallAnswer);
+                      // item.userAnswer = JSON.stringify(blankArr);
+                      this.$set(item, 'userAnswer', JSON.stringify(blankArr))
+                  }
+              } else {
+                  // item.userAnswer = "";
+                  this.$set(item, 'userAnswer', "")
+              }
+          } else {
+              item.componentQuestionModels.forEach(ele => {
+                  if (ele.type == "4") {
+                      const answer = ele.answer || ele.answerKeys
+                      if (answer != null) {
+                          let smallAnswer = JSON.parse(answer);
+                          for (let f = 0; f < smallAnswer.length; f++) {
+                              smallAnswer[f].answerValue = "";
+                          }
+                          let blankArr = [];
+                          smallAnswer.forEach((val) => {
+                              blankArr.push(val.answerValue);
+                          });
+                          // obj.userAnswer = JSON.stringify(smallAnswer);
+                          // ele.userAnswer = JSON.stringify(blankArr);
+                          this.$set(ele, 'userAnswer', JSON.stringify(blankArr))
+                      }
+                  } else {
+                      // ele.userAnswer = "";
+                      this.$set(ele, 'userAnswer', "")
+                  }
+              });
+          }
+      });
+      this.submitCon = val.questionList;
+      
+      if (this.paperState == 1) {
+        // 设置sweiper对象
+        this.setSweiper();
+      }
+      
     },
 
     /**

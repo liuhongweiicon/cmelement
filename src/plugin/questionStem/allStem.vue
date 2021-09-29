@@ -274,8 +274,10 @@ export default {
 				//开始做题 时间开始
 				this.nowTime = new Date().getTime();
 				this.countDown();
+
 				// 设置sweiper对象
-				this.setSweiper();
+        this.setSweiper();
+
 			} else if (val != 1 && this.mySwiper) {
 				
 				this.mySwiper.destroy(); //销毁Swiper对象。
@@ -296,7 +298,6 @@ export default {
     paperDetails: {
       handler(val) {
         if (val.bigQuestions) {
-          
           
           if (!this.oldSubmitCon.paperId) {
             this.topicname = this.paperDetails.standardTime * 60;
@@ -638,6 +639,11 @@ export default {
             _this.submitCon.questionList.push(obj);
           }
         }
+      }
+
+      if (this.paperState == 1) {
+        // 设置sweiper对象
+        this.setSweiper();
       }
 
     },
