@@ -6,6 +6,8 @@
                     :paperState="paperState"
                     :orderNum="orderNum"
                     :showBlock="showBlock"
+                    
+                    :showType="showType"
                     @onceChoice='selectAnswer'
                     :showKnowledgePoint="showKnowledgePoint"></baseTypeStem>
       <compoundTypeStem v-else
@@ -15,6 +17,8 @@
 				                :getSmallBtn="showKnowledgePoint"
                         :orderNum="orderNum"
                         @twoChoice="twoChoice"
+                        
+                        :showType="showType"
                         :showBlock="showBlock"
                         :showKnowledgePoint="showKnowledgePoint"></compoundTypeStem>
     </div>
@@ -98,6 +102,13 @@ export default {
       type: Boolean,
       default: true,
     },
+    /**
+     * 是否展示题型
+     */
+    showType: {
+        type: Boolean,
+        default: false
+    }
 
   },
   computed: {

@@ -91,6 +91,7 @@
                   :paperState="paperState"
                   :orderNum="showNum ? index + 1 : ''"
                   :showBlock="showBlock"
+                  :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
                 >
                 
@@ -109,6 +110,7 @@
                   :paperState="paperState"
                   :orderNum="showNum ? index + 1 : ''"
                   :showBlock="showBlock"
+                  :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
                 >
                 
@@ -240,6 +242,13 @@ export default {
       type: Boolean,
       default: true,
 
+    },
+    /**
+     * 是否展示题型
+     */
+    showType: {
+        type: Boolean,
+        default: false
     }
     
   },

@@ -57,6 +57,7 @@
 							:key="item6.componentId"
 						>
 							<base-type-stem
+								:showType="showType"
 								v-show="index6 == nowIndex || screenWidth"
 								@onceChoice="twoChoice"
 								:questionDetails="paperDataHandler(item6)"
@@ -130,6 +131,14 @@ export default {
 		gainBtnShow: {
 		  type: Boolean,
 		  default: false
+		},
+		
+		/**
+		 * 是否展示题型
+		 */
+		showType: {
+			type: Boolean,
+			default: false
 		}
 	},
 	components: {

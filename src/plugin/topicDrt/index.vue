@@ -1,5 +1,6 @@
 <template>
     <div class="topicDrt">
+        <div class="topicDrt_type" v-if="showType">{{questionType(type)}}</div>
         <div class="topicDrt-content">
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
             <div v-html="strToUrlCmelement(stem)"></div>
@@ -36,6 +37,20 @@ export default {
         topicSmall: {
             type: Boolean,
             default: false
+        },
+        /**
+         * 题型
+         */
+        type: {
+            type: String | Number,
+            default: "",
+        },
+        /**
+         * 是否展示题型
+         */
+        showType: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -59,6 +74,19 @@ export default {
     // display: flex;
     // align-items: baseline;
     color: #3C3C3C;
+    display: flex;
+    flex-direction: column;
+    .topicDrt_type {
+        width: 60px;
+        height: 24px;
+        line-height: 24px;
+        background: var(--color9);
+        border-radius: 4px; 
+        font-size: 14px;
+        color: var(--color8);
+        text-align: center;
+        margin-bottom: 10px;
+    }
     .topicDrt-content {
         display: flex;
         /deep/ span {

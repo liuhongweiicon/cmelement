@@ -17,6 +17,7 @@
                     :orderNum="(index4 + 1)"
                     :topicSmall="true"
                     :showBlock="showBlock"
+                    :showType="showType"
                     :showKnowledgePoint="showKnowledgePoint">
                         <template v-slot:optionitem="{optionitem}">
                             <slot name="bases" v-bind:bases="optionitem">
@@ -106,6 +107,14 @@
              * 获取试题按钮是否展示 true = 不展示
              */
             gainBtnShow: {
+                type: Boolean,
+                default: false
+            },
+    
+            /**
+             * 是否展示题型
+             */
+            showType: {
                 type: Boolean,
                 default: false
             }

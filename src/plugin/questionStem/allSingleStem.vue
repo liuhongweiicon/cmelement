@@ -6,6 +6,8 @@
             :paperState="paperState" 
             :orderNum="orderNum" 
             :showBlock="showBlock"
+            
+            :showType="showType"
             :showKnowledgePoint="showKnowledgePoint"
             @onceChoice="onceChoice"
         >
@@ -21,6 +23,7 @@
             :paperState="paperState" 
             :orderNum="orderNum" 
             :showBlock="showBlock"
+            :showType="showType"
             :showKnowledgePoint="showKnowledgePoint"
             @twoChoice="twoChoice"
         >
@@ -82,6 +85,13 @@
              * 获取试题按钮是否展示 true = 不展示
              */
             gainBtnShow: {
+                type: Boolean,
+                default: false
+            },
+            /**
+             * 是否展示题型
+             */
+            showType: {
                 type: Boolean,
                 default: false
             }

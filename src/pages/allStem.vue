@@ -7,6 +7,7 @@
             :paperDetails="paperDetails" 
             :showKnowledgePoint="true" 
             :paperState.sync="paperState"  
+            :showType="true"
             @slideChangeEnd="slideChangeEndHnadler" 
             @submit="submitHandler" 
             @goBack="goBackHandler" 

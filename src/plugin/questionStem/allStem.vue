@@ -116,6 +116,7 @@
                   :paperState="paperState"
                   :orderNum="index2 + 1"
                   :showBlock="showBlock"
+                  :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
                 ></base-type-stem>
 
@@ -130,6 +131,7 @@
                   :paperState="paperState"
                   :orderNum="index2 + 1"
                   :showBlock="showBlock"
+                  :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
                 >
                 </compound-type-stem>
@@ -261,7 +263,14 @@ export default {
       type: Boolean,
       default: true,
 
-    }
+    },
+		/**
+		 * 是否展示题型
+		 */
+		showType: {
+			type: Boolean,
+			default: false
+		}
   },
   watch: {
     /**
