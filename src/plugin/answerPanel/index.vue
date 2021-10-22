@@ -195,6 +195,12 @@ export default {
 		//复合题中点击下方小题
 		getnowIndex(item, index) {
 			document.querySelector('.bottom-topic' + this.random).scrollTop = 0;
+			if (!this.swiperInfo) {
+                this.swiperInfo = new Swiper(".top-index" + this.random, {
+					slidesPerView: "auto",
+					loop: false,
+				});
+            }
 			if (index >= 3) {
 				this.swiperInfo.slideNext();
 			}
