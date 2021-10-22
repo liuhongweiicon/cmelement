@@ -1066,7 +1066,7 @@ export default {
     
     /*答案 解析*/
     .result{
-      padding: 5px 24px;
+      padding: 15px 24px 5px;
       .baseKnowledgeModels {
         padding-top: 10px;
       }
