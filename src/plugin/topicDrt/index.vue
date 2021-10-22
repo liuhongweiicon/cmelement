@@ -1,7 +1,7 @@
 <template>
     <div class="topicDrt">
         
-        <div class="topicDrt-content">
+        <div class="topicDrt-content" :class="{'topicDrt-compound': type > 5}">
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
             <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
             <div v-html="strToUrlCmelement(stem)"></div>
@@ -116,6 +116,9 @@ export default {
             white-space: nowrap;
         }
 
+    }
+    .topicDrt-compound {
+        margin-bottom: 10px;
     }
 }
 @media screen and (min-width: 768px) and (max-width: 1024px) {
