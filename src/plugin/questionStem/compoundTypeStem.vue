@@ -3,7 +3,7 @@
     <div class="compoundTypeStem" :class="paperState != 1 ? 'compound_viewall' : ''">
         
         <!-- 题干 -->
-        <topic-drt :orderNum="orderNum" :stem="compoundDetails.stem" v-if="showBlock != 7"></topic-drt>
+        <topic-drt :orderNum="orderNum" :stem="compoundDetails.stem" v-if="showBlock != 7" :showType="showType" :type="compoundDetails.type"></topic-drt>
         <!-- 预览使用 -->
 
         <div v-if="(paperState == 0 && compoundDetails.type != 7) || paperState == 2">

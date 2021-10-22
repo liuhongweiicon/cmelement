@@ -1,8 +1,9 @@
 <template>
     <div class="topicDrt">
-        <div class="topicDrt_type" v-if="showType">{{questionType(type)}}</div>
+        
         <div class="topicDrt-content">
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
+            <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
             <div v-html="strToUrlCmelement(stem)"></div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
@@ -76,19 +77,20 @@ export default {
     color: #3C3C3C;
     display: flex;
     flex-direction: column;
-    .topicDrt_type {
-        width: 60px;
-        height: 24px;
-        line-height: 24px;
-        background: var(--color9);
-        border-radius: 4px; 
-        font-size: 14px;
-        color: var(--color8);
-        text-align: center;
-        margin-bottom: 10px;
-    }
     .topicDrt-content {
         display: flex;
+        .topicDrt_type {
+            width: 60px;
+            height: 24px;
+            line-height: 24px;
+            display: inline-block;
+            background: var(--color9);
+            border-radius: 4px; 
+            font-size: 14px;
+            color: var(--color8) !important;
+            text-align: center;
+            margin-right: 10px;
+        }
         /deep/ span {
             font-size: 15px !important;
             font-weight: 400 !important;
