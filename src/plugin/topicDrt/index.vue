@@ -80,10 +80,9 @@ export default {
     .topicDrt-content {
         display: flex;
         .topicDrt_type {
-            width: 60px;
+            flex: 0 0 60px;
             height: 24px;
             line-height: 24px;
-            display: inline-block;
             background: var(--color9);
             border-radius: 4px; 
             font-size: 14px;
