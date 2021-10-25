@@ -193,23 +193,34 @@ export default {
     width: 100%;
     padding: 10px;
     .next-question-btn {
-      width: 112px;
-      $h: 40px;
-      height: $h;
-      line-height: $h;
+      width: 70px;
+      height: 32px;
+      line-height: 32px;
+      background: #FFFFFF;
+      border: 1px solid #5076F1;
       border-radius: 6px;
-      color: #eb3f35;
-      font-size: 16px;
-      border: 1px solid #eb3f35;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: 500;
+      color: #0266FF;
       margin-right: 20px;
       cursor: pointer;
       user-select: none;
+      &:hover {
+        border: none;
+        background: #5076F1;
+        color: #fff;
+      }
     }
-    .isLastQuestion {
+    .isLastQuestion, .isfirstQuestion {
+      border: none;
+      background: #F9F9F9;
+      color: #767E8A;
       cursor: not-allowed;
-    }
-    .isfirstQuestion {
-      cursor: not-allowed;
+      &:hover {
+        background: #F9F9F9;
+        color: #767E8A;
+      }
     }
   }
 }
