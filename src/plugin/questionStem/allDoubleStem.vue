@@ -52,7 +52,9 @@ export default {
     // 试卷数据
     questionData: {
       type: Object,
-      default: {}
+      default: () => {
+        return {}
+      }
     },
     // 试卷状态，0 预览  1 做答中 2 作答完成
     paperState: {
