@@ -2,8 +2,9 @@
     <div id="allStem">
         
             <all-double-stem class="testPaperDetails-paperquestion"
-                       :questionData="questionList[0]"
+                       :questionData="questionList[4]"
                        :curAnswerNum="0"
+                       :showType="true"
                        :totalNum="questionList.length"
                        :showBlock="''"
                        :paperState="paperState"
@@ -23,7 +24,7 @@ export default {
     name: 'allStem',
     data() {
         return {
-            paperState: 2,
+            paperState: 1,
             paperDetails: {}, // 试题信息
             questionList: [],
             
@@ -38,7 +39,11 @@ export default {
          * 获取试题
          */
         async getPaper() {
-            const params ={"classCode":4515,"studentCode":19914,"taskCode":"8d8a610a5c224df88412643022d1c75b"};
+            const params ={
+              classCode: 4377,
+              studentCode: 19872,
+              taskCode: "16c6b509f3e441d7875ea8b8a7442b32",
+            };
             const {httpCode, result} = await $http.getPaper(params);
            
             

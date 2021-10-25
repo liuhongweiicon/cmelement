@@ -17,7 +17,6 @@
 				                :getSmallBtn="showKnowledgePoint"
                         :orderNum="orderNum"
                         @twoChoice="twoChoice"
-                        
                         :showType="showType"
                         :showBlock="showBlock"
                         :showKnowledgePoint="showKnowledgePoint"></compoundTypeStem>
@@ -208,6 +207,7 @@ export default {
       margin-right: 20px;
       cursor: pointer;
       user-select: none;
+      text-align: center;
       &:hover {
         border: none;
         background: #5076F1;

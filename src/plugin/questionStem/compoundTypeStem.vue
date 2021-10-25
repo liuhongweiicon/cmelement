@@ -33,6 +33,7 @@
         <slot name="answerSheet" :scope="compoundDetails">
             <div v-if="paperState == 1 && compoundDetails.type > 5 " class="compoundTypeStem-answerSheet">
                 <answer-sheet
+                    :showType="showType"
                     :questionType="compoundDetails.type"
                     :orderNum="orderNum"
                     :gainBtnShow="gainBtnShow"

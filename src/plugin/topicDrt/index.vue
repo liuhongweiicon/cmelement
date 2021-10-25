@@ -3,8 +3,11 @@
         
         <div class="topicDrt-content" :class="{'topicDrt-compound': type > 5}">
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
-            <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
-            <div v-html="strToUrlCmelement(stem)"></div>
+            <div class="content_body">
+
+                <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
+                <div class="topicDrt_html" v-html="strToUrlCmelement(stem)"></div>
+            </div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
             <audio controls src="horse.mp3"></audio>
@@ -79,16 +82,24 @@ export default {
     flex-direction: column;
     .topicDrt-content {
         display: flex;
-        .topicDrt_type {
-            flex: 0 0 60px;
-            height: 24px;
-            line-height: 24px;
-            background: var(--color9);
-            border-radius: 4px; 
-            font-size: 14px;
-            color: var(--color8) !important;
-            text-align: center;
-            margin-right: 10px;
+        .content_body {
+            position: relative;
+            display: flex;
+            .topicDrt_type {
+                position: absolute;
+                width: 60px;
+                display: inline-block;
+                height: 24px;
+                line-height: 24px;
+                background: var(--color9);
+                border-radius: 4px; 
+                font-size: 14px;
+                color: var(--color8) !important;
+                text-align: center;
+            }
+            .topicDrt_html {
+                text-indent: 70px;
+            }
         }
         /deep/ span {
             font-size: 15px !important;
