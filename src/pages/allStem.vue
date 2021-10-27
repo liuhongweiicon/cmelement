@@ -43,17 +43,17 @@ export default {
         async gerPaper() {
             const params = {
                 // appKey: "string",
-                paperId: "62e8a8303add4555b401ac2c1af9dfcb",
+                // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
                 
-                // evaluationRecordCode : "d6c5d6351a284e08b1e02d03165d73b3",
+                evaluationRecordCode: "1c7589d41d734af593fab71d088a773c"
 
-                paperId: "b47de561713347d9be4ce5a63d707cd4",
+                // paperId: "b47de561713347d9be4ce5a63d707cd4",
                 // token: "string",
             };
             const paperInfo = await $http.getPaper(params);
             if (paperInfo.code == '000000') {
                 
-                this.paperDetails = paperInfo.result;
+                this.paperDetails = paperInfo;
             }
         },
         

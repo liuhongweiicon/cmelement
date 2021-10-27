@@ -433,6 +433,8 @@ export default {
 
 		.bottom-topic {
 			/deep/ .baseTypeStem {
+				
+				padding-bottom: 30px !important;
 				.topicDrt {
 					padding-top: 0;
 				}
