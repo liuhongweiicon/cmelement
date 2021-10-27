@@ -6,7 +6,7 @@
             <div class="content_body">
 
                 <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
-                <div class="topicDrt_html" v-html="strToUrlCmelement(stem)"></div>
+                <div :class="{'topicDrt_html': showType}" v-html="strToUrlCmelement(stem)"></div>
             </div>
         </div>
         <!-- <div class="topicDrt-audio-visual">

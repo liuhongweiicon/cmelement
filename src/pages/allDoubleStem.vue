@@ -4,7 +4,6 @@
             <all-double-stem class="testPaperDetails-paperquestion"
                        :questionData="questionList[4]"
                        :curAnswerNum="0"
-                       :showType="true"
                        :totalNum="questionList.length"
                        :showBlock="''"
                        :paperState="paperState"
