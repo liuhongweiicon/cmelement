@@ -991,6 +991,7 @@ export default {
           padding: 6px 18px;
           border-radius: 5px;
           margin: 0;
+          max-width: 100%;
           min-width: 30%;
           width: initial;
           min-height: 40px;
