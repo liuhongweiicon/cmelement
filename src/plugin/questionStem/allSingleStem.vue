@@ -22,6 +22,7 @@
             :compoundDetails="questionData" 
             :paperState="paperState" 
             :orderNum="orderNum" 
+            :isSwider="isSwider"
             :showBlock="showBlock"
             :showType="showType"
             :showKnowledgePoint="showKnowledgePoint"
@@ -60,6 +61,11 @@
             orderNum: {
                 type: String | Number,
                 default: '1'
+            },
+            // 是否展示答题板形式
+            isSwider: {
+                type: Boolean,
+			    default: false
             },
             /**
              * 区分展示题干/作答/答案/解析

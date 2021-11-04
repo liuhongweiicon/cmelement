@@ -6,7 +6,7 @@
         <topic-drt :orderNum="orderNum" :stem="compoundDetails.stem" v-if="showBlock != 7" :showType="showType" :type="compoundDetails.type"></topic-drt>
         <!-- 预览使用 -->
 
-        <div v-if="(paperState == 0 && compoundDetails.type != 7) || paperState == 2">
+        <div v-if="(paperState == 0 && compoundDetails.type != 7) || paperState == 2&&!isSwider">
             <div 
             v-for="(item4,index4) in compoundDetails.componentQuestionModels"
             :key="index4" 
@@ -31,7 +31,7 @@
         <!--答题板-->
         
         <slot name="answerSheet" :scope="compoundDetails">
-            <div v-if="paperState == 1 && compoundDetails.type > 5 " class="compoundTypeStem-answerSheet">
+            <div v-if="paperState == 1 && compoundDetails.type > 5 || isSwider" class="compoundTypeStem-answerSheet">
                 <answer-sheet
                     :showType="showType"
                     :questionType="compoundDetails.type"
@@ -76,6 +76,11 @@
             orderNum: {
                 type: String | Number,
                 default: '1'
+            },
+            // 是否展示答题板形式
+            isSwider: {
+                type: Boolean,
+			    default: false
             },
             /**
              * 区分展示题干/作答/答案/解析

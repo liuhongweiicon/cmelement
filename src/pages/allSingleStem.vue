@@ -3,10 +3,12 @@
         <div v-for="(item, index) in questionList" :key="index">
             <all-single-stem 
                 :questionData="item"  
-                :orderNum="index" 
-                :showBlock="''" 
-                :paperState="1"
-                :showKnowledgePoint="false"
+                :orderNum="1"
+                :showSmall="true"
+                :showBlock="2"
+                :gainBtnShow="true"
+                :isSwider="true"
+                :paperState="2"
             >
             <!-- <template v-slot:optionScope="{optionScope}">
                 
