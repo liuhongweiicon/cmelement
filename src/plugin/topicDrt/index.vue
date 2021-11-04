@@ -99,7 +99,7 @@ export default {
                 margin-top: 4px;
             }
             .topicDrt_html {
-                text-indent: 70px;
+                text-indent: 60px;
             }
         }
         /deep/ span {
@@ -144,6 +144,9 @@ export default {
                     line-height: 24px;
                     font-size: 14px;
                 }
+                .topicDrt_html {
+                    text-indent: 70px;
+                }
             }
             /deep/ span {
                 font-size: 18px !important;
@@ -174,6 +177,9 @@ export default {
                     height: 24px;
                     line-height: 24px;
                     font-size: 14px;
+                }
+                .topicDrt_html {
+                    text-indent: 70px;
                 }
             }
             /deep/ span {
