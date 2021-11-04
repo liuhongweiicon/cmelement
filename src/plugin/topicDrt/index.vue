@@ -96,6 +96,7 @@ export default {
                 border-radius: 4px; 
                 color: var(--color8) !important;
                 text-align: center;
+                margin-top: 4px;
             }
             .topicDrt_html {
                 text-indent: 70px;

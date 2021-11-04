@@ -565,26 +565,26 @@ const ArabelToCN = (i) => {
  * 题型，题型code转文字
  */
 const questionType = (val) => {
-  let str = "单选题";
+  let str = "单选";
   const num = val + "";
   switch (num) {
     case "2":
-      str = "多选题";
+      str = "多选";
       break;
     case "3":
-      str = "判断题";
+      str = "判断";
       break;
     case "4":
-      str = "填空题";
+      str = "填空";
       break;
     case "5":
-      str = "主观题";
+      str = "主观";
       break;
     case "6":
-      str = "复合题";
+      str = "复合";
       break;
     default:
-      str = "单选题";
+      str = "单选";
   }
 
   return str;
