@@ -87,13 +87,13 @@ export default {
             display: flex;
             .topicDrt_type {
                 position: absolute;
-                width: 60px;
+                width: 50px;
+                height: 20px;
+                line-height: 20px !important;
+                font-size: 12px !important;
                 display: inline-block;
-                height: 24px;
-                line-height: 24px;
                 background: var(--color9);
                 border-radius: 4px; 
-                font-size: 14px;
                 color: var(--color8) !important;
                 text-align: center;
             }
@@ -136,6 +136,14 @@ export default {
         font-size: 18px !important;
         .topicDrt-content {
             display: flex;
+            .content_body {
+                .topicDrt_type {
+                    width: 60px;
+                    height: 24px;
+                    line-height: 24px;
+                    font-size: 14px;
+                }
+            }
             /deep/ span {
                 font-size: 18px !important;
             }
@@ -158,6 +166,15 @@ export default {
         // align-items: baseline !important;
         .topicDrt-content {
             display: flex;
+            
+            .content_body {
+                .topicDrt_type {
+                    width: 60px;
+                    height: 24px;
+                    line-height: 24px;
+                    font-size: 14px;
+                }
+            }
             /deep/ span {
                 font-size: 14px ;
                 font-weight: 400 !important;

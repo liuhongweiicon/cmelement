@@ -50,25 +50,30 @@
                         // "difficultStars":null,
                         // "saveLock":false,
                         // "typeId":"6"
-                        classCode: 4514,
-taskCode: "9ecfe2012e4f433b86464b867f1a7682"
+//                         classCode: 4514,
+// taskCode: "9ecfe2012e4f433b86464b867f1a7682"
+evaluationRecordCode: "ffe230c5517a4f83b5f7ce0e0e4dc14b"
                     }
 
                 // const parmas = {"booktypeCode":"b9a8320392c04661bfcee5117ba53260","difficultStar":null,"gradeCode":33,"knowledgeCodes":["88900001","88900002"],"pageNum":1,"pageSize":10,"stem":null,"subjectCode":2}
-                const res = await $http.getTaskQuestionsByTaskCode(data);
-                // this.questionList = res.result
-                res.result.forEach(val => {
-                        this.questionList.push( {
-                      'answer':val.rightAnswer,
-                  'stem':val.baseName,
-                  'quesAnalyze':val.questionAnalyze,
-                  'quesOption':val.questionOption,
-                  'isShowBase': true,
-                      isAdd:false,
-                      ...val,
-                  'type':val.questionType,
-                  })
-                })
+                // const res = await $http.getTaskQuestionsByTaskCode(data);
+                const res = await $http.getEvaluationAnswer(data);
+                let arr = []
+                res.bigQuestions.forEach(val => arr.push(...val.smallQuestions))
+                console.log('this.questionList',this.questionList)
+                this.questionList = arr
+                // res.result.forEach(val => {
+                //         this.questionList.push( {
+                //       'answer':val.rightAnswer,
+                //   'stem':val.baseName,
+                //   'quesAnalyze':val.questionAnalyze,
+                //   'quesOption':val.questionOption,
+                //   'isShowBase': true,
+                //       isAdd:false,
+                //       ...val,
+                //   'type':val.questionType,
+                //   })
+                // })
                 console.log('this.questionList',this.questionList)
             }
         },
