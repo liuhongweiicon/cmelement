@@ -21,7 +21,7 @@ const getTaskQuestionsByTaskCode = (data) => {
 }
 // 单题试卷
 const getEvaluationAnswer = (data) => {
-    return $http.post('http://tjservice.xinguoren.cn/evaluation/evaluation/getEvaluationAnswer?requestId=0.2635406746704281&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwIiwiYXVkIjoiNWNiZjBhNTFfNmM3Y180ZmM0Xzg3NTBfMjg3YjZjYTcwMTFhIiwibmJmIjoxNjI5ODU5MjIyLCJwcm9maWxlIjoidGVzdCIsImlzcyI6IjNiODgxZjQ4Nzg2OTRlOGI4MWEwMzk5ZGI3OTRjZjVlIiwiZXhwIjoxNjI5ODY2NDIyLCJpYXQiOjE2Mjk4NTkyMjJ9.SaOqWl_hO5z_dHLHjLghikO6BhR5vCY3XNuPSCzVn5g', data)
+    return $http.post('http://tetest.e-edusky.com/diagnosis/manager/question/bank/getQuestionByKnowledge?requestId=0.8016242538880982', data)
 }
 // 测试接口
 const getQuestionByKnowledge = (data) => {

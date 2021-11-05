@@ -505,7 +505,6 @@ export default {
         }
       } else if (this.questionDetailsInfo.type == "4") {
         // console.log(typeof this.questionDetailsInfo.answerKeys != "object");\
-        
         if (!this.questionDetailsInfo.answerKeys && this.questionDetailsInfo.rightAnswer) {
           this.questionDetailsInfo.answerKeys = this.questionDetailsInfo.rightAnswer
         }
@@ -515,7 +514,7 @@ export default {
             var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
             if (_this.paperState == 2) {
               if (this.questionDetailsInfo.userAnswer) {
-                    var  useranswerArr = JSON.parse(this.questionDetailsInfo.userAnswer);
+                    var  useranswerArr = typeof this.questionDetailsInfo.userAnswer != "object" ? JSON.parse(this.questionDetailsInfo.userAnswer) : this.questionDetailsInfo.userAnswer;
                     useranswerArr.forEach(ele => {
                       if (!isNaN(ele)) {
                         ele = toString(ele)
