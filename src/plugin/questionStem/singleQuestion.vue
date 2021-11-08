@@ -63,7 +63,8 @@
     </slot>
     <div
 	  @click.stop="answerCardOpen = false"
-      class="swiper-container small singleAnswerpaperList"
+      class="swiper-container small singleAnswerpaperList "
+      :class="{'swiper-no-swiping': paperState != 1}"
       style="touch-action: none;"
       v-if="paperDetails.questionList"
     >

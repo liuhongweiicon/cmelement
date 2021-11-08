@@ -103,7 +103,7 @@ export default {
                 const info = {
                     paperName: '全题型试卷',
                     totalScore: '30',
-                    questionList: [ss],
+                    questionList: paperInfo.result.list,
                 }
                 this.paperDetails = info;
             }
@@ -133,16 +133,20 @@ export default {
         submitHandler(item) {
             
             this.$refs.allStem.answerCardOpen = false;
-            this.$refs.allStem.mySwiper.slideTo(0, 100, true);
+
+            this.$refs.allStem.mySwiper.slideTo(0, 500, false);
 
             
-            const info = {
-                    paperName: '全题型试卷',
-                    totalScore: '30',
-                    questionList: item,
-                }
-            this.paperDetails = info;
-            this.paperState = 2;
+            // const info = {
+            //         paperName: '全题型试卷',
+            //         totalScore: '30',
+            //         questionList: item,
+            //     }
+            // this.paperDetails = info;
+            setTimeout(() => {
+                this.paperState = 2;
+            }, 1000);
+            
         },
 
         /**
