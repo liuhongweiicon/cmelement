@@ -96,7 +96,7 @@ export default {
                 border-radius: 4px; 
                 color: var(--color8) !important;
                 text-align: center;
-                margin-top: 4px;
+                // margin-top: 4px;
             }
             .topicDrt_html {
                 text-indent: 60px;
@@ -141,7 +141,7 @@ export default {
                 .topicDrt_type {
                     width: 60px;
                     height: 24px;
-                    line-height: 24px;
+                    line-height: 24px !important;
                     font-size: 14px;
                 }
                 .topicDrt_html {
