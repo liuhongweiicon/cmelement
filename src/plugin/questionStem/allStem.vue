@@ -92,7 +92,7 @@
       style="touch-action: none;"
       v-if="paperDetails.bigQuestions"
     >
-      <div>
+      <div class="swiper-wrapper">
         <template v-for="(item, inx) in paperDetails.bigQuestions">
           <div
             class="swiper-slide"
