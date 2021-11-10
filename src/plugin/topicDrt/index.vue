@@ -102,8 +102,9 @@ export default {
                 background: var(--color9);
                 border-radius: 4px; 
                 color: var(--color8) !important;
-                text-align: center;
-                // margin-top: 4px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .topicDrt_html {
                 text-indent: 60px;
