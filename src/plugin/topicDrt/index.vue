@@ -94,9 +94,8 @@ export default {
             display: flex;
             .topicDrt_type {
                 position: absolute;
-                width: 50px;
+                width: 40px;
                 height: 20px;
-                line-height: 20px !important;
                 font-size: 12px !important;
                 display: inline-block;
                 background: var(--color9);
@@ -181,9 +180,7 @@ export default {
             
             .content_body {
                 .topicDrt_type {
-                    width: 60px;
                     height: 24px;
-                    line-height: 24px;
                     font-size: 14px;
                 }
                 .topicDrt_html {
