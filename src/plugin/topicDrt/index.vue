@@ -106,7 +106,7 @@ export default {
                 align-items: center;
             }
             .topicDrt_html {
-                text-indent: 60px;
+                text-indent: 50px;
             }
         }
         /deep/ span {
@@ -182,9 +182,6 @@ export default {
                 .topicDrt_type {
                     height: 24px;
                     font-size: 14px;
-                }
-                .topicDrt_html {
-                    text-indent: 70px;
                 }
             }
             /deep/ span {
