@@ -97,7 +97,8 @@
           <div
             class="swiper-slide"
             v-for="(item2, index2) in item.smallQuestions"
-            :key="item2.smallId"
+            :class="`questionCode${item2.questionCode}`"
+            :key="item2.questionCode"
           >
             <div class="swiper-slideAnswer">
               <div class="big-name" v-if="!index2 || paperState == 1">
