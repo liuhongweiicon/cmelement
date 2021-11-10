@@ -18,6 +18,8 @@
                         :orderNum="orderNum"
                         @twoChoice="twoChoice"
                         :showType="showType"
+                        :showLowerType="showLowerType"
+                        
                         :showBlock="showBlock"
                         :showKnowledgePoint="showKnowledgePoint"></compoundTypeStem>
     </div>
@@ -109,7 +111,14 @@ export default {
     showType: {
         type: Boolean,
         default: false
-    }
+    },
+    /**
+     * 是否展示复合小题题型
+     */
+    showLowerType: {
+        type: Boolean,
+        default: false
+    },
 
   },
   computed: {

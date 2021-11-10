@@ -5,8 +5,8 @@
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
             <div class="content_body">
 
-                <span class="topicDrt_type" v-if="showType">{{questionType(type)}}</span>
-                <div :class="{'topicDrt_html': showType}" v-html="strToUrlCmelement(stem)"></div>
+                <span class="topicDrt_type" v-if="showType || showLowerType">{{questionType(type)}}</span>
+                <div :class="{'topicDrt_html': showType || showLowerType}" v-html="strToUrlCmelement(stem)"></div>
             </div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
@@ -55,7 +55,14 @@ export default {
         showType: {
             type: Boolean,
             default: false
-        }
+        },
+        /**
+         * 是否展示复合小题题型
+         */
+        showLowerType: {
+            type: Boolean,
+            default: false
+        },
     },
     data() {
         return {

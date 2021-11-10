@@ -18,6 +18,7 @@
                     :topicSmall="true"
                     :showBlock="showBlock"
                     :showType="showType"
+                    :showLowerType="showLowerType"
                     :showKnowledgePoint="showKnowledgePoint">
                         <template v-slot:optionitem="{optionitem}">
                             <slot name="bases" v-bind:bases="optionitem">
@@ -34,6 +35,7 @@
             <div v-if="paperState == 1 && compoundDetails.type > 5 || isSwider" class="compoundTypeStem-answerSheet">
                 <answer-sheet
                     :showType="showType"
+                    :showLowerType="showLowerType"
                     :questionType="compoundDetails.type"
                     :orderNum="orderNum"
                     :gainBtnShow="gainBtnShow"
@@ -123,7 +125,14 @@
             showType: {
                 type: Boolean,
                 default: false
-            }
+            },
+            /**
+             * 是否展示复合小题题型
+             */
+            showLowerType: {
+                type: Boolean,
+                default: false
+            },
 
         },
         components: {

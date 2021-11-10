@@ -25,6 +25,7 @@
             :isSwider="isSwider"
             :showBlock="showBlock"
             :showType="showType"
+            :showLowerType="showLowerType"
             :showKnowledgePoint="showKnowledgePoint"
             @twoChoice="twoChoice"
         >
@@ -100,7 +101,14 @@
             showType: {
                 type: Boolean,
                 default: false
-            }
+            },
+            /**
+             * 是否展示复合小题题型
+             */
+            showLowerType: {
+                type: Boolean,
+                default: false
+            },
 
         },
         watch: {

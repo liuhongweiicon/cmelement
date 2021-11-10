@@ -58,6 +58,7 @@
 						>
 							<base-type-stem
 								:showType="showType"
+                        		:showLowerType="showLowerType"
 								v-show="index6 == nowIndex || screenWidth"
 								@onceChoice="twoChoice"
 								:questionDetails="paperDataHandler(item6)"
@@ -139,7 +140,14 @@ export default {
 		showType: {
 			type: Boolean,
 			default: false
-		}
+		},
+		/**
+		 * 是否展示复合小题题型
+		 */
+		showLowerType: {
+			type: Boolean,
+			default: false
+		},
 	},
 	components: {
 		baseTypeStem,

@@ -2,7 +2,7 @@
 	<!--简单题型组件-->
 	<div class="baseTypeStem" :class="{baseTypeStem_voice: questionDetailsInfo.type == 5}" :style="{paddingBottom:  paperState != 1 ? '36px' : '0'}">
     <!-- 题干 -->
-    <topic-drt :topicSmall="topicSmall" :orderNum="orderNum" :stem="questionDetailsInfo.stem" :showType="showType" :type="questionDetailsInfo.type" v-if="isShowBlock('1')"></topic-drt>
+    <topic-drt :topicSmall="topicSmall" :orderNum="orderNum" :stem="questionDetailsInfo.stem" :showLowerType="showLowerType" :showType="showType" :type="questionDetailsInfo.type" v-if="isShowBlock('1')"></topic-drt>
   
     <div v-if="isShowBlock('2')" class="baseTypeStem_key" :class="{baseTypeStem_key_written: questionDetailsInfo.type == 5 || paperState != 1}">
       <!-- 选择题 -->
@@ -320,7 +320,14 @@ export default {
     showType: {
         type: Boolean,
         default: false
-    }
+    },
+    /**
+     * 是否展示复合小题题型
+     */
+    showLowerType: {
+        type: Boolean,
+        default: false
+    },
   },
   computed: {
     
