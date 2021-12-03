@@ -219,7 +219,8 @@
             :key="index"
           >
           <span v-if="questionDetailsInfo.answer.length > 1">{{index+1+'、'}}</span>
-          <span v-if="answeritem.answerKeys && answeritem.answerKeys.length > 0">
+          <span v-if="typeof answeritem.answerKeys == 'string'">{{answeritem.answerKeys}}</span>
+          <span v-else-if="answeritem.answerKeys && answeritem.answerKeys.length > 0">
             <span class="value-child" v-for="(a, b) in answeritem.answerKeys" :key="b">
               <span v-if="answeritem.answerKeys.length > 1">{{`（${b+1}）`}}</span>
               <span v-html="strUrlChangeCmelement(a)" ></span>
@@ -370,7 +371,7 @@ export default {
             return this.showBlock == 5 || this.showBlock == 6;
             break;
           case '6':
-            return !this.showBlock;
+            return !this.showBlock || this.showBlock == 2;
             break;
         }
       }
@@ -912,17 +913,17 @@ export default {
    .baseTypeStem {
     .baseTypeStem_key {
       .written {
-          font-size: 18px !important;
+          font-size: 26px !important;
       }
       .op {
         .op-item {
           .value_wrap {
             .value {
-              font-size: 18px !important;
+              font-size: 26px !important;
             }
           }
           .key {
-            font-size: 18px !important;
+            font-size: 26px !important;
             
           }
 
@@ -931,13 +932,15 @@ export default {
       .blanks {
         .blank {
           .index {
-            font-size: 18px !important;
+            width: 60px !important;
+            font-size: 26px !important;
           }
           .cont {
             textarea {
-              font-size: 18px !important;
+            height: 32px !important;
+              font-size: 26px !important;
               &::-webkit-input-placeholder {
-                font-size: 18px !important;
+                font-size: 26px !important;
               }
             }
           }
@@ -950,13 +953,13 @@ export default {
     /*答案 解析*/
     .result{
       .name,.value{
-        font-size: 18px !important;
+        font-size: 26px !important;
       }
       &.analysis {
         .analysis_info {
           .value {
             /deep/ .analyzeKey,.analyzeValue {
-              font-size: 18px !important;
+              font-size: 26px !important;
             }
           }
         }
@@ -966,9 +969,36 @@ export default {
       }
       &.answer .value{
         /deep/ span {
-          font-size: 18px !important;
+          font-size: 26px !important;
         }
       }
+    }
+    
+                                
+    .result {
+        padding: 20px 12px 0 !important;
+        .baseKnowledgeModels,.name,.value {
+            font-size: 26px !important;
+        }
+        .name {
+            line-height: 40px !important;
+        }
+        .value-4 {
+            margin-bottom: 10px;
+        }
+        .analysis_info {
+                margin-left: -10px !important;
+        }
+        .value {
+            line-height: 40px !important;
+            .analyzeValue {
+                line-height: 40px !important;
+            }
+            span {
+                font-size: 26px !important;
+                line-height: 40px !important
+            }
+        }
     }
   } 
 }

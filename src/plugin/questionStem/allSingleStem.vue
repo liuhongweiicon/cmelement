@@ -139,4 +139,233 @@
 .all-single-stem {
     height: 100%;
 }
+@media screen and (min-width: 700px) and (max-width: 1300px) {
+    .all-single-stem {
+        
+        .baseTypeStem {
+            
+            .answer,.analysis {
+                        display: none;
+                    }
+                    
+            .baseTypeStem_key {
+                /deep/ .blank {
+                    .index {
+                        width: 60px !important;
+                        font-size: 26px !important;
+                    }
+                    .cont {
+                        textarea {
+                            height: 32px !important;
+                            font-size: 26px  !important;
+                            &::-webkit-input-placeholder {
+                                font-size: 26px  !important;
+                            }
+                            }
+                    }
+                }
+                .written {
+                            .answer-wrap {
+                                        font-size: 26px  !important;
+                                .err {
+                                        font-size: 26px  !important;
+
+                                }
+                            }
+                            .answerSheet {
+                                .top-img {
+                                    img {
+                                    width: 60px;
+                                    height: 40px;
+
+                                    }
+                                }
+                                .bottom-written {
+                                    textarea {
+                                    height: 32px !important;
+                                    font-size: 26px  !important;
+                                    &::-webkit-input-placeholder {
+                                        font-size: 26px  !important;
+                                    }
+                                    }
+
+                                }
+                            }
+                        }
+            }
+            .result {
+                padding: 20px 12px 0 !important;
+                .baseKnowledgeModels,.name,.value {
+                    font-size: 26px !important;
+                }
+                .analysis_info {
+                    margin-left: -10px !important;
+                    .value {
+                        span {
+                        font-size: 26px !important;
+                        }  
+                    } 
+                }
+                .value-4 {
+                    margin-bottom: 10px;
+                }
+                .value {
+                    .analyzeValue {
+                        line-height: 40px !important;
+                    }
+                    span {
+                        font-size: 26px !important;
+                    }
+                }
+            }
+        }
+        .baseTypeStem {
+                        font-size: 29px !important;
+                        
+                        .baseTypeStem_key {
+                            
+                                .options {
+                                    .op-item .key {
+                                        font-size: 29px !important;
+                                    }
+                                    .op-item .value_wrap .value {
+                                        font-size: 29px !important;
+                                    }
+                                }
+                                .blanks {
+                                    .blank {
+                                        .index {
+                                            width: 60px !important;
+                                            font-size: 26px !important;
+                                        }
+                                        .cont {
+                                            textarea {
+                                                height: 32px !important;
+                                                padding-top: 0px !important;
+                                            font-size: 26px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 26px  !important;
+                                            }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                .written {
+                                    .answerSheet {
+                                        .top-img {
+                                            img {
+                                            width: 60px;
+                                            height: 40px;
+
+                                            }
+                                        }
+                                        .bottom-written {
+                                            textarea {
+                                            height: 32px !important;
+                                            font-size: 26px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 26px  !important;
+                                            }
+                                            }
+
+                                        }
+                                    }
+                                }
+                        }
+                        .compoundTypeStem-answerSheet {
+                            .answerSheet {
+                                .start {
+                                    span {
+                                        font-size: 29px !important;
+                                        height:  48px  !important;
+                                        line-height: 48px  !important;
+                                    }
+                                }
+                            }
+                            .answerSheet-content {
+                                .top-img {
+                                        height: 25px !important;
+                                    img {
+                                        height: 25px !important;
+                                        width: 60px !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+        .baseTypeStem {
+            .baseTypeStem_key {
+                .options {
+                    .op-item .key {
+                        font-size: 29px !important;
+                    }
+                    .op-item .value_wrap .value {
+                        font-size: 29px !important;
+                    }
+                }
+                .blanks {
+                    .blank {
+                        .index {
+                            width: 60px !important;
+                            font-size: 26px !important;
+                        }
+                        .cont {
+                            .textarea {
+                            height: 32px !important;
+                            font-size: 26px !important;
+                            }
+                        }
+                    }
+                }
+            }
+            .result {
+                padding: 20px 12px 0 !important;
+                .baseKnowledgeModels,.name,.value {
+                    font-size: 26px !important;
+                }
+                .value-4 {
+                    margin-bottom: 10px;
+                }
+                .name {
+                    line-height: 40px !important;
+                }
+                .analysis_info {
+                        margin-left: -10px !important;
+                }
+                .value {
+                    .analyzeValue {
+                        line-height: 40px !important;
+                    }
+                    span {
+                        font-size: 26px !important;
+                    }
+                }
+            }
+        }
+        .baseTypeStem_key {
+            padding-bottom: 0.6rem;
+            box-sizing: border-box;
+        }
+        .allStem-dialog {
+            .el-dialog__title {
+                    font-size: 29px !important;
+                }
+                .el-dialog__body {
+                    font-size: 29px !important;
+                }
+                .el-dialog__footer {
+                    font-size: 29px !important;
+                    .dialog-footer {
+                        .footer-cell {
+                            height: 50px !important;
+                            width: 90px !important;
+                            line-height: 50px !important;
+                        }
+                    }
+                }
+        }
+    }
+}
 </style>

@@ -139,31 +139,23 @@ export default {
         margin-bottom: 10px;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (min-width: 700px) and (max-width: 1300px) {
     .topicDrt {
-        font-size: 18px !important;
-        .topicDrt-content {
-            display: flex;
-            .content_body {
-                .topicDrt_type {
-                    width: 60px;
-                    height: 24px;
-                    line-height: 24px !important;
-                    font-size: 14px;
+        font-size: 29px !important;
+        /deep/ .topicDrt-content {
+            /deep/span {
+                font-size: 26px !important;
+                line-height: 40px  !important;
+            }
+            /deep/ .content_body {
+                font-size: 26px !important;
+                line-height: 40px  !important;
+                /deep/ p,div {
+                    font-size: 26px !important;
+                    line-height: 40px  !important;
                 }
-                .topicDrt_html {
-                    text-indent: 70px;
-                }
             }
-            /deep/ span {
-                font-size: 18px !important;
-            }
-            /deep/p {
-                font-size: 18px !important;
-            }
-
         }
-
     }
 }
 @media screen and (min-width: 1024px) {
@@ -186,14 +178,14 @@ export default {
             }
             /deep/ span {
                 font-size: 14px ;
-                font-weight: 400 !important;
-                line-height: 23px !important;
+                font-weight: 400 ;
+                line-height: 23px ;
             }
             /deep/p {
                 font-size: 14px ;
-                font-weight: 400 !important;
-                line-height: 23px !important;
-                margin: 0 !important;
+                font-weight: 400 ;
+                line-height: 23px ;
+                margin: 0 ;
             }
             &>span {
                 word-wrap: break-word;

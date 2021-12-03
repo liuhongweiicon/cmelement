@@ -697,7 +697,7 @@ export default {
           }
         }
         .big-name {
-          font-size: 12px 0;
+          padding: 12px 0;
           color: #999999;
         }
       }
@@ -726,37 +726,37 @@ export default {
     }
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .cm-allStem {
-    .swiper-container {
-      .swiper-slide {
-        .swiper-slideAnswer {
-          .big-name {
-            font-size: 20px !important;
-          }
-        }
-      }
-    }
+// @media screen and (min-width: 768px) and (max-width: 1024px) {
+//     .cm-allStem {
+//     .swiper-container {
+//       .swiper-slide {
+//         .swiper-slideAnswer {
+//           .big-name {
+//             font-size: 20px !important;
+//           }
+//         }
+//       }
+//     }
 
-    .cm-allStem-footer {
-      .cm-allStem-footer-item {
-        font-size: 18px !important;
-      }
-    }
-    .cm-allStem-head {
-      font-size: 18px !important;
+//     .cm-allStem-footer {
+//       .cm-allStem-footer-item {
+//         font-size: 18px !important;
+//       }
+//     }
+//     .cm-allStem-head {
+//       font-size: 18px !important;
       
-      .cm-allStem-head-title {
-        font-size: 20px;
-      }
-      .cm-allStem-head-r {
-        .cm-allStem-head-card {
-          font-size: 18px !important;
-        }
-      }
-    }
-  }
-}
+//       .cm-allStem-head-title {
+//         font-size: 20px;
+//       }
+//       .cm-allStem-head-r {
+//         .cm-allStem-head-card {
+//           font-size: 18px !important;
+//         }
+//       }
+//     }
+//   }
+// }
 @media screen and (min-width: 1024px) {
   .cm-singleQuestion {
     .swiper-container {
@@ -885,20 +885,20 @@ export default {
   }
 
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .cm-singleQuestion {
-        .cm-singleQuestion-mhead {
-            .allStem-mhead-top {
-                .mhead-top-name {
-                    font-size: 20px !important;
-                }
-                .mhead-top-btn {
-                    font-size: 18px !important;
-                }
-            }
-        }
-  }
-}
+// @media screen and (min-width: 768px) and (max-width: 1024px) {
+//     .cm-singleQuestion {
+//         .cm-singleQuestion-mhead {
+//             .allStem-mhead-top {
+//                 .mhead-top-name {
+//                     font-size: 20px !important;
+//                 }
+//                 .mhead-top-btn {
+//                     font-size: 18px !important;
+//                 }
+//             }
+//         }
+//   }
+// }
 @media screen and (max-width: 1024px) {
   .cm-singleQuestion {
     .cm-singleQuestion-mhead {

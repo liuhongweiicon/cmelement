@@ -200,7 +200,7 @@ export default {
 		this.screenWidth = document.body.offsetWidth > 1024 ? true : false;
 	},
 	mounted() {
-
+        console.log('getSmallBtn',this.getSmallBtn)
 	},
 	methods: {
 		//复合题中点击开始作答
@@ -372,23 +372,22 @@ export default {
     }
   }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .cmAnswerPanel {
-		.answerSheet {
-			.start {
-				font-size: 20px !important;
+@media screen and (min-width: 760px) and (max-width: 1300px) {
+    .swiper-wrapper {
+			.swiper-slide {
+			    line-height: 45px !important;
+                height: 45px !important;
 			}
-			.bottom-written {
-				textarea {
-					font-size: 18px !important;
-					&::-webkit-input-placeholder {
-						font-size: 18px !important;
-					}
-				}
-			}
-
 		}
-	}
+        .answerSheet {
+        .top-img {
+            img {
+                width: 70px !important;
+                height: 40px !important;
+                margin-top: -20px !important;
+            }
+        }
+        }
 }
 @media screen and (min-width: 1024px) {
 	.cmAnswerPanel {

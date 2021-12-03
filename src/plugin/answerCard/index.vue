@@ -116,21 +116,37 @@ export default {
         text-align: center;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .cm-answerCard {
-    .cm-answerCard-stem {
-        .answerCard-stem-cell {
-            .stem-cell-title {
-                font-size: 18px !important;
-                .cell-title-order {
-                    .cell-title-order-item {
-                        font-size: 18px !important;
+@media screen and (min-width: 760px) and (max-width: 1300px) {
+    
+        .cm-answerCard {
+            .answerCard-stem-cell {
+                .stem-cell-title {
+                    span {
+                        font-size: 29px !important;
+                    }
+                    .cell-title-order {
+                        .cell-title-order-item {
+                            font-size: 29px !important;
+                            width: 50px !important;
+                            height: 50px !important;
+                            line-height: 50px !important;
+                            
+                        }
                     }
                 }
             }
+            .cm-answerCard-footer {
+                width: 525px !important;
+                height: 70px !important;
+                background: #2780D0 !important;
+                border-radius: 15px !important;
+                line-height: 70px !important;
+                margin: 0 auto 40px auto !important;
+                position: relative !important;
+                color: #FEFEFE !important;
+                font-size: 29px !important;
+            }
         }
-    }
-}
 }
 @media screen and (max-width: 1024px) {
     .cm-answerCard {
