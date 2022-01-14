@@ -9,8 +9,15 @@ var router =  new VueRouter({
     routes: [
       {
          path: '/',
-        redirect: '/allSingleStem',
-        name: 'allSingleStem'
+        redirect: '/video',
+        name: 'video'
+      },
+      
+      {
+        path: '/video',
+        name: 'video',
+        component: () => import('@/pages/video/video.vue'),
+        meta: { title: "视频组件" }
       },
       
       {

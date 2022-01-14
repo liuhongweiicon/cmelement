@@ -3,10 +3,12 @@ import App from './App.vue';
 import './utils/rem';
 import '../static/css/reset.css';
 import '../static/css/index.scss';
+import '../static/iconfont/iconfont'
 import plugin from './plugin/index';
 import router from './router/index';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
 Vue.use(ElementUI);
 
 
