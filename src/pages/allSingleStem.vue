@@ -5,6 +5,7 @@
                 :questionData="item"  
                 :orderNum="1"
                 :showSmall="true"
+                :knowledgeString="'关键知识点：'"
                 :showBlock="2"
                 :gainBtnShow="true"
                 :isSwider="false"

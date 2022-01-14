@@ -116,6 +116,7 @@
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
+                  :knowledgeString="knowledgeString"
                   :showBlock="showBlock"
                   :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
@@ -129,6 +130,7 @@
                   @twoChoice="twoChoice"
 				          :getSmallBtn="getSmallBtn"
                   :compoundDetails="paperDataHandler(item2)"
+                  :knowledgeString="knowledgeString"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
                   :showBlock="showBlock"
@@ -234,6 +236,11 @@ export default {
     showBlock: {
       type: String | Number,
       default: "",
+    },
+    // 知识点文案
+    knowledgeString: {
+        type: String,
+        default: '',
     },
     // 是否展示知识点
     showKnowledgePoint: {
@@ -1007,382 +1014,6 @@ export default {
     }
   }
 }
-@media screen and (min-width: 760px) and (max-width: 1300px) {
-    .preview {
-        .cm-allStem-head {
-            background: #FFFBF8;
-                height: 110px !important;
-            .cm-allStem-head-title {
-                padding-left: 30px !important;
-                width: 400px !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
-                white-space: nowrap !important;
-                font-size: 28px !important;
-            }
-            .cm-allStem-head-r {
-                .cm-allStem-head-start {
-                    margin-right: 30px !important;
-                    width: 150px !important;
-                    height: 48px !important;
-                    line-height: 48px !important;
-                    background: #2780D0 !important;
-                    font-size: 26px !important;
-                    border-radius: 24px;
-                }
-                .cm-allStem-head-time {
-                    width: 280px !important;
-                    margin-right: -25px !important;
-                    font-size: 26px !important;
-                    .iconfont{
-                        width: 20px !important;
-                        height: 20px !important;
-                    }
-                }
-            } 
-        }
-        .answerpaperList {
-            padding: 0 30px !important;
-            .swiper-slideAnswer {
-                .big-name {
-                    font-size: 32px !important;
-                    color: #222222 !important;
-                }
-                .swiper-slide_content {
-                    font-size: 29px !important;
-                    .topicDrt {
-                        .topicDrt-content {
-                            span {
-                                font-size: 29px !important;
-                                line-height: 40px  !important;
-                            }
-                            .content_body {
-                                font-size: 29px !important;
-                                line-height: 40px  !important;
-                                p {
-                                    font-size: 29px !important;
-                                    line-height: 40px  !important;
-                                }
-                            }
-                        }
-                    }
-                    .baseTypeStem {
-                        .topicDrt-content {
-                            .content_body {
-                                p {
-                                    font-size: 29px !important;
-                                    line-height: 40px  !important;
-                                }
-                            }
-                        }
-                        .baseTypeStem_key {
-                            .options {
-                                .op-item .key {
-                                    font-size: 29px !important;
-                                }
-                                .op-item .value_wrap .value {
-                                    font-size: 29px !important;
-                                    line-height: 40px !important;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .baseTypeStem_key {
-            // padding-bottom: 100px;
-            box-sizing: border-box;
-        }  
-
-        .head-time-icon {
-            display: none;
-        }
-        .cm-allStem-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e8e8e8;
-            height: 56px;
-            margin: auto;
-            position: relative;
-            width: 100%;
-            font-size: 14px;
-            font-weight: 400;
-            color: #5e5e5e;
-            margin-bottom: 20px;
-            .cm-allStem-head-r {
-                display: flex;
-                .cm-allStem-head-start {
-                    margin-right: 30px !important;
-                }
-                .cm-allStem-head-time {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    line-height: 14px;
-                    .iconfont {
-                        margin-right: 5px;
-                    }
-                }
-                .cm-allStem-head-card {
-                    height: 36px;
-                    padding: 0 20px;
-                    line-height: 36px;
-                    text-align: center;
-                    border-radius: 18px;
-                    font-size: 14px;
-                    font-weight: 400;
-                    margin-left: 30px;
-                    user-select: none;
-                    position: relative;
-                    background: linear-gradient(to left, #eb3f35, #ff6158);
-                    color: #ffffff;
-                }
-            }
-        }
-        .cm-allStem-mhead {
-            display: none;
-        }
-        
-        .allStem-mhead-bot {
-            margin: 0 30px !important;
-            .mhead-bot-time {
-                font-size: 26px !important;
-
-            }
-            .mhead-bot-order {
-                font-size: 26px !important;
-
-            }
-        }
-    }
-    .paper  {
-        padding-bottom: 0.6rem;
-        box-sizing: border-box;
-        .cm-allStem-head {
-                background: #FFFBF8;
-                height: 65px !important;
-                .cm-allStem-head-title {
-                    padding-left: 30px !important;
-                    font-size: 28px !important;
-                }
-                .cm-allStem-head-r {
-                    .cm-allStem-head-start {
-                        margin-right: 30px !important;
-                        font-size: 26px !important;
-                    }
-                } 
-            }
-        .allStem-mhead-top {
-            background: #FFFBF8 !important;
-            // height: 60px !important;
-            // line-height: 60px !important;
-            height: 110px !important;
-            .mhead-top-name {
-                font-size: 29px !important;
-            }
-            .mhead-top-btn {
-                font-size: 26px !important;
-                margin-right: 30px !important;
-                height: 40px !important;
-                line-height: 40px !important;
-            }
-            .head-time-icon {
-                .iconfont {
-                    display: none;
-                }
-            }
-        }
-        .allStem-mhead-bot {
-            margin: 0 30px !important;
-            .mhead-bot-time {
-                font-size: 26px !important;
-
-            }
-            .mhead-bot-order {
-                font-size: 26px !important;
-
-            }
-        }
-        .cm-answerCard {
-            .answerCard-stem-cell {
-                .stem-cell-title {
-                    span {
-                        font-size: 29px !important;
-                    }
-                    .cell-title-order {
-                        .cell-title-order-item {
-                            font-size: 29px !important;
-                            width: 50px !important;
-                            height: 50px !important;
-                            line-height: 50px !important;
-                            
-                        }
-                    }
-                }
-            }
-            .cm-answerCard-footer {
-                width: 525px !important;
-                height: 70px !important;
-                background: #2780D0 !important;
-                border-radius: 15px !important;
-                line-height: 70px !important;
-                margin: 0 auto !important;
-                position: relative !important;
-                color: #FEFEFE !important;
-                font-size: 29px !important;
-            }
-        }
-        .answerpaperList {
-                .swiper-slideAnswer {
-                    padding: 0 15px !important;
-                    .big-name {
-                        padding: 15px 15px !important;
-                        font-size: 32px !important;
-                        color: #222222 !important;
-                    }
-                    .swiper-slide_content {
-                        padding: 0 15px !important;
-                        font-size: 29px !important;
-                        .topicDrt {
-                            .topicDrt-content {
-                                span {
-                                    font-size: 29px !important;
-                                    line-height: 40px  !important;
-                                }
-                                .content_body {
-                                    font-size: 29px !important;
-                                    line-height: 40px  !important;
-                                    p {
-                                        font-size: 29px !important;
-                                        line-height: 40px  !important;
-                                    }
-                                }
-                            }
-                        }
-                        .baseTypeStem {
-                            .topicDrt-content {
-                                .content_body {
-                                    p {
-                                        font-size: 29px !important;
-                                        line-height: 40px  !important;
-                                    }
-                                }
-                            }
-                            .baseTypeStem_key {
-                                .options {
-                                    .op-item .key {
-                                        font-size: 29px !important;
-                                    }
-                                    .op-item .value_wrap .value {
-                                        font-size: 29px !important;
-                                    }
-                                }
-                                .blanks {
-                                    .blank {
-                                        .index {
-                                            width: 60px !important;
-                                            font-size: 26px !important;
-                                        }
-                                        .cont {
-                                            textarea {
-                                            height: 32px !important;
-                                            font-size: 26px  !important;
-                                            &::-webkit-input-placeholder {
-                                                font-size: 26px  !important;
-                                            }
-                                            }
-                                        }
-                                    }
-                                }
-                                .written {
-                                    .answerSheet {
-                                        .top-img {
-                                            img {
-                                            width: 60px;
-                                            height: 40px;
-
-                                            }
-                                        }
-                                        .bottom-written {
-                                            textarea {
-                                            font-size: 26px  !important;
-                                            &::-webkit-input-placeholder {
-                                                font-size: 26px  !important;
-                                            }
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .compoundTypeStem-answerSheet {
-                            .answerSheet {
-                                .start {
-                                    span {
-                                        font-size: 29px !important;
-                                            height:  48px  !important;
-                                            line-height: 48px  !important;
-                                    }
-                                }
-                            }
-                            .answerSheet-content {
-                                .top-img {
-                                        height: 25px !important;
-                                    img {
-                                        height: 25px !important;
-                                        width: 60px !important;
-                                    }
-                                }
-                                .bottom-gestalt {
-                                    .bottom-gestalt-wrap {
-                                        .swiper-wrapper {
-                                            .topactive,.swiper-slide {
-                                                line-height: 38px !important;
-                                            }
-                                            
-                                                .topactive {
-                                                    border: 1px solid #2B83D3 !important;
-                                                    color: #2B83D3 !important;
-                                                }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-        .baseTypeStem_key {
-            padding-bottom: 0.6rem;
-            box-sizing: border-box;
-        }
-        
-        .allStem-dialog {
-            /deep/ .el-dialog {
-                /deep/ .el-dialog__title {
-                    font-size: 29px !important;
-                }
-                /deep/ .el-dialog__body {
-                    font-size: 29px !important;
-                }
-                /deep/ .el-dialog__footer {
-                    font-size: 29px !important;
-                    .dialog-footer {
-                        .footer-cell {
-                            height: 50px !important;
-                            width: 90px !important;
-                            line-height: 50px !important;
-                        }
-                    }
-                }
-
-            }
-        }
-  }
-}
 @media screen and (min-width: 1024px) {
   .cm-allStem {
     .swiper-container {
@@ -1578,6 +1209,801 @@ export default {
         margin-top: 50% !important;
       }
     }
+  }
+}
+@media screen and (min-width: 760px) and (max-width: 850px) {
+    .preview {
+        .cm-allStem-head {
+            background: #FFFBF8;
+                height: 110px !important;
+            .cm-allStem-head-title {
+                padding-left: 30px !important;
+                width: 400px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+                font-size: 28px !important;
+            }
+            .cm-allStem-head-r {
+                .cm-allStem-head-start {
+                    margin-right: 30px !important;
+                    width: 150px !important;
+                    height: 48px !important;
+                    line-height: 48px !important;
+                    background: #2780D0 !important;
+                    font-size: 24px !important;
+                    border-radius: 24px;
+                }
+                .cm-allStem-head-time {
+                    width: 280px !important;
+                    margin-right: -25px !important;
+                    font-size: 24px !important;
+                    .iconfont{
+                        width: 20px !important;
+                        height: 20px !important;
+                    }
+                }
+            } 
+        }
+        .answerpaperList {
+            padding: 0 30px !important;
+            .swiper-slideAnswer {
+                .big-name {
+                    font-size: 28px !important;
+                    color: #222222 !important;
+                }
+                .swiper-slide_content {
+                    font-size: 24px !important;
+                    .topicDrt {
+                        .topicDrt-content {
+                            span {
+                                font-size: 24px !important;
+                                line-height: 40px  !important;
+                            }
+                            .content_body {
+                                font-size: 24px !important;
+                                line-height: 40px  !important;
+                                p,div {
+                                    font-size: 24px !important;
+                                    line-height: 40px  !important;
+                                }
+                            }
+                        }
+                    }
+                    .baseTypeStem {
+                        .topicDrt-content {
+                            .content_body {
+                                p,div {
+                                    font-size: 24px !important;
+                                    line-height: 40px  !important;
+                                }
+                            }
+                        }
+                        .baseTypeStem_key {
+                            .options {
+                                .op-item .key {
+                                    font-size: 24px !important;
+                                }
+                                .op-item .value_wrap .value {
+                                    font-size: 24px !important;
+                                    line-height: 40px !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .baseTypeStem_key {
+            // padding-bottom: 100px;
+            box-sizing: border-box;
+        }  
+
+        .head-time-icon {
+            display: none;
+        }
+        .cm-allStem-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e8e8e8;
+            height: 56px;
+            margin: auto;
+            position: relative;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 400;
+            color: #5e5e5e;
+            margin-bottom: 20px;
+            .cm-allStem-head-r {
+                display: flex;
+                .cm-allStem-head-start {
+                    margin-right: 30px !important;
+                }
+                .cm-allStem-head-time {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    line-height: 14px;
+                    .iconfont {
+                        margin-right: 5px;
+                    }
+                }
+                .cm-allStem-head-card {
+                    height: 36px;
+                    padding: 0 20px;
+                    line-height: 36px;
+                    text-align: center;
+                    border-radius: 18px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    margin-left: 30px;
+                    user-select: none;
+                    position: relative;
+                    background: linear-gradient(to left, #eb3f35, #ff6158);
+                    color: #ffffff;
+                }
+            }
+        }
+        .cm-allStem-mhead {
+            display: none;
+        }
+        
+        .allStem-mhead-bot {
+            margin: 0 30px !important;
+            .mhead-bot-time {
+                font-size: 24px !important;
+
+            }
+            .mhead-bot-order {
+                font-size: 24px !important;
+
+            }
+        }
+    }
+    .paper  {
+        padding-bottom: 0.6rem;
+        box-sizing: border-box;
+        .cm-allStem-head {
+                background: #FFFBF8;
+                height: 65px !important;
+                .cm-allStem-head-title {
+                    padding-left: 30px !important;
+                    font-size: 28px !important;
+                }
+                .cm-allStem-head-r {
+                    .cm-allStem-head-start {
+                        margin-right: 30px !important;
+                        font-size: 24px !important;
+                    }
+                } 
+            }
+        .allStem-mhead-top {
+            background: #FFFBF8 !important;
+            // height: 60px !important;
+            // line-height: 60px !important;
+            height: 110px !important;
+            .mhead-top-name {
+                font-size: 24px !important;
+            }
+            .mhead-top-btn {
+                font-size: 24px !important;
+                margin-right: 30px !important;
+                height: 40px !important;
+                line-height: 40px !important;
+            }
+            .head-time-icon {
+                .iconfont {
+                    display: none;
+                }
+            }
+        }
+        .allStem-mhead-bot {
+            margin: 0 30px !important;
+            .mhead-bot-time {
+                font-size: 24px !important;
+
+            }
+            .mhead-bot-order {
+                font-size: 24px !important;
+
+            }
+        }
+        .cm-answerCard {
+            .answerCard-stem-cell {
+                .stem-cell-title {
+                    span {
+                        font-size: 24px !important;
+                    }
+                    .cell-title-order {
+                        .cell-title-order-item {
+                            font-size: 24px !important;
+                            width: 50px !important;
+                            height: 50px !important;
+                            line-height: 50px !important;
+                            
+                        }
+                    }
+                }
+            }
+            .cm-answerCard-footer {
+                width: 525px !important;
+                height: 70px !important;
+                background: #2780D0 !important;
+                border-radius: 15px !important;
+                line-height: 70px !important;
+                margin: 0 auto !important;
+                position: relative !important;
+                color: #FEFEFE !important;
+                font-size: 24px !important;
+            }
+        }
+        .answerpaperList {
+                .swiper-slideAnswer {
+                    padding: 0 15px !important;
+                    .big-name {
+                        padding: 15px 15px !important;
+                        font-size: 28px !important;
+                        color: #222222 !important;
+                    }
+                    .swiper-slide_content {
+                        padding: 0 15px !important;
+                        font-size: 24px !important;
+                        .topicDrt {
+                            .topicDrt-content {
+                                span {
+                                    font-size: 24px !important;
+                                    line-height: 40px  !important;
+                                }
+                                .content_body {
+                                    font-size: 24px !important;
+                                    line-height: 40px  !important;
+                                    p,div {
+                                        font-size: 24px !important;
+                                        line-height: 40px  !important;
+                                    }
+                                }
+                            }
+                        }
+                        .baseTypeStem {
+                            .topicDrt-content {
+                                .content_body {
+                                    p,div {
+                                        font-size: 24px !important;
+                                        line-height: 40px  !important;
+                                    }
+                                }
+                            }
+                            .baseTypeStem_key {
+                                .options {
+                                    .op-item .key {
+                                        font-size: 24px !important;
+                                    }
+                                    .op-item .value_wrap .value {
+                                        font-size: 24px !important;
+                                    }
+                                }
+                                .blanks {
+                                    .blank {
+                                        .index {
+                                            width: 60px !important;
+                                            font-size: 24px !important;
+                                        }
+                                        .cont {
+                                            textarea {
+                                            height: 32px !important;
+                                            font-size: 24px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 24px  !important;
+                                            }
+                                            }
+                                        }
+                                    }
+                                }
+                                .written {
+                                    .answerSheet {
+                                        .top-img {
+                                            img {
+                                            width: 60px;
+                                            height: 40px;
+
+                                            }
+                                        }
+                                        .bottom-written {
+                                            textarea {
+                                            font-size: 24px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 24px  !important;
+                                            }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .compoundTypeStem-answerSheet {
+                            .answerSheet {
+                                .start {
+                                    span {
+                                        font-size: 24px !important;
+                                            height:  48px  !important;
+                                            line-height: 48px  !important;
+                                    }
+                                }
+                            }
+                            .answerSheet-content {
+                                .top-img {
+                                        height: 25px !important;
+                                    img {
+                                        height: 25px !important;
+                                        width: 60px !important;
+                                    }
+                                }
+                                .bottom-gestalt {
+                                    .bottom-gestalt-wrap {
+                                        .swiper-container {
+                                            padding: 20px 0 !important;
+                                        }
+                                        .swiper-wrapper {
+                                            .topactive,.swiper-slide {
+                                                line-height: 38px !important;
+                                            }
+                                            
+                                                .topactive {
+                                                    border: 1px solid #2B83D3 !important;
+                                                    color: #2B83D3 !important;
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        .baseTypeStem_key {
+            padding-bottom: 0.6rem;
+            box-sizing: border-box;
+        }
+        
+        /deep/ .allStem-dialog {
+            /deep/ .el-dialog {
+                /deep/ .el-dialog__header .el-dialog__title {
+                    font-size: 24px !important;
+                }
+                /deep/ .el-dialog__body {
+                    span {
+                        font-size: 24px !important;
+                    }
+                }
+                /deep/ .el-dialog__footer {
+                    font-size: 24px !important;
+                    .dialog-footer {
+                        .footer-cell {
+                            height: 50px !important;
+                            width: 90px !important;
+                            font-size: 24px !important;
+                            line-height: 50px !important;
+                        }
+                    }
+                }
+
+            }
+        }
+  }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .preview {
+        .cm-allStem-head {
+            background: #FFFBF8;
+                height: 45px !important;
+            .cm-allStem-head-title {
+                padding-left: 30px !important;
+                width: 400px !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+                white-space: nowrap !important;
+                font-size: 24px !important;
+            }
+            .cm-allStem-head-r {
+                .cm-allStem-head-start {
+                    margin-right: 30px !important;
+                    width: 121px !important;
+                    height: 37px !important;
+                    line-height: 37px !important;
+                    background: #2780D0 !important;
+                    font-size: 19px !important;
+                    border-radius: 24px;
+                }
+                .cm-allStem-head-time {
+                    width: 280px !important;
+                    margin-right: -25px !important;
+                    font-size: 19px !important;
+                    .iconfont{
+                        width: 20px !important;
+                        height: 20px !important;
+                    }
+                }
+            } 
+        }
+        .answerpaperList {
+            padding: 0 30px !important;
+            .swiper-slideAnswer {
+                padding-top: 20px !important;
+                .big-name {
+                    font-size: 24px !important;
+                    color: #222222 !important;
+                }
+                .swiper-slide_content {
+                    font-size: 19px !important;
+                    .topicDrt {
+                        .topicDrt-content {
+                            span {
+                                font-size: 19px !important;
+                                line-height: 40px  !important;
+                            }
+                            .content_body {
+                                font-size: 19px !important;
+                                line-height: 40px  !important;
+                                p,div {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                }
+                            }
+                        }
+                    }
+                    .baseTypeStem {
+                        .topicDrt-content {
+                            .content_body {
+                                p,div {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                }
+                            }
+                        }
+                        .baseTypeStem_key {
+                            .options {
+                                .op-item .key {
+                                    font-size: 19px !important;
+                                }
+                                .op-item .value_wrap .value {
+                                    font-size: 19px !important;
+                                    line-height: 40px !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .baseTypeStem_key {
+            // padding-bottom: 100px;
+            box-sizing: border-box;
+        }  
+
+        .head-time-icon {
+            display: none !important;
+        }
+        .cm-allStem-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e8e8e8;
+            height: 37px;
+            margin: auto;
+            position: relative;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 400;
+            color: #5e5e5e;
+            margin-bottom: 20px;
+            .cm-allStem-head-r {
+                display: flex;
+                .cm-allStem-head-start {
+                    margin-right: 30px !important;
+                }
+                .cm-allStem-head-time {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    line-height: 14px;
+                    font-size: 19px !important;
+                    .iconfont {
+                        margin-right: 5px;
+                    }
+                }
+                .cm-allStem-head-card {
+                    height: 36px;
+                    padding: 0 20px;
+                    line-height: 36px;
+                    text-align: center;
+                    border-radius: 18px;
+                    font-size: 19px !important;
+                    font-weight: 400;
+                    margin-left: 30px;
+                    user-select: none;
+                    position: relative;
+                    background: linear-gradient(to left, #eb3f35, #ff6158);
+                    color: #ffffff;
+                }
+            }
+        }
+        .cm-allStem-mhead {
+            display: none !important;
+        }
+        
+        .allStem-mhead-bot {
+            margin: 0 30px !important;
+            .mhead-bot-time {
+                font-size: 19px !important;
+
+            }
+            .mhead-bot-order {
+                font-size: 19px !important;
+
+            }
+        }
+    }
+    .paper  {
+        padding-bottom: 0.2rem;
+        box-sizing: border-box; 
+
+        .cm-allStem-head {
+            .cm-allStem-head-r {
+                .cm-allStem-head-time {
+                    font-size: 19px !important;
+                }
+                .cm-allStem-head-card {
+                    font-size: 19px !important;
+                }
+            }
+        }
+        .head-time-icon {
+            display: none !important;
+        }
+        .cm-allStem-footer {
+            .cm-allStem-footer-item:first-child {
+                background: #ffffff !important;
+                border: 1px solid #e8e8e8 !important;
+                color: #5e5e5e !important;
+            }
+            .cm-allStem-footer-item:last-child {
+                background: #f2f8ff !important;
+                border: 1px solid var(--color1) !important;
+                color: var(--color1) !important;
+            }
+        }
+        .cm-allStem-head {
+                background: #FFFBF8;
+                height: 45px !important;
+                .cm-allStem-head-title {
+                    padding-left: 30px !important;
+                    font-size: 20px !important;
+                }
+                .cm-allStem-head-r {
+                    .cm-allStem-head-start {
+                        margin-right: 30px !important;
+                        font-size: 19px !important;
+                    }
+                } 
+            }
+        .allStem-mhead-top {
+            background: #FFFBF8 !important;
+            // height: 60px !important;
+            // line-height: 60px !important;
+            height: 110px !important;
+            .mhead-top-name {
+                font-size: 19px !important;
+            }
+            .mhead-top-btn {
+                font-size: 19px !important;
+                margin-right: 30px !important;
+                height: 40px !important;
+                line-height: 40px !important;
+            }
+            .head-time-icon {
+                .iconfont {
+                    display: none;
+                }
+            }
+        }
+        .allStem-mhead-bot {
+            margin: 0 30px !important;
+            .mhead-bot-time {
+                font-size: 19px !important;
+
+            }
+            .mhead-bot-order {
+                font-size: 19px !important;
+
+            }
+        }
+        .cm-answerCard {
+            width: 300px !important;
+            max-height: 400px;
+            overflow-y: scroll !important;
+            .answerCard-stem-cell {
+                .stem-cell-title {
+                    span {
+                        font-size: 19px !important;
+                    }
+                    .cell-title-order {
+                        .cell-title-order-item {
+                            font-size: 19px !important;
+                            width: 40px !important;
+                            height: 40px !important;
+                            line-height: 40px !important;
+                            margin-bottom: 10px !important;
+                        }
+                    }
+                }
+            }
+            .cm-answerCard-footer {
+                width: 200px !important;
+                height: 37px !important;
+                background: #2780D0 !important;
+                border-radius: 15px !important;
+                line-height: 37px !important;
+                margin: 0 auto !important;
+                position: relative !important;
+                color: #FEFEFE !important;
+                font-size: 19px !important;
+            }
+        }
+        .answerpaperList {
+                .swiper-slideAnswer {
+                    padding: 0 15px !important;
+                    .big-name {
+                        padding: 15px 15px !important;
+                        font-size: 24px !important;
+                        color: #222222 !important;
+                    }
+                    .swiper-slide_content {
+                        padding: 0 15px !important;
+                        font-size: 19px !important;
+                        .topicDrt {
+                            .topicDrt-content {
+                                span {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                }
+                                .content_body {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                    p,div {
+                                        font-size: 19px !important;
+                                        line-height: 40px  !important;
+                                    }
+                                }
+                            }
+                        }
+                        .baseTypeStem {
+                            .topicDrt-content {
+                                .content_body {
+                                    p,div {
+                                        font-size: 19px !important;
+                                        line-height: 40px  !important;
+                                    }
+                                }
+                            }
+                            .baseTypeStem_key {
+                                .options {
+                                    .op-item .key {
+                                        font-size: 19px !important;
+                                    }
+                                    .op-item .value_wrap .value {
+                                        font-size: 19px !important;
+                                    }
+                                }
+                                .blanks {
+                                    .blank {
+                                        .index {
+                                            width: 60px !important;
+                                            font-size: 19px !important;
+                                        }
+                                        .cont {
+                                            textarea {
+                                            height: 32px !important;
+                                            font-size: 19px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 19px  !important;
+                                            }
+                                            }
+                                        }
+                                    }
+                                }
+                                .written {
+                                    .answerSheet {
+                                        .top-img {
+                                            img {
+                                            width: 60px;
+                                            height: 40px;
+
+                                            }
+                                        }
+                                        .bottom-written {
+                                            textarea {
+                                            font-size: 19px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 19px  !important;
+                                            }
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .compoundTypeStem-answerSheet {
+                            .answerSheet {
+                                .start {
+                                    span {
+                                        font-size: 19px !important;
+                                            height:  48px  !important;
+                                            line-height: 48px  !important;
+                                    }
+                                }
+                            }
+                            .answerSheet-content {
+                                .top-img {
+                                        height: 25px !important;
+                                    img {
+                                        height: 25px !important;
+                                        width: 60px !important;
+                                    }
+                                }
+                                .bottom-gestalt {
+                                    .bottom-gestalt-wrap {
+                                        .swiper-container {
+                                            padding: 20px 0 !important;
+                                        }
+                                        .swiper-wrapper {
+                                            .topactive,.swiper-slide {
+                                                line-height: 38px !important;
+                                            }
+                                            
+                                                .topactive {
+                                                    border: 1px solid #2B83D3 !important;
+                                                    color: #2B83D3 !important;
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        .baseTypeStem_key {
+            padding-bottom: 0.6rem;
+            box-sizing: border-box;
+        }
+        
+        /deep/ .allStem-dialog {
+            /deep/ .el-dialog {
+                /deep/ .el-dialog__header .el-dialog__title {
+                    font-size: 19px !important;
+                }
+                /deep/ .el-dialog__body {
+                    span {
+                        font-size: 19px !important;
+                    }
+                }
+                /deep/ .el-dialog__footer {
+                    font-size: 19px !important;
+                    .dialog-footer {
+                        .footer-cell {
+                            height: 50px !important;
+                            width: 90px !important;
+                            font-size: 19px !important;
+                            line-height: 50px !important;
+                        }
+                    }
+                }
+
+            }
+        }
   }
 }
 </style>

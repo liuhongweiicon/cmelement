@@ -372,7 +372,30 @@ export default {
     }
   }
 }
-@media screen and (min-width: 760px) and (max-width: 1300px) {
+@media screen and (min-width: 760px) and (max-width: 850px) {
+    .swiper-container {
+        padding: 20px 0 !important;
+    }
+    .swiper-wrapper {
+			.swiper-slide {
+			    line-height: 45px !important;
+                height: 45px !important;
+			}
+		}
+        .answerSheet {
+        .top-img {
+            img {
+                width: 70px !important;
+                height: 40px !important;
+                margin-top: -20px !important;
+            }
+        }
+        }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .swiper-container {
+        padding: 20px 0 !important;
+    }
     .swiper-wrapper {
 			.swiper-slide {
 			    line-height: 45px !important;

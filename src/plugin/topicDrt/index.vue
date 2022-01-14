@@ -109,14 +109,14 @@ export default {
                 text-indent: 50px;
             }
         }
-        /deep/ span {
-            font-size: 15px !important;
+        span {
+            font-size: 15px ;
             font-weight: 400 !important;
             line-height: 24px !important;
             color: #3C3C3C!important;
         }
-        /deep/p {
-            font-size: 15px !important;
+        p {
+            font-size: 15px ;
             font-weight: 400 !important; 
             line-height: 24px !important;
             color: #3C3C3C!important;
@@ -139,19 +139,43 @@ export default {
         margin-bottom: 10px;
     }
 }
-@media screen and (min-width: 700px) and (max-width: 1300px) {
+@media screen and (min-width: 700px) and (max-width: 850px) {
     .topicDrt {
-        font-size: 29px !important;
+        padding: 20px 12px 0 !important;
+        font-size: 24px !important;
+        line-height: 40px  !important;
         /deep/ .topicDrt-content {
-            /deep/span {
-                font-size: 26px !important;
+            span {
+                font-size: 24px !important;
                 line-height: 40px  !important;
             }
             /deep/ .content_body {
-                font-size: 26px !important;
+                font-size: 24px !important;
                 line-height: 40px  !important;
-                /deep/ p,div {
-                    font-size: 26px !important;
+                p,div {
+                    font-size: 24px !important;
+                    line-height: 40px  !important;
+                }
+            }
+        }
+    }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .topicDrt {
+        padding: 20px 12px 0 !important;
+        font-size: 19px !important;
+        line-height: 40px  !important;
+        /deep/ .topicDrt-content {
+            line-height: 40px  !important;
+            span {
+                font-size: 19px !important;
+                line-height: 40px  !important;
+            }
+            /deep/ .content_body {
+                font-size: 19px !important;
+                line-height: 40px  !important;
+                p,div {
+                    font-size: 19px !important;
                     line-height: 40px  !important;
                 }
             }

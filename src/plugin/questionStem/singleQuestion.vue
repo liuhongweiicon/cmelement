@@ -62,7 +62,7 @@
       </div>
     </slot>
     <div
-	    @click.stop="answerCardOpen = false"
+	  @click.stop="answerCardOpen = false"
       class="swiper-container small singleAnswerpaperList "
       :class="{'swiper-no-swiping': paperState != 1}"
       style="touch-action: none;"
@@ -76,7 +76,7 @@
           >
             <div class="swiper-slideAnswer">
               <slot name="bigName" >
-                <div class="big-name" v-if="!index || paperState == 1">
+                <div class="big-name">
                     {{ ArabelToCN(index + 1) }}、{{ item.bigTitle }}
                 </div>
               </slot>
@@ -91,6 +91,7 @@
                   :questionDetails="paperDataHandler(item)"
                   :paperState="paperState"
                   :orderNum="showNum ? index + 1 : ''"
+                  :knowledgeString="knowledgeString"
                   :showBlock="showBlock"
                   :showType="showType"
                   :showKnowledgePoint="showKnowledgePoint"
@@ -111,6 +112,7 @@
                   :paperState="paperState"
                   :orderNum="showNum ? index + 1 : ''"
                   :showBlock="showBlock"
+                   :knowledgeString="knowledgeString"
                   :showType="showType"
                   :showLowerType="showLowerType"
                   :showKnowledgePoint="showKnowledgePoint"
@@ -177,6 +179,11 @@ export default {
       default: function() {
         return {};
       },
+    },
+    // 知识点文案
+    knowledgeString: {
+        type: String,
+        default: '',
     },
     // 是否隐藏head, ,默认显示
     headerShow: {
@@ -999,4 +1006,15 @@ export default {
   }
 }
 
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .cm-singleQuestion {
+    .cm-singleQuestion-mhead {
+      .allStem-mhead-top {
+        .head-time-icon {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
 </style>

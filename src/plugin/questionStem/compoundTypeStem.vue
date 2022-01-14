@@ -17,6 +17,7 @@
                     :orderNum="(index4 + 1)"
                     :topicSmall="true"
                     :showBlock="showBlock"
+                    :knowledgeString="knowledgeString"
                     :showType="showType"
                     :showLowerType="showLowerType"
                     :showKnowledgePoint="showKnowledgePoint">
@@ -64,6 +65,11 @@
             paperState: {
                 type: String | Number,
                 default: 0,
+            },
+            // 知识点文案
+            knowledgeString: {
+                type: String,
+                default: '',
             },
             // 试题信息
             compoundDetails: {
@@ -226,23 +232,23 @@
         flex-direction: column;
     }
 }
-@media screen and (min-width: 700px) and (max-width: 1300px) {
+@media screen and (min-width: 700px) and (max-width: 800px) {
     .compoundTypeStem {
-                font-size: 29px !important;
+                font-size: 24px !important;
                 .compoundTypeStem-stem {
                     .topicDrt {
                             span {
-                                font-size: 29px !important;
+                                font-size: 24px !important;
                                 line-height: 40px  !important;
                             }
                     }
                     .baseTypeStem_key {
                         .options {
                             .op-item .key {
-                                font-size: 29px !important;
+                                font-size: 24px !important;
                             }
                             .op-item .value_wrap .value {
-                                font-size: 29px !important;
+                                font-size: 24px !important;
                             }
                         }
                     }
@@ -251,7 +257,7 @@
                     .answerSheet {
                         .start {
                             span {
-                                font-size: 29px !important;
+                                font-size: 24px !important;
                                     height:  48px  !important;
                                     line-height: 48px  !important;
                             }
@@ -267,22 +273,22 @@
                         }
                         .bottom-gestalt {
                             .gestalt-wrap-sc {
-                                font-size: 26px !important;
+                                font-size: 24px !important;
                             } 
                             .bottom-topic {
                                 .baseTypeStem {
                                     .topicDrt {
                                         span {
-                                            font-size: 26px !important;
+                                            font-size: 24px !important;
                                         }
                                     }
                                     .baseTypeStem_key {
                                         .options {
                                         .op-item .key {
-                                            font-size: 29px !important;
+                                            font-size: 24px !important;
                                         }
                                         .op-item .value_wrap .value {
-                                            font-size: 29px !important;
+                                            font-size: 24px !important;
                                         }
                                     }
                                     }
@@ -290,7 +296,7 @@
                                     .result {
                                         padding: 20px 12px 0 !important;
                                         .baseKnowledgeModels,.name,.value {
-                                            font-size: 26px !important;
+                                            font-size: 24px !important;
                                         }
                                         .name {
                                             line-height: 40px !important;
@@ -303,7 +309,7 @@
                                                 line-height: 40px !important;
                                             }
                                             span {
-                                                font-size: 26px !important;
+                                                font-size: 24px !important;
                                             }
                                         }
                                     }
@@ -311,8 +317,17 @@
                             }
                         }
                     }
+                    
+                .bottom-gestalt-wrap {
+                    .swiper-container, .top-index{
+                        padding: 20px 0 !important;
+                    }
+                }
                 }
                 .bottom-gestalt-wrap {
+                    .swiper-container, .top-index{
+                        padding: 20px 0 !important;
+                    }
                                 .swiper-wrapper {
                                     .topactive,.swiper-slide {
                                         line-height: 38px !important;
@@ -332,20 +347,26 @@
                     }
         }
         .compoundTypeStem {
-                        font-size: 29px !important;
+                        font-size: 24px !important;
                         .topicDrt {
-                            font-size: 29px !important;
+                            font-size: 24px !important;
+                            line-height: 40px  !important;
                             .topicDrt-content {
                                 span {
-                                    font-size: 26px !important;
+                                    font-size: 24px !important;
                                     line-height: 40px  !important;
                                 }
                                 .content_body {
-                                    font-size: 26px !important;
+                                    font-size: 24px !important;
                                     line-height: 40px  !important;
-                                    p,div {
-                                        font-size: 26px !important;
+                                    & > div{
+                                        font-size: 24px !important;
                                         line-height: 40px  !important;
+                                        & > p,span  {
+                                            font-size: 24px !important;
+                                            line-height: 40px  !important;
+
+                                        }
                                     }
                                 }
                             }
@@ -354,25 +375,26 @@
                             
                                 .options {
                                     .op-item .key {
-                                        font-size: 29px !important;
+                                        font-size: 24px !important;
                                     }
                                     .op-item .value_wrap .value {
-                                        font-size: 29px !important;
+                                        font-size: 24px !important;
+                                        line-height: 40px  !important;
                                     }
                                 }
                                 .blanks {
                                     .blank {
                                         .index {
                                             width: 60px !important;
-                                            font-size: 26px !important;
+                                            font-size: 24px !important;
                                         }
                                         .cont {
                                             textarea {
                                                 padding-top: 0px !important;
                                              height: 32px !important;
-                                            font-size: 26px  !important;
+                                            font-size: 24px  !important;
                                             &::-webkit-input-placeholder {
-                                                font-size: 26px  !important;
+                                                font-size: 24px  !important;
                                             }
                                             }
                                         }
@@ -390,9 +412,9 @@
                                         }
                                         .bottom-written {
                                             textarea {
-                                            font-size: 26px  !important;
+                                            font-size: 24px  !important;
                                             &::-webkit-input-placeholder {
-                                                font-size: 26px  !important;
+                                                font-size: 24px  !important;
                                             }
                                             }
 
@@ -404,7 +426,219 @@
                             .answerSheet {
                                 .start {
                                     span {
-                                        font-size: 29px !important;
+                                        font-size: 24px !important;
+                                        height:  48px  !important;
+                                        line-height: 48px  !important;
+                                    }
+                                }
+                            }
+                            .answerSheet-content {
+                                .top-img {
+                                        height: 25px !important;
+                                    img {
+                                        height: 25px !important;
+                                        width: 60px !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .compoundTypeStem {
+                font-size: 19px !important;
+                .compoundTypeStem-stem {
+                    .topicDrt {
+                            span {
+                                font-size: 19px !important;
+                                line-height: 40px  !important;
+                            }
+                    }
+                    .baseTypeStem_key {
+                        .options {
+                            .op-item .key {
+                                font-size: 19px !important;
+                            }
+                            .op-item .value_wrap .value {
+                                font-size: 19px !important;
+                            }
+                        }
+                    }
+                }
+                .compoundTypeStem-answerSheet {
+                    .answerSheet {
+                        .start {
+                            span {
+                                font-size: 19px !important;
+                                    height:  48px  !important;
+                                    line-height: 48px  !important;
+                            }
+                        }
+                    }
+                    .answerSheet-content {
+                        .top-img {
+                                height: 25px !important;
+                            img {
+                                height: 25px !important;
+                                width: 60px !important;
+                            }
+                        }
+                        .bottom-gestalt {
+                            .gestalt-wrap-sc {
+                                font-size: 19px !important;
+                            } 
+                            .bottom-topic {
+                                .baseTypeStem {
+                                    .topicDrt {
+                                        span {
+                                            font-size: 19px !important;
+                                        }
+                                    }
+                                    .baseTypeStem_key {
+                                        .options {
+                                        .op-item .key {
+                                            font-size: 19px !important;
+                                        }
+                                        .op-item .value_wrap .value {
+                                            font-size: 19px !important;
+                                        }
+                                    }
+                                    }
+                                    
+                                    .result {
+                                        padding: 20px 12px 0 !important;
+                                        .baseKnowledgeModels,.name,.value {
+                                            font-size: 19px !important;
+                                        }
+                                        .name {
+                                            line-height: 40px !important;
+                                        }
+                                        .value-4 {
+                                            margin-bottom: 10px;
+                                        }
+                                        .value {
+                                            .analyzeValue {
+                                                line-height: 40px !important;
+                                            }
+                                            span {
+                                                font-size: 19px !important;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                .bottom-gestalt-wrap {
+                    .swiper-container, .top-index{
+                        padding: 20px 0 !important;
+                    }
+                }
+                }
+                .bottom-gestalt-wrap {
+                    .swiper-container, .top-index{
+                        padding: 20px 0 !important;
+                    }
+                                .swiper-wrapper {
+                                    .topactive,.swiper-slide {
+                                        line-height: 38px !important;
+                                    }
+                                    .topactive {
+                                        border: 1px solid #2B83D3 !important;
+                                        color: #2B83D3 !important;
+                                    }
+                                }
+                        }
+                    .top-img{
+                        display: none;
+                    }
+                    .bottom-gestalt {
+                        min-height: 293px !important;
+                        height: 100% !important;
+                    }
+        }
+        .compoundTypeStem {
+                        font-size: 19px !important;
+                        .topicDrt {
+                            font-size: 19px !important;
+                            line-height: 40px  !important;
+                            .topicDrt-content {
+                                span {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                }
+                                .content_body {
+                                    font-size: 19px !important;
+                                    line-height: 40px  !important;
+                                    & > div{
+                                        font-size: 19px !important;
+                                        line-height: 40px  !important;
+                                        & > p,span  {
+                                            font-size: 19px !important;
+                                            line-height: 40px  !important;
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .baseTypeStem_key {
+                            
+                                .options {
+                                    .op-item .key {
+                                        font-size: 19px !important;
+                                    }
+                                    .op-item .value_wrap .value {
+                                        font-size: 19px !important;
+                                        line-height: 40px  !important;
+                                    }
+                                }
+                                .blanks {
+                                    .blank {
+                                        .index {
+                                            width: 60px !important;
+                                            font-size: 19px !important;
+                                        }
+                                        .cont {
+                                            textarea {
+                                                padding-top: 0px !important;
+                                             height: 32px !important;
+                                            font-size: 19px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 19px  !important;
+                                            }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                .written {
+                                    .answerSheet {
+                                        .top-img {
+                                            img {
+                                            width: 60px;
+                                            height: 40px;
+
+                                            }
+                                        }
+                                        .bottom-written {
+                                            textarea {
+                                            font-size: 19px  !important;
+                                            &::-webkit-input-placeholder {
+                                                font-size: 19px  !important;
+                                            }
+                                            }
+
+                                        }
+                                    }
+                                }
+                        }
+                        .compoundTypeStem-answerSheet {
+                            .answerSheet {
+                                .start {
+                                    span {
+                                        font-size: 19px !important;
                                         height:  48px  !important;
                                         line-height: 48px  !important;
                                     }

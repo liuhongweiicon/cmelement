@@ -182,7 +182,7 @@
     <!-- 产生式 -->
     <div v-if="paperState == 2 && isShowBlock('5') && showKnowledgePoint">
       <div class="result answer">
-				<span class="name baseKnowledgeModels">产生式：</span>
+				<span class="name baseKnowledgeModels">{{knowledgeString ? knowledgeString:"产生式："}}</span>
         <span class="value" v-if="questionDetailsInfo.baseKnowledgeModels && questionDetailsInfo.baseKnowledgeModels.length > 0">
           <span v-for="(know, k) in questionDetailsInfo.baseKnowledgeModels" :key="k">
             {{ know.baseProductionName }}
@@ -271,6 +271,11 @@ export default {
     paperState: {
       type: String | Number,
       default: 0,
+    },
+    // 知识点文案
+    knowledgeString: {
+      type: String,
+      default: '',
     },
     // 试题信息
     questionDetails: {
@@ -909,21 +914,22 @@ export default {
       }
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (min-width: 768px) and (max-width: 800px) {
    .baseTypeStem {
     .baseTypeStem_key {
       .written {
-          font-size: 26px !important;
+          font-size: 24px !important;
       }
       .op {
         .op-item {
           .value_wrap {
             .value {
-              font-size: 26px !important;
+              font-size: 24px !important;
+              line-height: 40px !important;
             }
           }
           .key {
-            font-size: 26px !important;
+            font-size: 24px !important;
             
           }
 
@@ -933,14 +939,14 @@ export default {
         .blank {
           .index {
             width: 60px !important;
-            font-size: 26px !important;
+            font-size: 24px !important;
           }
           .cont {
             textarea {
             height: 32px !important;
-              font-size: 26px !important;
+              font-size: 24px !important;
               &::-webkit-input-placeholder {
-                font-size: 26px !important;
+                font-size: 24px !important;
               }
             }
           }
@@ -953,23 +959,23 @@ export default {
     /*答案 解析*/
     .result{
       .name,.value{
-        font-size: 26px !important;
+        font-size: 24px !important;
       }
       &.analysis {
         .analysis_info {
           .value {
             /deep/ .analyzeKey,.analyzeValue {
-              font-size: 26px !important;
+              font-size: 24px !important;
             }
           }
         }
       }
       &.answer {
-          margin-top: 20px;
+        //   margin-top: 20px;
       }
       &.answer .value{
         /deep/ span {
-          font-size: 26px !important;
+          font-size: 24px !important;
         }
       }
     }
@@ -978,7 +984,7 @@ export default {
     .result {
         padding: 20px 12px 0 !important;
         .baseKnowledgeModels,.name,.value {
-            font-size: 26px !important;
+            font-size: 24px !important;
         }
         .name {
             line-height: 40px !important;
@@ -995,7 +1001,103 @@ export default {
                 line-height: 40px !important;
             }
             span {
-                font-size: 26px !important;
+                font-size: 24px !important;
+                line-height: 40px !important
+            }
+        }
+    }
+  } 
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+   .baseTypeStem {
+    .baseTypeStem_key {
+      .written {
+          font-size: 19px !important;
+      }
+      .op {
+        .op-item {
+        //   max-width: 80% !important;
+        //   min-width: 30% !important;
+          .value_wrap {
+            .value {
+              font-size: 19px !important;
+              line-height: 40px !important;
+            }
+          }
+          .key {
+            font-size: 19px !important;
+            
+          }
+
+        }
+      }
+      .blanks {
+        .blank {
+          .index {
+            width: 60px !important;
+            font-size: 19px !important;
+          }
+          .cont {
+            textarea {
+            height: 32px !important;
+              font-size: 19px !important;
+              &::-webkit-input-placeholder {
+                font-size: 19px !important;
+              }
+            }
+          }
+        }
+      }
+
+    }
+    
+    
+    /*答案 解析*/
+    .result{
+      .name,.value{
+        font-size: 19px !important;
+      }
+      &.analysis {
+        .analysis_info {
+          .value {
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 19px !important;
+            }
+          }
+        }
+      }
+      &.answer {
+        //   margin-top: 20px;
+      }
+      &.answer .value{
+        /deep/ span {
+          font-size: 19px !important;
+        }
+      }
+    }
+    
+                                
+    .result {
+        padding: 20px 12px 0 !important;
+        .baseKnowledgeModels,.name,.value {
+            font-size: 19px !important;
+        }
+        .name {
+            line-height: 40px !important;
+        }
+        .value-4 {
+            margin-bottom: 10px;
+        }
+        .analysis_info {
+                margin-left: -10px !important;
+        }
+        .value {
+            line-height: 40px !important;
+            .analyzeValue {
+                line-height: 40px !important;
+            }
+            span {
+                font-size: 19px !important;
                 line-height: 40px !important
             }
         }

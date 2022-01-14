@@ -4,6 +4,7 @@
       <baseTypeStem v-if="questionData.type < 6"
                     :questionDetails="questionData"
                     :paperState="paperState"
+                    :knowledgeString="knowledgeString"
                     :orderNum="orderNum"
                     :showBlock="showBlock"
                     
@@ -16,6 +17,7 @@
                         :gainBtnShow="gainBtnShow"
 				                :getSmallBtn="showKnowledgePoint"
                         :orderNum="orderNum"
+                        :knowledgeString="knowledgeString"
                         @twoChoice="twoChoice"
                         :showType="showType"
                         :showLowerType="showLowerType"
@@ -66,6 +68,11 @@ export default {
     orderNum: {
       type: String | Number,
       default: '1'
+    },
+    // 知识点文案
+    knowledgeString: {
+        type: String,
+        default: '',
     },
     // 试题总数
     totalNum: {

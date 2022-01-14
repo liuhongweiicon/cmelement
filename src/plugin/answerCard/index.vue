@@ -116,17 +116,17 @@ export default {
         text-align: center;
     }
 }
-@media screen and (min-width: 760px) and (max-width: 1300px) {
+@media screen and (min-width: 760px) and (max-width: 850px) {
     
         .cm-answerCard {
             .answerCard-stem-cell {
                 .stem-cell-title {
                     span {
-                        font-size: 29px !important;
+                        font-size: 24px !important;
                     }
                     .cell-title-order {
                         .cell-title-order-item {
-                            font-size: 29px !important;
+                            font-size: 24px !important;
                             width: 50px !important;
                             height: 50px !important;
                             line-height: 50px !important;
@@ -144,7 +144,40 @@ export default {
                 margin: 0 auto 40px auto !important;
                 position: relative !important;
                 color: #FEFEFE !important;
-                font-size: 29px !important;
+                font-size: 24px !important;
+            }
+        }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    
+        .cm-answerCard {
+            .answerCard-stem-cell {
+                .stem-cell-title {
+                    span {
+                        font-size: 19px !important;
+                    }
+                    .cell-title-order {
+                        .cell-title-order-item {
+                            font-size: 19px !important;
+                            width: 40px !important;
+                            height: 40px !important;
+                            line-height: 40px !important;
+                            margin-bottom: 10px !important;
+                            
+                        }
+                    }
+                }
+            }
+            .cm-answerCard-footer {
+                width: 230px !important;
+                height: 45px !important;
+                background: #2780D0 !important;
+                border-radius: 15px !important;
+                line-height: 45px !important;
+                margin: 10px auto 20px auto !important;
+                position: relative !important;
+                color: #FEFEFE !important;
+                font-size: 19px !important;
             }
         }
 }
