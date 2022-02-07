@@ -691,6 +691,7 @@ export default {
         display: flex;
         flex-direction: column;
         height: 100%;
+        padding-top: 20px;
         .swiper-slide_content {
           flex: 1;
           height: 0;

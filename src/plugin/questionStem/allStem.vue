@@ -912,7 +912,10 @@ export default {
   flex-direction: column;
   user-select: none;
   .swiper-container {
+    width: 1200px;
+    background: #ffffff;
     flex: 1;
+    padding-top: 20px;
     .swiper-slide {
       .swiper-slideAnswer {
         .big-name {
@@ -961,8 +964,11 @@ export default {
 /*作答试题样式*/
 .paper {
   .swiper-container {
-    width: 100%;
+    // width: 100%;
+    width: 1200px;
     height: 100%;
+    margin: auto;
+    background: #ffffff;
     .swiper-wrapper {
       width: 100%;
     }
@@ -972,6 +978,7 @@ export default {
         display: flex;
         flex-direction: column;
         height: 100%;
+        padding-top: 20px;
         .swiper-slide_content {
           flex: 1;
           height: 0;
@@ -1020,7 +1027,7 @@ export default {
       .swiper-slide {
         .swiper-slideAnswer {
           .big-name {
-            padding: 0px 0px 20px 0;
+            padding: 0px 0px 20px 20px;
             font-size: 16px;
             color: #3c3c3c;
             font-weight: bold;
@@ -1036,7 +1043,7 @@ export default {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      width: 100%;
+      width: 1200px;
       .cm-allStem-footer-item {
         width: 100px;
         height: 28px;
@@ -1064,15 +1071,15 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #e8e8e8;
+    //   border-bottom: 1px solid #e8e8e8;
       height: 56px;
       margin: auto;
       position: relative;
-      width: 100%;
+      width: 1200px;
       font-size: 14px;
       font-weight: 400;
       color: #5e5e5e;
-      margin-bottom: 20px;
+    //   margin-bottom: 20px;
       .head-time-icon {
         height: 100%;
         display: flex;
@@ -1543,6 +1550,7 @@ export default {
                                 .bottom-gestalt {
                                     .bottom-gestalt-wrap {
                                         .swiper-container {
+                                            max-width: 900px !important;
                                             padding: 20px 0 !important;
                                         }
                                         .swiper-wrapper {
@@ -1597,7 +1605,9 @@ export default {
     .preview {
         .cm-allStem-head {
             background: #FFFBF8;
-                height: 45px !important;
+                padding: 32px 0 12px 0;
+                height: auto !important;
+                width: 100% !important;
             .cm-allStem-head-title {
                 padding-left: 30px !important;
                 width: 400px !important;
@@ -1697,7 +1707,7 @@ export default {
             font-size: 14px;
             font-weight: 400;
             color: #5e5e5e;
-            margin-bottom: 20px;
+            // margin-bottom: 20px;
             .cm-allStem-head-r {
                 display: flex;
                 .cm-allStem-head-start {
@@ -1750,6 +1760,7 @@ export default {
         box-sizing: border-box; 
 
         .cm-allStem-head {
+            padding: 32px 0 12px 0;
             .cm-allStem-head-r {
                 .cm-allStem-head-time {
                     font-size: 19px !important;
@@ -1776,7 +1787,8 @@ export default {
         }
         .cm-allStem-head {
                 background: #FFFBF8;
-                height: 45px !important;
+                height: auto !important;
+                width: 100% !important;
                 .cm-allStem-head-title {
                     padding-left: 30px !important;
                     font-size: 20px !important;
@@ -1956,6 +1968,7 @@ export default {
                                 .bottom-gestalt {
                                     .bottom-gestalt-wrap {
                                         .swiper-container {
+                                            max-width: 900px !important;
                                             padding: 20px 0 !important;
                                         }
                                         .swiper-wrapper {
