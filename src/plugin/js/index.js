@@ -470,7 +470,9 @@ const banUserReviseFontSize = () => {
 };
 
 // 将秒转化为时分秒
+// val => true  只返回分秒
 const formatSeconds = (value, val) => {
+  if(!value && val) return '00:00'
   let result = parseInt(value)
   let d = Math.floor(result / 86400) < 10 ? '0' + Math.floor(result / 86400) : Math.floor(result / 86400);
 
@@ -481,12 +483,12 @@ const formatSeconds = (value, val) => {
   let s = Math.floor((result % 60)) < 10 ? '0' + Math.floor((result % 60)) : Math.floor((result % 60));
  
   if (Number(d) <= 0 && Number(h) <= 0 && Number(m) <= 0) {
-    result = `${s}秒`
+    result = val ? `00:${s}` : `${s}秒`;
   } else if (Number(d) <= 0 && Number(h) <= 0 && Number(m) > 0) {
-    result = `${m}分${s}秒`
-  } else if (Number(d) <= 0 && Number(h) > 0) {
+    result = val ? `${m}:${s}` : `${m}分${s}秒`;
+  } else if (Number(d) <= 0 && Number(h) > 0  && !val) {
     result = `${h}时${m}分${s}秒`
-  } else {
+  } else if (!val) {
     result = `${d}天${h}时${m}分${s}秒`
   }
   

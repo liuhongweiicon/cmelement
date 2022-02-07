@@ -7,6 +7,7 @@ import plugin from './plugin/index';
 import router from './router/index';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import  '../static/iconfont/iconfont';
 Vue.use(ElementUI);
 
 

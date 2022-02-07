@@ -388,7 +388,7 @@ export default {
         setTimeout(() => {
           this.mySwiper = new Swiper(".answerpaperList", {
             speed: 100,
-            // touchRatio : 0.2,
+            touchRatio : 0.8,
             loop: false,
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true, //修改swiper的父元素时，自动初始化swiper

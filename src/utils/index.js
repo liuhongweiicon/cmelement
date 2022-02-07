@@ -466,6 +466,7 @@ const banUserReviseFontSize = () => {
 };
 
 // 将秒转化为时分秒
+// val => true  只返回分秒
 const formatSeconds = (value, val) => {
   let result = parseInt(value);
   let h =
@@ -480,12 +481,12 @@ const formatSeconds = (value, val) => {
     Math.floor(result % 60) < 10
       ? "0" + Math.floor(result % 60)
       : Math.floor(result % 60);
-  // 　　result = `${h}:${m}:${s}`
+  
   if (Number(h) <= 0 && Number(m) > 0) {
-    result = `${m}分${s}秒`;
+    result = val ? `${m}:${s}` : `${m}分${s}秒`;
   } else if (Number(h) <= 0 && Number(m) <= 0) {
-    result = `${s}秒`;
-  } else {
+    result = val ? `${s}` : `${s}秒`;
+  } else if (!val) {
     result = `${h}时${m}分${s}秒`;
   }
   return result;

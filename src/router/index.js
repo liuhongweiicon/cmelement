@@ -19,6 +19,13 @@ var router =  new VueRouter({
         component: () => import('@/pages/allStem.vue'),
         meta: { title: "全题型" }
       },
+      {
+        path: '/video',
+        name: 'video',
+        component: () => import('@/pages/video/video.vue'),
+        
+        meta: { title: "视频播放" }
+      },
       
       {
         path: '/allDoubleStem',
