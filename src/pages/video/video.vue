@@ -140,7 +140,7 @@
                 <div class="control_playloop control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true">     
                         <use :xlink:href="browserFullscreen ? '#icontuichuquanping-02' : '#iconquanping'"></use> 
-                    </svg> 
+                    </svg>
                 </div>
                 <div class="control_playloop control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true" @click="controlFullScreen">     

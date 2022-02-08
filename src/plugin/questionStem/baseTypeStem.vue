@@ -82,13 +82,16 @@
             <div :class="['blank', answertem]">
               <span class="index">{{ `空${index + 1}` }}</span>
               <span class="line"></span>
-              <div class="cont">
-                <textarea
+              <div 
+                class="cont" 
+                :class="questionDetailsInfo.blankMarkResult[index] === true ? 'ok' : questionDetailsInfo.blankMarkResult[index] === false ? 'err' : ''">
+                {{answertem || '未作答'}}
+                <!-- <textarea
                 type="textarea"
                 readonly
                 :placeholder="answertem"
                 v-model="answertem.answerValue"
-                ></textarea>
+                ></textarea> -->
               </div>
             </div>
           </div>
@@ -683,6 +686,19 @@ export default {
             box-sizing: border-box;
             width: 100%;
             z-index: 1;
+            line-height: 20px;
+            font-size: 14px;
+          }
+          
+          .ok {
+            color: var(--color3);
+            // background: var(--color3);
+          }
+          
+          /*错误情况*/
+          .err {
+            color: var(--color5);
+            // background: var(--color6);
           }
           input,textarea{
             outline: none;
@@ -704,22 +720,22 @@ export default {
               font-size: 13px;
             }
           }
-          /*正确*/
-          &.ok{
-            border: 1px solid var(--color3);
-            .index{
-              color: var(--color3);
-              background-color: var(--color4);
-            }
-          }
-          /*错误*/
-          &.err{
-            border: 1px solid var(--color5);
-            .index{
-              color: var(--color6);
-              background-color: var(--color6);
-            }
-          }
+          // /*正确*/
+          // &.ok{
+          //   border: 1px solid var(--color3);
+          //   .index{
+          //     color: var(--color3);
+          //     background-color: var(--color4);
+          //   }
+          // }
+          // /*错误*/
+          // &.err{
+          //   border: 1px solid var(--color5);
+          //   .index{
+          //     color: var(--color6);
+          //     background-color: var(--color6);
+          //   }
+          // }
         }
       }
 
@@ -943,7 +959,7 @@ export default {
           }
           .cont {
             textarea {
-            height: 32px !important;
+              height: 32px !important;
               font-size: 24px !important;
               &::-webkit-input-placeholder {
                 font-size: 24px !important;
