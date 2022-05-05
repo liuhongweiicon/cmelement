@@ -294,7 +294,6 @@ export default {
      */
 	paperState: {
 		handler(val) {
-			
 			if (val == 1 && !this.mySwiper) {
 				//开始做题 时间开始
 				this.nowTime = new Date().getTime();
@@ -304,7 +303,9 @@ export default {
         this.setSweiper();
 
 			} else if (val != 1 && this.mySwiper) {
-				
+				// this.nowquesIndex = 1
+                // this.totalTopic = 0
+			    clearInterval(this.timeInfo);
 				this.mySwiper.destroy(); //销毁Swiper对象。
 				this.mySwiper = null;
 			} else if (val == 0) {

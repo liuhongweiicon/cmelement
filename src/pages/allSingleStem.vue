@@ -3,13 +3,11 @@
         <div v-for="(item, index) in questionList" :key="index">
             <all-single-stem 
                 :questionData="item"  
-                :orderNum="1"
-                :showSmall="true"
-                :knowledgeString="'关键知识点：'"
-                :showBlock="2"
                 :gainBtnShow="true"
-                :isSwider="false"
-                :paperState="1"
+                :orderNum="1"
+                :showBlock="'2'" 
+                :isSwider="true"
+                :paperState="2"
             >
             <!-- <template v-slot:optionScope="{optionScope}">
                 
@@ -54,17 +52,20 @@
 //                         classCode: 4514,
                         // taskCode: "9ecfe2012e4f433b86464b867f1a7682"
                         // evaluationRecordCode: "ffe230c5517a4f83b5f7ce0e0e4dc14b"
-                        paperId: "2aa445c21ceb473fb0830c04c33ead7a",
-                        token: "string"
+                        // paperId: "2aa445c21ceb473fb0830c04c33ead7a",
+                        // token: "string"
+                        "questionId":"368eb5b68cc64733b342f2126bd0def2",
+                        "sourceCode":"968d56aa6ad844a490478b9ab24c5073",
+                        "userId":"1030457d-7861-404c-9db2-ba2cb45d4255"
                     }
 
                 // const parmas = {"booktypeCode":"b9a8320392c04661bfcee5117ba53260","difficultStar":null,"gradeCode":33,"knowledgeCodes":["88900001","88900002"],"pageNum":1,"pageSize":10,"stem":null,"subjectCode":2}
                 // const res = await $http.getTaskQuestionsByTaskCode(data);
-                const res = await $http.getPaper(data);
-                let arr = []
-                res.bigQuestions.forEach(val => arr.push(...val.smallQuestions))
-                console.log('this.questionList',this.questionList)
-                this.questionList = arr
+                const res = await $http.getWrongSubjectQuestion(data);
+                // let arr = []
+                // res.bigQuestions.forEach(val => arr.push(...val.smallQuestions))
+                // console.log('this.questionList',this.questionList)
+                this.questionList = [res.result.question]
                 // res.result.forEach(val => {
                 //         this.questionList.push( {
                 //       'answer':val.rightAnswer,

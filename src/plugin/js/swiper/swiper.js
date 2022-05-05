@@ -30,7 +30,7 @@
             speed: 300,
             // autoplay
             autoplay: false,
-            autoplayDisableOnInteraction: true,
+            autoplayDisableOnInteraction: false,
             autoplayStopOnLast: false,
             // To support iOS's swipe-to-go-back gesture (when being used in-app, with UIWebView).
             iOSEdgeSwipeDetection: false,
@@ -1352,6 +1352,7 @@
         
             //Touch Events
             if (s.browser.ie) {
+                // alert(14)
                 touchEventsTarget[action](s.touchEvents.start, s.onTouchStart, false);
                 target[action](s.touchEvents.move, s.onTouchMove, moveCapture);
                 target[action](s.touchEvents.end, s.onTouchEnd, false);
@@ -1364,6 +1365,7 @@
                     touchEventsTarget[action](s.touchEvents.end, s.onTouchEnd, passiveListener);
                 }
                 if ((params.simulateTouch && !s.device.ios && !s.device.android) || (params.simulateTouch && !s.support.touch && s.device.ios)) {
+                    // console.log('222222222222222222222', target)
                     touchEventsTarget[action]('mousedown', s.onTouchStart, false);
                     document[action]('mousemove', s.onTouchMove, moveCapture);
                     document[action]('mouseup', s.onTouchEnd, false);
@@ -1583,6 +1585,9 @@
         };
         
         s.onTouchMove = function (e) {
+            // debugger
+            // console.log('eeeeeee',e.clientX)
+            // console.log('ffffffffff',e.clientY)
             if (e.originalEvent) e = e.originalEvent;
             if (isTouchEvent && e.type === 'mousemove') return;
             if (e.preventedByNestedSwiper) {
@@ -1762,10 +1767,20 @@
             }
             // Update progress
             s.updateProgress(currentTranslate);
+            // debugger
+            console.log('currentTranslate', window.self === window.top)
             // Update translate
             s.setWrapperTranslate(currentTranslate);
+            // 当前页面是否嵌入iframe
+            if ((e.clientX<10||e.clientX>document.body.clientWidth-20)&&window.self !== window.top) {
+                document.removeEventListener('mousemove', s.onTouchMove, false);
+                s.onTouchEnd(e)
+            }
         };
         s.onTouchEnd = function (e) {
+            if (window.self !== window.top) {
+                document.addEventListener('mousemove', s.onTouchMove, false);
+            }
             if (e.originalEvent) e = e.originalEvent;
             if (allowTouchCallbacks) {
                 s.emit('onTouchEnd', s, e);
@@ -2213,7 +2228,7 @@
                 x = round(x);
                 y = round(y);
             }
-        
+            // console.log('setWrapperTranslateX',x)
             if (!s.params.virtualTranslate) {
                 if (s.support.transforms3d) s.wrapper.transform('translate3d(' + x + 'px, ' + y + 'px, ' + z + 'px)');
                 else s.wrapper.transform('translate(' + x + 'px, ' + y + 'px)');
@@ -2592,6 +2607,7 @@
                             if (shadowAfter.length) shadowAfter[0].style.opacity = Math.max(progress, 0);
                         }
         
+                    // alert(4)
                         slide
                             .transform('translate3d(' + tx + 'px, ' + ty + 'px, 0px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)');
                     }
@@ -2668,6 +2684,7 @@
                             ty = tx;
                             tx = 0;
                         }
+                        // alert(6)
         
                         var transform = 'rotateX(' + (s.isHorizontal() ? 0 : -slideAngle) + 'deg) rotateY(' + (s.isHorizontal() ? slideAngle : 0) + 'deg) translate3d(' + tx + 'px, ' + ty + 'px, ' + tz + 'px)';
                         if (progress <= 1 && progress > -1) {
@@ -2748,6 +2765,7 @@
                         if (Math.abs(translateZ) < 0.001) translateZ = 0;
                         if (Math.abs(rotateY) < 0.001) rotateY = 0;
                         if (Math.abs(rotateX) < 0.001) rotateX = 0;
+                        // alert(7)
         
                         var slideTransform = 'translate3d(' + translateX + 'px,' + translateY + 'px,' + translateZ + 'px)  rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
         
@@ -3065,7 +3083,8 @@
                 }
                 if (s.isHorizontal()) {
                     if (s.support.transforms3d) {
-                        sb.drag.transform('translate3d(' + (newPos) + 'px, 0, 0)');
+                    // alert(8)
+                    sb.drag.transform('translate3d(' + (newPos) + 'px, 0, 0)');
                     }
                     else {
                         sb.drag.transform('translateX(' + (newPos) + 'px)');
@@ -3763,6 +3782,7 @@
                 pY = pY * progress + 'px' ;
             }
         
+            // alert(9)
             el.transform('translate3d(' + pX + ', ' + pY + ',0px)');
         }
         s.parallax = {
@@ -3989,6 +4009,7 @@
                 z.velocity.prevPositionY = z.image.touchesCurrent.y;
                 z.velocity.prevTime = Date.now();
         
+                    // alert(10)
                 z.gesture.imageWrap.transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
             },
             onTouchEnd: function (s, e) {
@@ -4026,6 +4047,7 @@
                 z.image.currentX = Math.max(Math.min(z.image.currentX, z.image.maxX), z.image.minX);
                 z.image.currentY = Math.max(Math.min(z.image.currentY, z.image.maxY), z.image.minY);
         
+                    // alert(11)
                 z.gesture.imageWrap.transition(momentumDuration).transform('translate3d(' + z.image.currentX + 'px, ' + z.image.currentY + 'px,0)');
             },
             onTransitionEnd: function (s) {
@@ -4107,6 +4129,7 @@
                         translateX = 0;
                         translateY = 0;
                     }
+                    // alert(1)
                     z.gesture.imageWrap.transition(300).transform('translate3d(' + translateX + 'px, ' + translateY + 'px,0)');
                     z.gesture.image.transition(300).transform('translate3d(0,0,0) scale(' + z.scale + ')');
                 }
@@ -4133,6 +4156,7 @@
                     // Move image
                     s[action]('touchStart', s.zoom.onTouchStart);
                     s.slides.each(function (index, slide){
+                        // alert(13)
                         if ($(slide).find('.' + s.params.zoomContainerClass).length > 0) {
                             $(slide)[action](s.touchEvents.move, s.zoom.onTouchMove);
                         }
@@ -4761,6 +4785,7 @@
                         }
                     }
                 }
+                // console.log('--------------------', eventName)
                 var events = eventName.split(' ');
                 var i, j;
                 for (i = 0; i < this.length; i++) {

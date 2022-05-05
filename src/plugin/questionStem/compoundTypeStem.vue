@@ -446,6 +446,7 @@
 }
 @media screen and (min-width: 850px) and (max-width: 1280px) {
     .compoundTypeStem {
+        height: 90% !important;
                 font-size: 19px !important;
                 .compoundTypeStem-stem {
                     .topicDrt {

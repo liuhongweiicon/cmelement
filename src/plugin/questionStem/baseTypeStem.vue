@@ -25,7 +25,7 @@
                 <span class="line"></span>
                 <div class="value_wrap">
                   <span
-                    class="value"
+                    class="value value_img"
                     v-html="strToUrlCmelement(optionitem.optionValue)"
                     ></span>
                 </div>
@@ -84,7 +84,7 @@
               <span class="line"></span>
               <div 
                 class="cont" 
-                :class="questionDetailsInfo.blankMarkResult[index] === true ? 'ok' : questionDetailsInfo.blankMarkResult[index] === false ? 'err' : ''">
+                :class="!!questionDetailsInfo.blankMarkResult&&questionDetailsInfo.blankMarkResult[index] === true ? 'ok' : !!questionDetailsInfo.blankMarkResult&&questionDetailsInfo.blankMarkResult[index] === false ? 'err' : ''">
                 {{answertem || '未作答'}}
                 <!-- <textarea
                 type="textarea"
@@ -226,7 +226,7 @@
           <span v-else-if="answeritem.answerKeys && answeritem.answerKeys.length > 0">
             <span class="value-child" v-for="(a, b) in answeritem.answerKeys" :key="b">
               <span v-if="answeritem.answerKeys.length > 1">{{`（${b+1}）`}}</span>
-              <span v-html="strUrlChangeCmelement(a)" ></span>
+              <span class="value-child-img" v-html="strUrlChangeCmelement(a)" ></span>
             </span>
           </span>
           <span v-else>略</span>
@@ -237,7 +237,7 @@
       <!-- 主观题 -->
 			<div class="result answer" v-if="questionDetailsInfo.type == 5">
 				<span class="name">{{topicSmall && showBlock == 7 ?  `第${orderNum}题答案：` : '答案：'}}</span>
-				<span class="value" v-html="strUrlChangeCmelement(questionDetailsInfo.answer)"></span>
+				<span class="value value_img" v-html="strUrlChangeCmelement(questionDetailsInfo.answer)"></span>
 			</div>
 		</div>
 
@@ -253,7 +253,7 @@
                 class="value" >
                 <span class="analyzeKey">{{`${item.analyzeKey ? item.analyzeKey + ':' : ''}`}}</span>
                 
-                <span class="analyzeValue" v-html="strUrlChangeCmelement(item.analyzeValue)"></span>
+                <span class="analyzeValue analyzeValue-img" v-html="strUrlChangeCmelement(item.analyzeValue)"></span>
               </div>
               
             </div>
@@ -617,6 +617,11 @@ export default {
           .value {
             color: #5E5E5E;
           }
+          .value_img {
+            /deep/ img {
+                min-height: 30px !important;
+            }
+          }
           .key {
             color: #3C3C3C;
           }
@@ -872,6 +877,11 @@ export default {
               font-family: "微软雅黑";
               color: #808080 ;
             }
+            .analyzeValue-img {
+                /deep/ img {
+                    min-height: 30px !important;
+                }
+            }
             span:first-child {
               margin-right: 10px;
             }
@@ -898,6 +908,9 @@ export default {
             .value-child {
               display: flex;
               color: #7ac858;
+                .value-child-img {
+                    min-height: 30px !important;
+                }
             }
           }
         }
@@ -929,196 +942,6 @@ export default {
         display: none;
       }
     }
-}
-@media screen and (min-width: 768px) and (max-width: 800px) {
-   .baseTypeStem {
-    .baseTypeStem_key {
-      .written {
-          font-size: 24px !important;
-      }
-      .op {
-        .op-item {
-          .value_wrap {
-            .value {
-              font-size: 24px !important;
-              line-height: 40px !important;
-            }
-          }
-          .key {
-            font-size: 24px !important;
-            
-          }
-
-        }
-      }
-      .blanks {
-        .blank {
-          .index {
-            width: 60px !important;
-            font-size: 24px !important;
-          }
-          .cont {
-            textarea {
-              height: 32px !important;
-              font-size: 24px !important;
-              &::-webkit-input-placeholder {
-                font-size: 24px !important;
-              }
-            }
-          }
-        }
-      }
-
-    }
-    
-    
-    /*答案 解析*/
-    .result{
-      .name,.value{
-        font-size: 24px !important;
-      }
-      &.analysis {
-        .analysis_info {
-          .value {
-            /deep/ .analyzeKey,.analyzeValue {
-              font-size: 24px !important;
-            }
-          }
-        }
-      }
-      &.answer {
-        //   margin-top: 20px;
-      }
-      &.answer .value{
-        /deep/ span {
-          font-size: 24px !important;
-        }
-      }
-    }
-    
-                                
-    .result {
-        padding: 20px 12px 0 !important;
-        .baseKnowledgeModels,.name,.value {
-            font-size: 24px !important;
-        }
-        .name {
-            line-height: 40px !important;
-        }
-        .value-4 {
-            margin-bottom: 10px;
-        }
-        .analysis_info {
-                margin-left: -10px !important;
-        }
-        .value {
-            line-height: 40px !important;
-            .analyzeValue {
-                line-height: 40px !important;
-            }
-            span {
-                font-size: 24px !important;
-                line-height: 40px !important
-            }
-        }
-    }
-  } 
-}
-@media screen and (min-width: 850px) and (max-width: 1280px) {
-   .baseTypeStem {
-    .baseTypeStem_key {
-      .written {
-          font-size: 19px !important;
-      }
-      .op {
-        .op-item {
-        //   max-width: 80% !important;
-        //   min-width: 30% !important;
-          .value_wrap {
-            .value {
-              font-size: 19px !important;
-              line-height: 40px !important;
-            }
-          }
-          .key {
-            font-size: 19px !important;
-            
-          }
-
-        }
-      }
-      .blanks {
-        .blank {
-          .index {
-            width: 60px !important;
-            font-size: 19px !important;
-          }
-          .cont {
-            textarea {
-            height: 32px !important;
-              font-size: 19px !important;
-              &::-webkit-input-placeholder {
-                font-size: 19px !important;
-              }
-            }
-          }
-        }
-      }
-
-    }
-    
-    
-    /*答案 解析*/
-    .result{
-      .name,.value{
-        font-size: 19px !important;
-      }
-      &.analysis {
-        .analysis_info {
-          .value {
-            /deep/ .analyzeKey,.analyzeValue {
-              font-size: 19px !important;
-            }
-          }
-        }
-      }
-      &.answer {
-        //   margin-top: 20px;
-      }
-      &.answer .value{
-        /deep/ span {
-          font-size: 19px !important;
-        }
-      }
-    }
-    
-                                
-    .result {
-        padding: 20px 12px 0 !important;
-        .baseKnowledgeModels,.name,.value {
-            font-size: 19px !important;
-        }
-        .name {
-            line-height: 40px !important;
-        }
-        .value-4 {
-            margin-bottom: 10px;
-        }
-        .analysis_info {
-                margin-left: -10px !important;
-        }
-        .value {
-            line-height: 40px !important;
-            .analyzeValue {
-                line-height: 40px !important;
-            }
-            span {
-                font-size: 19px !important;
-                line-height: 40px !important
-            }
-        }
-    }
-  } 
 }
 @media screen and (min-width: 1024px) {
   .baseTypeStem {
@@ -1265,5 +1088,213 @@ export default {
       width: 4px;
     }
   }
+}
+@media screen and (min-width: 768px) and (max-width: 800px) {
+   .baseTypeStem {
+    .baseTypeStem_key {
+      .written {
+          font-size: 24px !important;
+      }
+      .op {
+        .op-item {
+          .value_wrap {
+            .value {
+              font-size: 24px !important;
+              line-height: 40px !important;
+            }
+          }
+          .key {
+            font-size: 24px !important;
+            
+          }
+
+        }
+      }
+      .blanks {
+        .blank {
+          .index {
+            width: 60px !important;
+            font-size: 24px !important;
+          }
+          .cont {
+            textarea {
+              height: 32px !important;
+              font-size: 24px !important;
+              &::-webkit-input-placeholder {
+                font-size: 24px !important;
+              }
+            }
+          }
+        }
+      }
+
+    }
+    
+    
+    /*答案 解析*/
+    .result{
+      .name,.value{
+        font-size: 24px !important;
+      }
+      &.analysis {
+        .analysis_info {
+          .value {
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 24px !important;
+            }
+          }
+        }
+      }
+      &.answer {
+        //   margin-top: 20px;
+      }
+      &.answer .value{
+        /deep/ span {
+          font-size: 24px !important;
+        }
+      }
+    }
+    
+                                
+    .result {
+        padding: 20px 12px 0 !important;
+        .baseKnowledgeModels,.name,.value {
+            font-size: 24px !important;
+        }
+        .name {
+            line-height: 40px !important;
+        }
+        .value-4 {
+            margin-bottom: 10px;
+        }
+        .analysis_info {
+                margin-left: -10px !important;
+        }
+        .value {
+            line-height: 40px !important;
+            .analyzeValue {
+                line-height: 40px !important;
+            }
+            span {
+                font-size: 24px !important;
+                line-height: 40px !important
+            }
+        }
+    }
+  } 
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+   .baseTypeStem {
+    height: 95% !important;
+    .baseTypeStem_key {
+      .written {
+          font-size: 19px !important;
+      }
+      .op {
+        .op-item {
+        //   max-width: 80% !important;
+        //   min-width: 30% !important;
+          .value_wrap {
+            .value {
+              font-size: 19px !important;
+              line-height: 40px !important;
+            }
+            .value_img {
+                /deep/ img {
+                min-height: 25px !important;
+            }
+            }
+          }
+          .key {
+            font-size: 19px !important;
+            
+          }
+
+        }
+      }
+      .blanks {
+        .blank {
+          .index {
+            width: 60px !important;
+            font-size: 19px !important;
+          }
+          .cont {
+            textarea {
+            height: 32px !important;
+              font-size: 19px !important;
+              &::-webkit-input-placeholder {
+                font-size: 19px !important;
+              }
+            }
+          }
+        }
+      }
+
+    }
+    
+    
+    /*答案 解析*/
+    .result{
+      .name,.value{
+        font-size: 19px !important;
+      }
+      &.analysis {
+        .analysis_info {
+          .value {
+            /deep/ .analyzeKey,.analyzeValue {
+              font-size: 19px !important;
+            }
+            .analyzeValue-img {
+                /deep/ img {
+                    min-height: 25px !important;
+                }
+            }
+          }
+        }
+      }
+      &.answer {
+        //   margin-top: 20px;
+      }
+      &.answer .value{
+        /deep/ span {
+          font-size: 19px !important;
+        }
+      }
+    }
+    
+                                
+    .result {
+        padding: 20px 12px 0 !important;
+        .baseKnowledgeModels,.name,.value {
+            font-size: 19px !important;
+        }
+        .name {
+            line-height: 40px !important;
+        }
+        .value-4 {
+            margin-bottom: 10px;
+            .value-child {
+                .value-child-img {
+                    /deep/ img {
+                        min-height: 25px !important;
+                    }
+                }
+            }
+        }
+        .analysis_info {
+                margin-left: -10px !important;
+        }
+        .value {
+            line-height: 40px !important;
+            .analyzeValue {
+                line-height: 40px !important;
+            }
+            span {
+                font-size: 19px !important;
+                line-height: 40px !important
+            }
+        }
+    }
+  } 
 }
 </style>

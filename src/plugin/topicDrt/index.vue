@@ -6,7 +6,7 @@
             <div class="content_body">
 
                 <span class="topicDrt_type" v-if="showType || showLowerType">{{questionType(type)}}</span>
-                <div :class="{'topicDrt_html': showType || showLowerType}" v-html="strToUrlCmelement(stem)"></div>
+                <div class="topicDrt_img" :class="{'topicDrt_html': showType || showLowerType}" v-html="strToUrlCmelement(stem)"></div>
             </div>
         </div>
         <!-- <div class="topicDrt-audio-visual">
@@ -108,6 +108,11 @@ export default {
             .topicDrt_html {
                 text-indent: 50px;
             }
+            .topicDrt_img {
+                /deep/ img {
+                    min-height: 30px !important;
+                }
+            }
         }
         span {
             font-size: 15px ;
@@ -137,49 +142,6 @@ export default {
     }
     .topicDrt-compound {
         margin-bottom: 10px;
-    }
-}
-@media screen and (min-width: 700px) and (max-width: 850px) {
-    .topicDrt {
-        padding: 20px 12px 0 !important;
-        font-size: 24px !important;
-        line-height: 40px  !important;
-        /deep/ .topicDrt-content {
-            span {
-                font-size: 24px !important;
-                line-height: 40px  !important;
-            }
-            /deep/ .content_body {
-                font-size: 24px !important;
-                line-height: 40px  !important;
-                p,div {
-                    font-size: 24px !important;
-                    line-height: 40px  !important;
-                }
-            }
-        }
-    }
-}
-@media screen and (min-width: 850px) and (max-width: 1280px) {
-    .topicDrt {
-        padding: 20px 12px 0 !important;
-        font-size: 19px !important;
-        line-height: 40px  !important;
-        /deep/ .topicDrt-content {
-            line-height: 40px  !important;
-            span {
-                font-size: 19px !important;
-                line-height: 40px  !important;
-            }
-            /deep/ .content_body {
-                font-size: 19px !important;
-                line-height: 40px  !important;
-                p,div {
-                    font-size: 19px !important;
-                    line-height: 40px  !important;
-                }
-            }
-        }
     }
 }
 @media screen and (min-width: 1024px) {
@@ -226,6 +188,54 @@ export default {
 
         }
 
+    }
+}
+@media screen and (min-width: 700px) and (max-width: 850px) {
+    .topicDrt {
+        padding: 20px 12px 0 !important;
+        font-size: 24px !important;
+        line-height: 40px  !important;
+        /deep/ .topicDrt-content {
+            span {
+                font-size: 24px !important;
+                line-height: 40px  !important;
+            }
+            /deep/ .content_body {
+                font-size: 24px !important;
+                line-height: 40px  !important;
+                p,div {
+                    font-size: 24px !important;
+                    line-height: 40px  !important;
+                }
+            }
+        }
+    }
+}
+@media screen and (min-width: 850px) and (max-width: 1280px) {
+    .topicDrt {
+        padding: 20px 12px 0 !important;
+        font-size: 19px !important;
+        line-height: 40px  !important;
+        /deep/ .topicDrt-content {
+            line-height: 40px  !important;
+            span {
+                font-size: 19px !important;
+                line-height: 40px  !important;
+            }
+            .content_body {
+                font-size: 19px !important;
+                line-height: 40px  !important;
+                p,div {
+                    font-size: 19px !important;
+                    line-height: 40px  !important;
+                }
+                .topicDrt_img {
+                    /deep/ img {
+                        min-height: 25px !important;
+                    }
+                }
+            }
+        }
     }
 }
 </style>

@@ -1,3 +1,4 @@
+
 import $http from '../utils/http'
 // 测试
 const getPaper = (data) => {
@@ -23,6 +24,15 @@ const getTaskQuestionsByTaskCode = (data) => {
 const getEvaluationAnswer = (data) => {
     return $http.post('http://tetest.e-edusky.com/diagnosis/manager/question/bank/getQuestionByKnowledge?requestId=0.8016242538880982', data)
 }
+// 全体型
+const distributePaper = (data) => {
+    return $http.post('http://tetest.e-edusky.com/diagnosis/resource/evaluation/distributePaper?requestId=0.5307370171583412', data)
+}
+
+// 错题本
+const getWrongSubjectQuestion = (data) => {
+    return $http.post('http://tjservice.xinguoren.cn/evaluation/wrongQuestionNotebook/getWrongSubjectQuestion?requestId=0.05045609213200941', data)
+}
 // 测试接口
 const getQuestionByKnowledge = (data) => {
     return $http.post($http.lantianUrl1 + '/class/classroomTask/getTaskTeacherReportAnswerAnalysis', data)
@@ -39,5 +49,7 @@ export default {
     getQuestionByKnowledge,
     liveUpload,
     getEvaluationAnswer,
-    getTaskQuestionsByTaskCode
+    getWrongSubjectQuestion,
+    getTaskQuestionsByTaskCode,
+    distributePaper
 }
