@@ -1,15 +1,17 @@
 <template>
+<div class="videoControlBox">
     <div 
-        class="videocontrol" 
+        class="videoControl" 
+        ref="videoControl"
         :style="{height: height, width: width}" 
-        :class="{'videocontrol_inside': inside}" 
+        :class="{'videoControl_inside': inside, 'h5Full': !isPC && windowFullscreen}" 
         @mouseenter="inside = true" 
         @mouseleave="inside = false">
         <!-- 底部阴影 -->
-        <div class="videocontrol_gradient_bottom">
+        <div class="videoControl_gradient_bottom">
         </div>
         <!-- 视频块 -->
-        <div class="videocontrol_video" @click="playStopHandler">
+        <div class="videoControl_video" @click="playStopHandler">
             <!-- 1、loadstart：视频查找。当浏览器开始寻找指定的音频/视频时触发，也就是当加载过程开始时 -->
             <!-- 2、durationchange：时长变化。当指定的音频/视频的时长数据发生变化时触发，加载后，时长由 NaN 变为音频/视频的实际时长 -->
             <!-- 3、loadedmetadata ：元数据加载。当指定的音频/视频的元数据已加载时触发，元数据包括：时长、尺寸（仅视频）以及文本轨道 -->
@@ -38,6 +40,7 @@
                 :autoplay="autoplay"
                 :loop="loop"
                 :muted="muted"
+                x5-video-player-type="h5"
                 @loadstart="loadstart"
                 @durationchange="durationchange"
                 @loadedmetadata="loadedmetadata"
@@ -65,19 +68,20 @@
                 <source :src="src" type="video/WebM">
                 <source v-if="isM3u8" :src="src" type="application/x-mpegURL">
             </video>
+            <!-- <video src=""></video> -->
         </div>
         <!-- 控制面板 -->
-        <div class="videocontrol_control">
-            <div class="videocontrol_control_progress">
-                <progressBar 
-                    :bufferProgress="bufferProgress"
-                    :progressNum="progressNum"
-                    @customdown="customdownHandler" 
-                    @custommove="custommoveHandler" 
-                    @customup="customupHandler"
-                    @customleave="customleaveHandler"></progressBar>
+        <div class="videoControl_control">
+            <div class="videoControl_control_progress">
+                <!-- 播放进度条 -->
+                <div class="videoControl_control_progress_playRate">
+                    <div class="videoControl_control_progress_playRate_buffer" :style="{width: `${bufferValue}%`}"></div>
+                    <div class="videoControl_control_progress_playRate_rate" :style="{width: `${rangeValue}%`}"></div>
+                    <div class="videoControl_control_progress_playRate_circle" :style="{left: `calc(${rangeValue}% - ${rangeValue/10}px)`}"></div>
+                    <input @input="rangeInput"  @change="rangeChange" class="videoControl_control_progress_playRate_input" type="range" v-model="rangeValue" :max-value="maxValue" min-value="0" style="width: 100%">
+                </div>
             </div>
-            <div class="videocontrol_control_wrap">
+            <div class="videoControl_control_wrap">
                 <div class="control_playbtn control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true" @click="playStopHandler">     
                         <use :xlink:href="playStop ? '#iconzanting1' : '#iconkaishi1'"></use> 
@@ -99,10 +103,11 @@
                     <span>{{duration || '00:00'}}</span>
                 </div>
             </div>
-            <div class="videocontrol_control_wrap">
-                <div class="control_speed" :class="{'speedPopup': speedPopup}"  @mouseleave="speedPopup = false" >
-                    <div class="control_speed_lable" @click="speedPopup = !speedPopup">{{ activeSpeed == 1 ? '倍速' : activeSpeed + 'X'}}</div>
-                    <div class="control_speed_list">
+            <!-- @mouseleave="speedPopup = false" -->
+            <div class="videoControl_control_wrap">
+                <div class="control_speed" :class="{'speedPopup': speedPopup}" >
+                    <div class="control_speed_lable" @click="showSpeedPopup">{{ activeSpeed == 1 ? '倍速' : activeSpeed + 'X'}}</div>
+                    <div class="control_speed_list"  >
                         <div class="speed_list_content">
                             <div
                                 class="list_content_menuitem" 
@@ -114,34 +119,27 @@
                         
                     </div>
                 </div>
-                <div class="control_wrap_cell" @mouseleave="soundPopup = false">
-                    
+
+                <div class="control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true"  @click="soundHandler"  >     
                         <use :xlink:href="muted ? '#iconfanhui' : '#iconline_shengyin'"></use>
                     </svg>
-                    <div class="control_change" :style="{display: soundPopup ? 'block' : 'none'}" >
+                    <!-- 声音进度条 -->
+                    <!--  -->
+                    <div class="control_change" @mouseleave="soundPopup = false" :style="{display: soundPopup ? 'block' : 'none'}">
                         <div class="control_change_drag" id="control_change_drag">
-                            <progressBar 
-                                direction="vertical"
-                                height="90px"
-                                width="4px"
-                                thumbHW="10px"
-                                moveId="control_change_drag"
-                                
-                                :progressNum="volumeNum"
-                                @customdown="customdownHandler" 
-                                @custommove="custommoveHandler" 
-                                @customup="customupHandler"
-                                @customleave="customleaveHandler">
-                            </progressBar>
+                            <div class="control_change_drag_voiceRate-bg"></div>
+                            <div class="control_change_drag_voiceRate-rate"  :style="{height: `${voiceRangeValue}%`}"></div>
+                            <div class="control_change_drag_voiceRate-circle" :style="{bottom: `calc(${voiceRangeValue}% - ${voiceRangeValue/10}px)`}"></div>
+                            <input @change="voiceRangeChange" class="control_change_drag_voiceRate-input" type="range" v-model="voiceRangeValue" :max-value="voiceMaxValue" min-value="0">
                         </div>
                     </div>
                 </div>
-                <div class="control_playloop control_wrap_cell">
+                <!-- <div class="control_playloop control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true">     
                         <use :xlink:href="browserFullscreen ? '#icontuichuquanping-02' : '#iconquanping'"></use> 
                     </svg>
-                </div>
+                </div> -->
                 <div class="control_playloop control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true" @click="controlFullScreen">     
                         <use :xlink:href="windowFullscreen ? '#iconcompress' : '#iconquanping_o'"></use> 
@@ -149,34 +147,37 @@
                 </div>
             </div>
         </div>
-
-        <slot name="loadeddata">
-            <div class="videocontrol_loadeddata"  v-show="videoLoadeddata && playStop">
-                <div class="loadeddata_cell"></div>
-                <div class="loadeddata_cell"></div>
-                <div class="loadeddata_cell"></div>
-            </div>
-        </slot>
-
-        <slot name="pausePlay">
-            <div class="videocontrol_pausePlay" :class="playStop ? 'videocontrol_playstate' : 'videocontrol_pausestate'">
-                <div class="videocontrol_pausePlay_strip">
+        <template v-if="videoLoadeddata && playStop">
+            <slot name="loadeddata">
+                <div class="videoControl_loadeddata">
+                    <div class="loadeddata_cell"></div>
+                    <div class="loadeddata_cell"></div>
+                    <div class="loadeddata_cell"></div>
                 </div>
-            </div>
-        </slot>
+            </slot>
+
+            <slot name="pausePlay">
+                <div class="videoControl_pausePlay" :class="playStop ? 'videoControl_playstate' : 'videoControl_pausestate'">
+                    <div class="videoControl_pausePlay_strip">
+                    </div>
+                </div>
+            </slot>
+        </template>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
         <!-- 水印 -->
-        <div class="videocontrol_watermark">
-            <img class="videocontrol_watermark_img" :src="watermark" alt="">
+        <div class="videoControl_watermark">
+            <img class="videoControl_watermark_img" :src="watermark" alt="">
         </div>
-        
     </div>
+    <input v-if="!isPC && windowFullscreen" @input="rangeInput"  @change="rangeChange" class="videoControlBoxInput" type="range" v-model="rangeValue" :max-value="maxValue" min-value="0" style="width: 100%">
+        </div>
+
 </template>
 
 <script>
 require('./hls.js')
 export default {
-    name: 'videocontrol',
+    name: 'videoControl',
     components: {
         progressBar: () => import('./progressBar.vue'), // 进度条组件
     },
@@ -234,14 +235,14 @@ export default {
          */
         height: {
             type: String,
-            default: '600px'
+            default: 'auto'
         },
         /**
          * 视频宽度
          */
         width: {
             type: String,
-            default: '900px'
+            default: '100vw'
         },
         /**
          * 水印
@@ -286,7 +287,6 @@ export default {
                 left: '0%', // 起始位置
                 width: '0%' // 宽度
             }],
-            volumeNum: '50%', // 音量进度条位置
             progressNum: '0%', // 视频播放进度条位置
             direction: 'vertical', // 进度条方向
 
@@ -298,23 +298,74 @@ export default {
 
             browserFullscreen: false, // 浏览器全屏
             windowFullscreen: false, // 系统全屏
+            rangeValue: 0,  // 播放进度
+            maxValue: 100,
+            isDragRange: true,  // 拖拽进度条时
+            bufferValue: 0, // 缓存进度
+            voiceRangeValue: 0, // 声音大小
+            voiceMaxValue: 100, // 声音最大值
+            isPC: true
         }
     },
     mounted() {
         window.document.addEventListener('keydown', this.escapeHandler());
+        this.isPC = parseInt(document.body.offsetWidth) < 1024 ? false : true;
+
+        this.addEventListenerScreen();
     },
     methods: {
+        addEventListenerScreen(){
+            document.addEventListener("fullscreenchange", () => {
+                this.windowFullscreen = !this.windowFullscreen;
+            });
+
+            document.addEventListener("mozfullscreenchange", () => {
+                this.windowFullscreen = !this.windowFullscreen;
+            });
+
+            document.addEventListener("webkitfullscreenchange", () => {
+                this.windowFullscreen = !this.windowFullscreen;
+            });
+
+            document.addEventListener("msfullscreenchange", () => {
+                this.windowFullscreen = !this.windowFullscreen;
+            });
+        },
+        // 点击进度条
+        rangeChange(val){
+            let ELE = document.querySelector('.videoControl');
+            const fullScreenEle = document.fullscreenElement || document.msFullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+
+            console.log('[ this.$refs.videoControl ] >', fullScreenEle)
+            this.isDragRange = true;
+            this.videoInfo.currentTime = (this.videoInfo.duration * (Number(this.rangeValue) / 100)).toFixed(6)
+        },
+        rangeInput(){
+            this.isDragRange = false;
+        },
+        voiceRangeChange(){
+            this.videoInfo.volume = Number(this.voiceRangeValue) / 100;
+        },
+        showSpeedPopup(){
+            this.soundPopup = false;
+            this.speedPopup = !this.speedPopup;
+        },
         /**
          * 点击倍速，切换倍速
          */
         speedHandler(item) {
             this.activeSpeed = item;
             this.videoInfo.playbackRate = item;
+            let timer = setTimeout(() => {
+                this.speedPopup = false;
+                clearTimeout(timer);
+            },1000)
         },
         /**
          * 点击声音图标按钮
          */
         soundHandler() {
+            this.speedPopup = false;
             if (this.soundPopup) {
                 this.muted = true;
             }
@@ -332,76 +383,26 @@ export default {
             } else {
                 this.videoInfo.play();
             }
+            this.speedPopup = false;
+            this.soundPopup = false;
             this.playStop = !this.playStop;
         },
-
-        /**
-         * 进度条鼠标按下事件
-         */
-        customdownHandler(item) {
-            if (item.direction == 'vertical') {
-                this.muted = false;
-                this.videoInfo.volume = item.progress.replace("%", '') / 100;
-            } else {
-                if (this.playStop) {
-                    this.mouseDown = true;
-                    this.videoInfo.pause()
-                }
-                this.progressNum = item.progress;
-            }
-        },
-        /**
-         * 进度条鼠标移动事件
-         */
-        custommoveHandler(item) {
-            if (item.direction == 'vertical') {
-                this.volumeNum = item.progress;
-            }
-            
-        },
-        /**
-         * 进度条鼠标抬起事件
-         */
-        customupHandler(item) {
-            if (item.direction == 'vertical') {
-                this.muted = false;
-                this.videoInfo.volume = item.progress.replace("%", '') / 100;
-            } else {
-                this.videoInfo.currentTime = this.videoInfo.duration * (item.progress.replace("%", '') / 100);
-                
-                if (this.playStop) {
-                    this.mouseDown = false;
-                    this.videoInfo.play()
-                }
-            }
-            
-        },
-        /**
-         * 进度条鼠标移出事件
-         */
-        customleaveHandler(item) {
-            if (item.direction == 'vertical') {
-                this.volumeNum = item.progress;
-            } else {
-                this.videoInfo.currentTime = this.videoInfo.duration * (item.progress.replace("%", '') / 100);
-                
-                if (this.playStop) {
-                    this.mouseDown = false;
-                    this.videoInfo.play()
-                }
-            }
-            
-        },
         escapeHandler(e) {
-            debugger
+            // debugger
             this.windowFullscreen = false;
         },
         // 全屏 / 退出全屏
         controlFullScreen () {
-            let ELE = document.querySelector('.video_cell');
+            // let ELE = document.querySelector('.video_cell');
+            if(!this.isPC) {
+                this.windowFullscreen = !this.windowFullscreen;
+                return;
+            };
+            let ELE = document.querySelector('.videoControl');
+
             if (!this.windowFullscreen) {
-                this.windowFullscreen = true;
-                console.log('进入全屏')
+                // this.windowFullscreen = true;
+                // console.log('进入全屏')
                 if (ELE.requestFullscreen) {
                 ELE.requestFullscreen();
                 } else if (ELE.mozRequestFullScreen) {
@@ -416,7 +417,7 @@ export default {
                 alert('当前视频不支持全屏')
                 }
             } else {
-                this.windowFullscreen = false;
+                // this.windowFullscreen = false;
                 if (document.exitFullScreen) {
                 document.exitFullScreen();
                 } else if (document.mozCancelFullScreen) {
@@ -438,15 +439,18 @@ export default {
          * 获取视频缓存进度
          */
         bufferProgressChange() {
+            // debugger
             let temp = []
-            for (let i = 0; i < this.videoInfo.buffered.length; i++) {
-                const start = this.videoInfo.buffered.start(i);
-                const end = this.videoInfo.buffered.end(i);
-                const width = (end - start) / this.videoInfo.duration * 100 + '%';
-                const left = start / this.videoInfo.duration * 100 + '%';
-                temp.push({left, width})
-            }
-
+        // 先不计算缓存
+            // for (let i = 0; i < this.videoInfo.buffered.length; i++) {
+            //     const start = this.videoInfo.buffered.start(i);
+            //     const end = this.videoInfo.buffered.end(i);
+            //     console.log('[ start,end ] >', start,end)
+            //     const width = (end - start) / this.videoInfo.duration * 100 + '%';
+            //     const left = start / this.videoInfo.duration * 100 + '%';
+            //     temp.push({left, width})
+            // }
+            // console.log('bufferProgress',temp, this.videoInfo.buffered);
             this.bufferProgress = temp;
         },
 
@@ -454,7 +458,7 @@ export default {
          * 1、loadstart：视频查找。当浏览器开始寻找指定的音频/视频时触发，也就是当加载过程开始时
          */
         loadstart(e) {
-            console.log(e, 'loadstart')
+            // console.log(e, 'loadstart')
             this.$emit('loadstart', e);
             
             this.videoInfo = document.querySelector('.video_cell');
@@ -465,7 +469,7 @@ export default {
          * 2、progress：浏览器下载监听。当浏览器正在下载指定的音频/视频时触发
          */
         progress(e) {
-            console.log(e, 'progress')
+            // console.log(e, 'progress')
             this.$emit('progress', e);
             // 更新视频缓存进度
             this.bufferProgressChange();
@@ -475,8 +479,10 @@ export default {
          * 3、durationchange：时长变化。当指定的音频/视频的时长数据发生变化时触发，加载后，时长由 NaN 变为音频/视频的实际时长
          */
         durationchange(e) {
-            console.log(e, 'durationchange');
+            // console.log(e, 'durationchange');
             this.duration =  this.formatSeconds(this.videoInfo.duration, true);
+            this.maxValue = this.videoInfo.duration || 0;
+            // console.log('this.maxValue', this.maxValue);
             this.$emit('durationchange', e);
         },
         
@@ -484,7 +490,7 @@ export default {
          * 4、loadedmetadata ：元数据加载。当指定的音频/视频的元数据已加载时触发，元数据包括：时长、尺寸（仅视频）以及文本轨道
          */
         loadedmetadata(e) {
-            console.log(e, 'loadedmetadata')
+            // console.log(e, 'loadedmetadata')
             this.$emit('loadedmetadata', e);
         },
 
@@ -493,7 +499,7 @@ export default {
          */
         loadeddata(e) {
             this.videoLoadeddata = true;
-            console.log(e, 'loadeddata')
+            // console.log(e, 'loadeddata')
             this.$emit('loadeddata', e)
         },
 
@@ -503,7 +509,7 @@ export default {
          */
         canplay(e) {
             this.videoLoadeddata = false;
-            console.log(e, 'canplay')
+            // console.log(e, 'canplay')
             this.$emit('canplay', e)
         },
 
@@ -511,7 +517,7 @@ export default {
          * 7、canplaythrough：可流畅播放。当浏览器预计能够在不停下来进行缓冲的情况下持续播放指定的音频/视频时触发
          */
         canplaythrough(e) {
-            console.log(e, 'canplaythrough')
+            // console.log(e, 'canplaythrough')
             this.$emit('canplaythrough', e)
         },
 
@@ -519,7 +525,7 @@ export default {
          * 8、play：播放监听
          */
         play(e) {
-            console.log(e, 'play')
+            // console.log(e, 'play')
             this.$emit('play', e)
         },
 
@@ -527,7 +533,7 @@ export default {
          * 9、pause：暂停监听
          */
         pause(e) {
-            console.log(e, 'pause')
+            // console.log(e, 'pause')
             this.$emit('pause', e)
         },
 
@@ -535,7 +541,7 @@ export default {
          * 10、seeking：查找开始。当用户开始移动/跳跃到音频/视频中新的位置时触发
          */
         seeking(e) {
-            console.log(e, 'seeking')
+            // console.log(e, 'seeking')
             this.$emit('seeking', e)
         },
 
@@ -543,8 +549,7 @@ export default {
          * 11、seeked：查找结束。当用户已经移动/跳跃到视频中新的位置时触发
          */
         seeked(e) {
-            console.log(e, 'seeked')
-            
+            // console.log(e, 'seeked')
             this.$emit('seeked', e)
         },
 
@@ -553,7 +558,7 @@ export default {
          */
         waiting(e) {
             this.videoLoadeddata = true;
-            console.log(e, 'waiting')
+            // console.log(e, 'waiting')
             this.$emit('waiting', e)
         },
 
@@ -561,7 +566,7 @@ export default {
          * 13、playing：当视频在已因缓冲而暂停或停止后已就绪时触发
          */
         playing(e) {
-            console.log(e, 'playing')
+            // console.log(e, 'playing')
             this.$emit('playing', e)
         },
 
@@ -571,6 +576,9 @@ export default {
         timeupdate(e) {
             if (this.mouseDown) return
             this.progressNum = this.videoInfo.currentTime / this.videoInfo.duration * 100 + '%';
+            if(this.isDragRange){
+                this.rangeValue = this.videoInfo.currentTime / this.videoInfo.duration * 100;
+            }
             this.currentTime = this.formatSeconds(this.videoInfo.currentTime, true);
             this.$emit('timeupdate', e)
         },
@@ -579,7 +587,7 @@ export default {
          * 15、ended：播放结束
          */
         ended(e) {
-            console.log(e, 'ended')
+            // console.log(e, 'ended')
             // 播放结束改变按钮状态
             this.playStop = false;
             this.$emit('ended', e)
@@ -589,7 +597,7 @@ export default {
          * 16、error：播放错误
          */
         error(e) {
-            console.log(e, 'error')
+            // console.log(e, 'error')
             this.$emit('error', e)
         },
 
@@ -597,7 +605,7 @@ export default {
          * 17、volumechange：当音量更改时
          */
         volumechange(e) {
-            console.log(e, 'volumechange')
+            // console.log(e, 'volumechange')
             this.$emit('volumechange', e)
         },
 
@@ -605,7 +613,7 @@ export default {
          * 18、stalled：当浏览器尝试获取媒体数据，但数据不可用时
          */
         stalled(e) {
-            console.log(e, 'stalled')
+            // console.log(e, 'stalled')
             this.$emit('stalled', e)
         },
 
@@ -613,7 +621,7 @@ export default {
          * 19、ratechange：当视频的播放速度已更改时
          */
         ratechange(e) {
-            console.log(e, 'ratechange')
+            // console.log(e, 'ratechange')
             this.$emit('ratechange', e)
         },
         /**
@@ -621,13 +629,13 @@ export default {
          */
         abort(e) {
 
-            console.log(e, 'abort')
+            // console.log(e, 'abort')
             this.$emit('abort', e)
         },
         
         suspend(e) {
 
-            console.log(e, 'suspend')
+            // console.log(e, 'suspend')
             this.$emit('suspend', e)
 
         }
@@ -640,14 +648,14 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.videocontrol {
+<style lang="scss" scoped>
+.videoControl {
     position: relative;
     background: #1c1d30;
     margin: auto;
     user-select: none;
     // overflow: hidden;
-    .videocontrol_gradient_bottom {
+    .videoControl_gradient_bottom {
         pointer-events: none;
         position: absolute;
         bottom: 0;
@@ -659,16 +667,17 @@ export default {
         background-position: 0 bottom;
         background-repeat: repeat-x;
     }
-    .videocontrol_video {
+    .videoControl_video {
         height: 100%;
         width: 100%;
         .video_cell {
             height: 100%;
             width: 100%;
+            object-fit: fill;
         }
     }
 
-    .videocontrol_control{
+    .videoControl_control{
         position: absolute;
         bottom: 0;
         left: 0;
@@ -680,16 +689,79 @@ export default {
         padding: 0 10px;
         box-sizing: border-box;
         // opacity: 0;
-        .videocontrol_control_progress {
+        .videoControl_control_progress {
             position: absolute;
             top: -8px;
-            left: 0;
-            width: 100%;
+            left: 10px;
+            width: calc(100% - 20px);
             height: 8px;
             padding: 0;
             vertical-align: top;
+            &_playRate {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0px;
+                height: 4px;
+                background-color: rgba(255,255,255,.35);
+                // &_rate {
+                //     height: 4px;
+                //     width: 0;
+                //     background-color: #ff6429;
+                //     cursor: pointer;
+                // }
+                &_rate, &_buffer {
+                    position: absolute;
+                    height: 100%;
+                    width: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-color:#ff6429;
+                    cursor: pointer;
+                }
+                &_buffer {
+                    background-color: #fff;
+                }
+                &_circle {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    display: none;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 100%;
+                    background-color: #ff6429;
+                    box-shadow: 0px 0px 2px 4px rgba(254,100,41,.3);
+                    cursor: pointer;
+
+                }
+                &_input {
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 99;
+                    margin: 0;
+                    padding: 0;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+            }
         }
-        .videocontrol_control_wrap {
+        .videoControl_control_progress:hover {
+            .videoControl_control_progress_playRate {
+                height: 8px;
+                transition: height .2s ease;
+                // &_rate,&_buffer {
+                //     height: 8px;
+                //     transition: height .2s ease;
+                // }
+                &_circle{
+                    display: inline-block;
+                }
+            }
+        }
+        .videoControl_control_wrap {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -712,90 +784,64 @@ export default {
                 .control_change {
                     z-index: 20;
                     position: absolute;
-                    bottom: 100%;
-                    width: 100%;
-                    padding-bottom: 6px;
-                    color: #eee;
-                    left: 50%;
                     width: 42px;
-                    transform: translate(-50%);
-                    cursor: default;
+                    height: 120px;
+                    top: -118px;
+                    background-color: rgba(0,0,0,.8);
+                    border-radius: 4px;
+                    padding: 10px 0px;
+                    box-sizing: border-box;
                     .control_change_drag {
-                        border-radius: 4px;
-                        overflow: hidden;
-                        background-color: rgba(0,0,0,.8);
-                        height: 90px;
-                        padding: 10px 0;
-                        display: flex;
-                        justify-content: center;
-                        // .change_drag_range {
-                        //     position: relative;
-                        //     width: 4px;
-                        //     height: 90px;
-                        //     margin: 10px 19px;
-                        //     border-radius: 2px;
-                        //     background-color: #a6a6a6;
-                        //     background-color: rgba(166,166,166,.5);
-                        //     cursor: pointer;
-                        //     .drag_range_current {
-                        //         z-index: 1;
-                        //         position: absolute;
-                        //         bottom: 0;
-                        //         left: 0;
-                        //         width: 100%;
-                        //         border-radius: 2px;
-                        //         background-color: #ff6429;
-                        //         height: 56%;
-                        //         pointer-events: none;
-                        //         .range_current_handle {
-                        //             position: absolute;
-                        //             top: -4px;
-                        //             left: -2px;
-                        //             width: 8px;
-                        //             height: 8px;
-                        //             border-radius: 100%;
-                        //             background-color: #fff;
-                        //             cursor: pointer;
-                        //             &::after {
-                        //                 display: block;
-                        //                 z-index: -1;
-                        //                 position: absolute;
-                        //                 top: -12px;
-                        //                 left: -12px;
-                        //                 width: 32px;
-                        //                 height: 32px;
-                        //                 background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAADAUExURQAAAP+ZAP+RAP9/AP+aAP9/AP+OCP//AP9/AP+qAP+QDf+SDP+TDv+TCv+RCP+ZAP+TC/+TCP+QC/+RCv+SCf+SCv+QCv+RCv+TCf+PD/+PCP+RDP+RCf+RCv+PCf+RB/+RCv+RCf6RCv+ZEf+RC/+RCf+RC/+RC/6RCv+OB/+QC/+RC/+RCv+TC/+QC/+SC/+RC/+RCv+RCv+RCv+RC/6RCv6RCv6RCv6SCv6SCv2QC/+RCv+SCv+RC/+RCv2RCn+uAUwAAABAdFJOUwAFBwYIBAsBAgMNExEYOAoWHit4JUtXYhoQHCg1MT4gRmmHD1SlsbaUIi5BIy1DUltIb2VygY+Jm6KYrHyYuqzDURAFAAAB/klEQVQ4y6WVWZeiMBSEhQZmDAgJO7LIIrivuNv2/P9/NTdRp7VlTmfO1BMP36kKl5ui1XrQD9DPm+hzq1lXqn3TlW3mKCXLApMsU7aBpHaUehMlJvGNsq+mzE6mlKEwGZSVX0yZnSBKBkJFoIGCAiFDEgVm+oUDO4Q0FeMOCGNVQ+hq+kAyDuwCFfuE9ECE+FgNwJSRz5yCNMCmdmiCQnsKqIaURxKCKVeone4onMWRDoriWTgiHbWg5D0cDAXRQGqH2GasJ/N0tUrniR6bNpDIEIW7JQtGGnDjKEmdhQtaOGkSjYHU0Gc4GEoowF17rE+c/tKrs6z2ln1noo/tLg6QdLdsyzTYH5nRxHG9bGOBNpnnOpPIHPk0XG5fQUFSNEzCOHHcem1t8/0+31rr2nWSOCRYU6glBekJVX8609O+t37Pd8PTabjL39deP9VnU7CkL85A0SjghGC4zKx8eDiW5fEwzK1sCZZwygKyGSiISgDJ0Xzhbba7Q/mrqs7lYbfdeIt5BNmBAhNiIByx0zMhuQbD47kaDKrzESxryDZ7dELP4MrNrP2prAYfH4OqvOytzF39H/h9NO/LcI/nZeCXS/PAuT8h91Lc1ow0rRl5XDPuxeW+CtyXi/u68hfAn0pRnitFeakU7pJ6rj0E+lvt8RcpfzX/Q9l/8/v4DS6tX+XyhPN2AAAAAElFTkSuQmCC);
-                        //                 background-size: 32px 32px;
-                        //                 content: "";
-                        //                 opacity: .5;
-                        //                 pointer-events: none;
-                        //             }
-                        //             &::before {
-                        //                 display: block;
-                        //                 position: absolute;
-                        //                 top: -3px;
-                        //                 left: -3px;
-                        //                 width: 14px;
-                        //                 height: 14px;
-                        //                 transform: scale(0);
-                        //                 border-radius: 7px;
-                        //                 background-color: #fff;
-                        //                 background-color: rgba(255,255,255,.2);
-                        //                 content: "";
-                        //                 opacity: 0;
-                        //             }
-                        //             &:hover {
-                        //                 &::after {
-                        //                    opacity: 1; 
-                        //                 }
-                        //                 &::before {
-                        //                    transform: scale(1);
-                        //                     opacity: 1;
-                        //                 }
-                        //             }
-                        //         }
-                        //     }
-                        // }
+                        height: 100%;
+                        width: 100%;
+                        position: relative;
+                        cursor: pointer;
+                        &_voiceRate-bg,&_voiceRate-rate {
+                            position: absolute;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            height: 100%;
+                            width: 4px;
+                            background-color: rgba(255,255,255,.35);
+                        }
+                        &_voiceRate-rate {
+                            bottom: 0;
+                        }
+                        &_voiceRate-input {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            width: 104px;
+                            height: 8px;
+                            margin: 0;
+                            padding: 0;
+                            z-index: 26;
+                            cursor: pointer;
+                            transform: rotateZ(-90deg);
+                            transform-origin: center bottom;
+                            left: -27px;
+                            top: 40px;
+                            opacity: 0;
+                        }
+                        &_voiceRate-rate {
+                            background-color: #ff6429;
+                            z-index: 22;
+                        }
+                        &_voiceRate-circle {
+                            position: absolute;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 100%;
+                            background-color: #ff6429;
+                            z-index: 23;
+                        }
+                    }
+                    .control_change_drag:hover {
+                        .control_change_drag_voiceRate-circle {
+                            box-shadow: 0px 0px 2px 4px rgba(254,100,41,.3);
+                        }
                     }
                 }
             }
@@ -825,6 +871,7 @@ export default {
                     white-space: nowrap;
                     border-radius: 26px;
                     background-color: rgba(0,0,0,.5);
+                    cursor: pointer;
                     &:hover {
                         background-color: #ff6429;
                     }
@@ -833,14 +880,15 @@ export default {
                 .control_speed_list {
                     display: none;
                     position: absolute;
-                    bottom: 34px;
-                    padding-bottom: 24px;
+                    bottom: 44px;
+                    // padding-bottom: 24px;
                     color: #eee;
                     cursor: default;
                     left: 50%;
                     width: auto;
                     transform: translate(-50%);
                     font-size: 0;
+                    z-index: 30;
                     .speed_list_content {
                         background-color: rgba(0,0,0,.8);
                         border-radius: 4px;
@@ -880,9 +928,9 @@ export default {
         }
     }
 
-    .videocontrol_watermark {
+    .videoControl_watermark {
         pointer-events: none;
-        .videocontrol_watermark_img {
+        .videoControl_watermark_img {
             pointer-events: none;
             position: absolute;
             height: 40px;
@@ -890,7 +938,7 @@ export default {
             top: 10px;
         }
     }
-    .videocontrol_loadeddata {
+    .videoControl_loadeddata {
         pointer-events: none;
         position: absolute;
         top: 50%;
@@ -936,7 +984,7 @@ export default {
             }
         }
     }
-    .videocontrol_pausePlay {
+    .videoControl_pausePlay {
         pointer-events: none;
         position: absolute;
         top: 50%;
@@ -950,7 +998,7 @@ export default {
         transition: all .15s;
 
 
-        .videocontrol_pausePlay_strip {
+        .videoControl_pausePlay_strip {
             background-color: rgba(255, 255, 255, 1);
             width:  .8em;
             height: 2em;
@@ -976,25 +1024,76 @@ export default {
 
         }
     }
-    .videocontrol_playstate {
+    .videoControl_playstate {
         transform: scale(0) translate(-50%, -50%);
         opacity: 0;
     }
-    .videocontrol_pausestate {
+    .videoControl_pausestate {
         transform: scale(1) translate(-50%, -50%);
         opacity: 1;
     }
-
+    input[type=range] {
+        // -webkit-appearance: none;/*清除系统默认样式*/
+        // width: 1.8rem;
+        background: -webkit-linear-gradient(#ddd, #ddd) no-repeat, #ddd;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+        background-size: 75% 100%;/*设置左右宽度比例*/
+        height: 8px;/*横条的高度*/
+        // border-radius: 10px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;/*清除系统默认样式*/
+        height: 4px;/*拖动块高度*/
+        width: 4px;/*拖动块宽度*/
+        // background: rgb(255, 1, 1);/*拖动块背景*/
+        border-radius: 50%; /*外观设置为圆形*/
+        border: solid 1px #ddd; /*设置边框*/
+    }
 }
 // 鼠标移入顶级元素
-.videocontrol_inside {
-    .videocontrol_gradient_bottom {
+.videoControl_inside {
+    .videoControl_gradient_bottom {
         opacity: 1;
         transition: opacity .5s cubic-bezier(0,0,.2,1);
     }
-    .videocontrol_control {
+    .videoControl_control {
         opacity: 1;
         transition: opacity .5s cubic-bezier(0,0,.2,1);
     }
+}
+.h5Full {
+    height: 100vw!important;
+    width: 100vh!important;
+    transform: translate(-50%, -50%) rotate(90deg);
+    left: 50%;
+    top: 50%;
+}
+.videoControlBox {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .videoControlBoxInput {
+        width: calc(100vh - 20px)!important;
+        position: absolute;
+        transform: rotateZ(90deg);
+        transform-origin: left center;
+        top: 0;
+        left: 50px;
+        opacity: 0;
+    }
+        .videoControl_control_progress_playRate {
+            height: 6px!important;
+            &_circle {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                display: inline-block!important;
+                width: 12px;
+                height: 12px;
+                border-radius: 100%;
+                background-color: #ff6429;
+                box-shadow: 0px 0px 2px 4px rgba(254,100,41,.3);
+                cursor: pointer;
+            }
+        }
 }
 </style>

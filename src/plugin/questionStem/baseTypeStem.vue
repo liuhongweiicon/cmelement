@@ -23,7 +23,7 @@
                 
                 <span class="key">{{ optionitem.optionKey }}</span>
                 <span class="line"></span>
-                <div class="value_wrap">
+                <div class="value_wrap" :class="{preview:paperState == 0}">
                   <span
                     class="value value_img"
                     v-html="strToUrlCmelement(optionitem.optionValue)"
@@ -104,8 +104,8 @@
         
         <!-- 预览状态 -->
         <div class="judge" v-if="paperState == 0">
-          <div>✔</div>
-          <div>✘</div>
+          <div class="right">正确</div>
+          <div class="wrong">错误</div>
         </div>
         
         <!-- 作答状态 -->
@@ -392,7 +392,7 @@ export default {
       return function(item) {
         switch(Number(this.paperState)) {
           case 0:
-            return '';
+            return 'isBorder';
             break;
           case 1:
             return {
@@ -632,9 +632,15 @@ export default {
             height: 15px;
             margin: 0 14px 0 12.5px;
           }
-
+            .preview {
+                line-height: 3px;
+            }
         }
-        
+        .isBorder {
+            border: none;
+            padding: 0px;
+            align-items: flex-start;
+        }
         /*点击情况*/
         .active {
           border: 1px solid var(--color1);
@@ -746,7 +752,6 @@ export default {
 
       /*判断题*/
       .judge {
-        
         margin: 13px 12px 0;
         &>div {
           border: 1px solid #ccc;
@@ -777,6 +782,20 @@ export default {
             color: var(--color5);
             background: var(--color6);
           }
+        }
+        
+        .right {
+            margin-right: 20px;
+            border: none;
+            display: inline-block;
+            margin-top: 0px;
+            width:auto
+        }
+        .wrong {
+            border: none;
+            display: inline-block;
+            margin-top: 0px;
+            width:auto
         }
       }
 
@@ -993,6 +1012,11 @@ export default {
           }
 
         }
+        .isBorder {
+            border: none;
+            padding: 0px;
+            align-items: flex-start;
+        }
       }
       .judge {
         margin: 0;
@@ -1008,6 +1032,20 @@ export default {
           margin-top: 20px;
           padding-left: 20px;
           width: 180px;
+        }
+        .right {
+            margin-right: 20px;
+            border: none;
+            display: inline-block;
+            width:auto;
+            margin-top: 0px;
+        }
+        .wrong {
+            border: none;
+            display: inline-block;
+            width:auto;
+            margin-top: 0px;
+
         }
       }
       .blanks {
@@ -1108,6 +1146,11 @@ export default {
             
           }
 
+        }
+        .isBorder {
+            border: none;
+            padding: 0px;
+            align-items: flex-start;
         }
       }
       .blanks {
@@ -1210,6 +1253,11 @@ export default {
             
           }
 
+        }
+        .isBorder {
+            border: none;
+            padding: 0px;
+            align-items: flex-start;
         }
       }
       .blanks {
