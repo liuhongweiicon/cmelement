@@ -1,8 +1,6 @@
 <template>
     <div>
-        <cusVideo :src="src" :adTime="5" :adSrc="adVideoUrl">
-            
-        </cusVideo>
+        <cusVideo :src="src" :adTime="5" :adSrc="adVideoUrl"></cusVideo>
     </div>
 </template>
 

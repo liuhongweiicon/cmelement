@@ -200,7 +200,7 @@
 
 <script>
 export default {
-    name: 'cm-yj-video',
+    name: 'cm-video',
     props: {
         /**
          * auto => 指示一旦页面加载，则开始加载音频/视频。
