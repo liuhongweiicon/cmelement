@@ -6,8 +6,8 @@
         ref="videoControl"
         :style="{height: height, width: width}" 
         :class="{'videoControl_inside': inside && controls}" 
-        @mouseenter="inside = true" 
-        @mouseleave="inside = false">
+        @mouseenter="setTimer"
+        >
         
         <!-- 底部阴影 -->
         <div class="videoControl_gradient_bottom">
@@ -45,8 +45,8 @@
                 :preload="preload" 
                 :poster="poster" 
                 :autoplay="autoplay"
-                :loop="loop"
-                :muted="muted"
+                :loop="srcLoop"
+                :muted="srcMuted"
                 x5-video-player
                 x5-playsinline
                 x5-video-player-type="h5"
@@ -95,7 +95,7 @@
 
         </div>
         <!-- 控制面板 -->
-        <div class="videoControl_control" v-show="!isPlayAd && controls">
+        <div class="videoControl_control" v-show="!isPlayAd && controls" @mouseenter="setTimer">
             <div class="videoControl_control_progress">
                 <!-- 播放进度条 -->
                 <div class="videoControl_control_progress_playRate">
@@ -118,7 +118,7 @@
                 </div>
                 <div class="control_playloop control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true" @click="setLoop">     
-                        <use :xlink:href="loop ? '#icona-iconxunhuankai' : '#icona-iconxunhuanguan'"></use>
+                        <use :xlink:href="srcLoop ? '#icona-iconxunhuankai' : '#icona-iconxunhuanguan'"></use>
                     </svg>
                 </div>
                 <div class="control_playtime">
@@ -146,7 +146,7 @@
 
                 <div class="control_wrap_cell">
                     <svg class="iconfont" aria-hidden="true"  @click="soundHandler"  >     
-                        <use :xlink:href="muted ? '#iconmn_shengyinwu_fill' : '#iconline_shengyin'"></use>
+                        <use :xlink:href="srcMuted ? '#iconmn_shengyinwu_fill' : '#iconline_shengyin'"></use>
                     </svg>
                     <!-- 声音进度条 -->
                     <!--  -->
@@ -311,14 +311,14 @@ export default {
          * 视频填充类型
          */
         objectFit: {
-            type: Boolean,
+            type: String,
             default: 'contain'
         },
         /**  
          * 广告视频填充类型
          */
         adObjectFit: {
-            type: Boolean,
+            type: String,
             default: 'contain'
         },
 
@@ -386,9 +386,11 @@ export default {
                 currentTime: 0
             },
             changeTime: null, //移动端全屏滑动屏幕快进到的视频时刻
+            srcMuted: false, // 视频是否静音
             adMuted: true, // 广告是否静音
             isPlayAd: false, // 还是否播放广告
             isFirstPlayAdVideo: false, // 点击开始播放视频面板播放视频广告标记一次
+            srcLoop: false
         }
     },
     mounted() {
@@ -398,12 +400,14 @@ export default {
         this.addEventListenerScreen();
         this.videoInfo = document.querySelector('.video_cell'); 
         this.videoInfo.volume = 0.5;
+        this.srcLoop = this.loop;
+        this.srcMuted = this.muted;
         this.adVideoInfo = document.querySelector('.adVideo_cell');
         // 处理视频和广告url
         this.formatTurn('videoUrl', true);
         this.formatTurn('adVideoUrl', false);
         // 移动端添加定时器关闭控制器
-        !this.isPC && this.setTimer();
+        this.setTimer();
     },
     methods: {
         /**
@@ -516,8 +520,8 @@ export default {
          * 设置循环播放
          */
         setLoop() {
-            this.loop = !this.loop;
-            !this.isPC && this.setTimer();
+            this.srcLoop = !this.srcLoop;
+            this.setTimer();
         },
         /** 
          * 视频进度条变化
@@ -526,7 +530,7 @@ export default {
             const fullScreenEle = document.fullscreenElement || document.msFullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
             this.isDragRange = true;
             this.videoInfo.currentTime = (this.videoInfo.duration * (Number(this.rangeValue) / 100)).toFixed(6)
-            !this.isPC && this.setTimer();
+            this.setTimer();
         },
         /** 
          * 播放下一个视频
@@ -543,14 +547,14 @@ export default {
                 this.speedPopup = false;
             }
             this.isDragRange = false;
-            !this.isPC && this.setTimer();
+            this.setTimer();
         },
         /** 
          * 声音进度条变化
         */
         voiceRangeChange(){
-            this.videoInfo.volume = Number(this.voiceRangeValue) / 50;
-            !this.isPC && this.setTimer();
+            this.videoInfo.volume = Number(this.voiceRangeValue) / 100;
+            this.setTimer();
         },
         /** 
          * 打开倍速弹框
@@ -558,7 +562,7 @@ export default {
         showSpeedPopup(){
             this.soundPopup = false;
             this.speedPopup = !this.speedPopup;
-            !this.isPC && this.setTimer();
+            this.setTimer();
         },
         /**
          * 点击倍速，切换倍速
@@ -570,7 +574,7 @@ export default {
                 this.speedPopup = false;
                 clearTimeout(timer);
             },1000)
-            !this.isPC && this.setTimer();
+            this.setTimer();
         },
         /**
          * 点击声音图标按钮
@@ -578,10 +582,10 @@ export default {
         soundHandler() {
             this.speedPopup = false;
             if (this.soundPopup) {
-                this.muted = true;
+                this.srcMuted = true;
             }
-            if (!this.soundPopup && this.muted) {
-                this.muted = false;
+            if (!this.soundPopup && this.srcMuted) {
+                this.srcMuted = false;
             }
             this.soundPopup = !this.soundPopup;
         },
@@ -592,7 +596,7 @@ export default {
             if(this.isPlayAd)return;
             this.speedPopup = false;
             this.soundPopup = false;
-            !this.isPC && this.setTimer();
+            this.setTimer();
             if (this.playStop) {
                 this.videoInfo.pause();
             } else {

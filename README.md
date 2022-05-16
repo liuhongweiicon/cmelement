@@ -2,11 +2,11 @@
 试题（PCor Mobile）封装
 
 # 视频组件使用
-<cm-video :src="src" :adTime="5" :adSrc="adVideoUrl" ></cm-video>
+#### <cm-video :src="src" :adTime="5" :adSrc="adVideoUrl" ></cm-video>
 
 ## 视频组件传参
 
-props: {
+    {
         /**
          * auto => 指示一旦页面加载，则开始加载音频/视频。
          * metadata => 指示当页面加载后仅加载音频/视频的元数据。
