@@ -1,11 +1,9 @@
 <template>
-<!-- <div class="videoControlBox"> -->
-    <!-- , 'h5Full': !isPC && windowFullscreen -->
     <div 
         class="videoControl" 
+        :class="`${inside && controls ? 'videoControl_inside' : ''} videoControl${classId}`"
         ref="videoControl"
         :style="{height: height, width: width}" 
-        :class="{'videoControl_inside': inside && controls}" 
         @mouseenter="setTimer"
         >
         
@@ -40,8 +38,8 @@
                 @touchmove="touchmove"
                 @touchend="touchend"
                 class="video_cell"
-                :class="{'video_cell_opacity': isPlayAd}"
-                :style="{'object-fit': objectFit}"
+                :class="`video_cell${classId}`"
+                :style="{'object-fit': objectFit,  position: isPlayAd ? 'relative' : 'unset',  opacity: isPlayAd ? 0 : 1,  'z-index': isPlayAd ? '-99' : 'unset'}"
                 :preload="preload" 
                 :poster="poster" 
                 :autoplay="autoplay"
@@ -78,10 +76,10 @@
             <div v-show="adVideoUrl" class="adVideo_cell_masker"></div>
             <video 
                 class="adVideo_cell" 
-                :class="{'adVideo_cell_opacity': isPlayAd}"
+                :class="`adVideo_cell${classId}`"
                 :preload="preload" 
                 :muted="adMuted"
-                :style="{'object-fit': adObjectFit}"
+                :style="{'object-fit': adObjectFit, opacity: isPlayAd ? 1 : 0,  'z-index': isPlayAd ? 199 : '-100', display: isPlayAd ? 'block' : 'none'}"
                 @ended="adVideoEnded"
                 x5-video-player
                 x5-playsinline
@@ -321,6 +319,13 @@ export default {
             type: String,
             default: 'contain'
         },
+        /***  
+         * 当前视频要播放的时刻
+         */
+        curTime: { 
+            type: String | Number,
+            default: 0
+        },
 
     },
     watch: {
@@ -329,18 +334,33 @@ export default {
          */
         src: {
             handler(val) {
+                this.init();
+                this.formatTurn('videoUrl', true);
             },  
             deep: true
         },
         adSrc: {
             handler(val) {
+                this.formatTurn('adVideoUrl', false);
             },  
             deep: true
+        },
+        curTime: {
+            handler(val) {
+                console.log('[ val ] >', val, this.videoInfo)
+                this.$nextTick(()=> {
+                    if(val && this.videoInfo){
+                        this.videoInfo.currentTime = val || 0;
+                        this.playStopHandler(true);
+                    }
+                })
+            },
+            deep: true, 
+            immediate: true
         }
     },
     data() {
         return {
-            isM3u8: false, // 是否是m3u8 true => m3u8
             inside: true, // 鼠标移入顶级元素标识 true => 移入 false => 移除
 
             // 操作面板
@@ -348,7 +368,6 @@ export default {
             speedPopup: false, // 点击倍速状态 => true  => 弹出倍速选择框
             activeSpeed: '1.0', // 当前选中倍速
             soundPopup: false, //  点击声音状态 => true  => 弹出声音选择框
-            dragRange: null, // 音量鼠标mouseMove事件对象
             bufferProgress: [{  // 视频缓冲进度
                 left: '0%', // 起始位置
                 width: '0%' // 宽度
@@ -361,18 +380,14 @@ export default {
             videoLoadeddata: true, // 视频是否准备就绪
             duration: 0, // 视频时长
             currentTime: 0, // 视频当前播放时间
-            mouseDown: false, // 鼠标是否按下 = true 鼠标按下
-
             browserFullscreen: false, // 浏览器全屏
             windowFullscreen: false, // 系统全屏
             rangeValue: 0,  // 播放进度
             maxValue: 100, // 播放进度input最大值
             isDragRange: true,  // 拖拽进度条时
-            bufferValue: 0, // 缓存进度
             voiceRangeValue: 0, // 声音大小
             voiceMaxValue: 100, // 声音最大值
             isPC: true, // 是pc还是移动端
-            isRotate: false,
             videoUrl: '', // 视频
             adVideoUrl: '', // 广告
             isPlayAdVideo: false, // 视频中间播放过一次广告标记
@@ -390,7 +405,8 @@ export default {
             adMuted: true, // 广告是否静音
             isPlayAd: false, // 还是否播放广告
             isFirstPlayAdVideo: false, // 点击开始播放视频面板播放视频广告标记一次
-            srcLoop: false
+            srcLoop: false,
+            classId: this.guid()
         }
     },
     mounted() {
@@ -398,18 +414,38 @@ export default {
         this.isPC = parseInt(document.body.offsetWidth) < 1024 ? false : true;
 
         this.addEventListenerScreen();
-        this.videoInfo = document.querySelector('.video_cell'); 
-        this.videoInfo.volume = 0.5;
-        this.srcLoop = this.loop;
-        this.srcMuted = this.muted;
-        this.adVideoInfo = document.querySelector('.adVideo_cell');
-        // 处理视频和广告url
+        this.init();
         this.formatTurn('videoUrl', true);
         this.formatTurn('adVideoUrl', false);
-        // 移动端添加定时器关闭控制器
-        this.setTimer();
     },
     methods: {
+        /**
+         * 初始化数据
+         */
+        init(){
+            const _this = this;
+            _this.videoInfo = document.querySelector(`.video_cell${_this.classId}`); 
+            _this.videoInfo.volume = 0.5;
+            _this.srcLoop = _this.loop;
+            _this.srcMuted = _this.muted;
+            _this.adVideoInfo = document.querySelector(`.adVideo_cell${_this.classId}`);
+            _this.isPlayAd = false;  // 还是否播放广告
+            _this.isFirstPlayAdVideo = false; // 点击开始播
+            _this.isPlayAdVideo = false; // 视频中间播放过一次广告标记
+            _this.rangeValue = 0;  // 播放进度
+            _this.isDragRange = true;  // 拖拽进度条时
+            _this.duration = 0;// 视频时长
+            _this.currentTime = 0;// 视频当前播放时间
+            _this.playStop = _this.autoplay || false;// 暂停播放状态  true => 播放  false => 暂停
+            _this.speedPopup = false;// 点击倍速状态 => true  => 弹出倍速选择框
+            _this.activeSpeed = '1.0';// 当前选中倍速
+            _this.soundPopup = false;//  点击声音状态 => true  => 弹出声音选择框
+            _this.bufferProgress = [{  // 视频缓冲进度
+                left: '0%',// 起始位置
+                width: '0%' // 宽度
+            }];
+            _this.setTimer();
+        },
         /**
          * 设置自定义控件隐藏
          */
@@ -431,8 +467,6 @@ export default {
          * 视频格式转换
          */
         formatTurn (url, val) {
-
-            this.isM3u8 = false;
             const src = (val ? this.src : this.adSrc).trim();
             if (src.slice(0, 5) == 'http:') {
                 this[url] = encodeURI('https:' + src.slice(5))
@@ -441,7 +475,6 @@ export default {
             }
             const video = val ? 'videoInfo' : 'adVideoInfo';
             if (/(\.m3u8)$/.test(this[url]) && Hls.isSupported()) {
-                this.isM3u8 = true;
                 let hls = new Hls(); // 实例化 Hls 对象
                 hls.loadSource(this[url]); // 传入路径
                 hls.attachMedia(this[video]);
@@ -621,7 +654,7 @@ export default {
         // 全屏 / 退出全屏
         controlFullScreen () {
             const {ios, iPhone, iPad, webKit} = this.versions();
-            let ELE = document.querySelector('.videoControl');
+            let ELE = document.querySelector('.videoControl' + _this.classId);
 
             if (!this.windowFullscreen) {
                 // this.windowFullscreen = true;
@@ -680,7 +713,7 @@ export default {
             // console.log(e, 'loadstart')
             this.$emit('loadstart', e);
             
-            this.videoInfo = document.querySelector('.video_cell');
+            this.videoInfo = document.querySelector('.video_cell'+ this.classId);
             
             this.videoInfo.volume = 0.5;
         },
@@ -794,7 +827,6 @@ export default {
          * 14、timeupdate：目前的播放位置已更改时，播放时间更新
          */
         timeupdate(e) {
-            // if (this.mouseDown) return
             this.progressNum = this.videoInfo.currentTime / this.videoInfo.duration * 100 + '%';
             if(this.isDragRange){
                 this.rangeValue = this.videoInfo.currentTime / this.videoInfo.duration * 100;
@@ -929,11 +961,11 @@ export default {
             object-fit: contain;
             cursor: pointer;
         }
-        .video_cell_opacity {
-            position: relative;
-            opacity: 0;
-            z-index: -99;
-        }
+        // .video_cell_opacity {
+        //     position: relative;
+        //     opacity: 0;
+        //     z-index: -99;
+        // }
         .adVideo_cell {
             position: absolute;
             top:0; 
@@ -944,11 +976,11 @@ export default {
             opacity: 0;
             display: none;
         }
-        .adVideo_cell_opacity {
-            opacity: 1;
-            z-index: 199;
-            display: block;
-        }
+        // .adVideo_cell_opacity {
+        //     opacity: 1;
+        //     z-index: 199;
+        //     display: block;
+        // }
         // .adVideo_cell_masker {
         //     z-index: 198;
         //     background-color: #000;
