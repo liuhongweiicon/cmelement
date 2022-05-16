@@ -421,11 +421,11 @@ export default {
     countDown() {
       this.timeInfo = setInterval(() => {
         this.topicname -= 1;
-        this.timeHtml = this.formatSeconds(this.topicname);
+        this.timeHtml = this.cmFormatSeconds(this.topicname);
         
         if (this.topicname <= 0) {
           this.topicname = 0;
-          this.timeHtml = this.formatSeconds(this.topicname);
+          this.timeHtml = this.cmFormatSeconds(this.topicname);
           this.answerCardHandler();
           this.answerCardOpen = true;
           this.submitConHandler();

@@ -19,13 +19,13 @@ var router =  new VueRouter({
         component: () => import('@/pages/allStem.vue'),
         meta: { title: "全题型" }
       },
-      {
-        path: '/video',
-        name: 'video',
-        component: () => import('@/pages/video/video.vue'),
+      // {
+      //   path: '/video',
+      //   name: 'video',
+      //   component: () => import('@/pages/video/video.vue'),
         
-        meta: { title: "视频播放" }
-      },
+      //   meta: { title: "视频播放" }
+      // },
       
       {
         path: '/allDoubleStem',
@@ -65,7 +65,14 @@ var router =  new VueRouter({
         component: resolve => require(['../pages/sliveRoomtwo.vue'], resolve),
         meta: { title: "进入直播间" }
 
-      }
+      },
+        // 首页
+        {
+          path: '/home',
+          component: resolve => require(['../pages/home/index.vue'], resolve),
+          meta: { title: "首页" }
+  
+        }
     ]
 });
 

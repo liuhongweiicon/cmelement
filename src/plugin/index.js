@@ -3,7 +3,7 @@
 import './static/css/reset.css';
 import './js/swiper/index.css'; // swiper样式
 import './js/swiper/swiper'; // swiperJS
-
+import './static/css/iconfont/iconfont'
 
 
 
@@ -26,6 +26,8 @@ import cmSingleQuestion from './questionStem/singleQuestion.vue'; // 移动端�
 // import cmLiveRoom from './liveRoom/index.vue'; // 直播间
 
 // import screenCap from './js/room/screencap/index' // 直播间方法
+
+import cmYjVideo from './video/video.vue'
 
 let cmelement = {};
 
@@ -62,6 +64,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(cmAnswerCard.name, cmAnswerCard);
     Vue.component(allDoubleStem.name, allDoubleStem);
     Vue.component(cmSingleQuestion.name, cmSingleQuestion);
+    Vue.component(cmYjVideo.name, cmYjVideo);
     // Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 

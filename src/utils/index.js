@@ -467,7 +467,7 @@ const banUserReviseFontSize = () => {
 
 // 将秒转化为时分秒
 // val => true  只返回分秒
-const formatSeconds = (value, val) => {
+const cmFormatSeconds = (value, val) => {
   let result = parseInt(value);
   let h =
     Math.floor(result / 3600) < 10
@@ -616,7 +616,7 @@ export {
   commonSubject,
   strToUrlCmelement,
   strUrlChangeCmelement,
-  formatSeconds,
+  cmFormatSeconds,
   getDiagnosisStatus,
   gradeToStage,
   touchstart,
