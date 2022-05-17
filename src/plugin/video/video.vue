@@ -335,28 +335,26 @@ export default {
         src: {
             handler(val) {
                 this.init();
+                if(this.hls){
+                    this.hls.destroy();
+                    this.hls = null;
+                }
                 this.formatTurn('videoUrl', true);
+                if(this.curTime){
+                    this.videoInfo.currentTime = this.curTime || 0;
+                }
             },  
             deep: true
         },
         adSrc: {
             handler(val) {
+                if(this.adHls){
+                    this.adHls.destroy();
+                    this.adHls = null;
+                }
                 this.formatTurn('adVideoUrl', false);
             },  
             deep: true
-        },
-        curTime: {
-            handler(val) {
-                console.log('[ val ] >', val, this.videoInfo)
-                this.$nextTick(()=> {
-                    if(val && this.videoInfo){
-                        this.videoInfo.currentTime = val || 0;
-                        this.playStopHandler(true);
-                    }
-                })
-            },
-            deep: true, 
-            immediate: true
         }
     },
     data() {
@@ -406,7 +404,9 @@ export default {
             isPlayAd: false, // 还是否播放广告
             isFirstPlayAdVideo: false, // 点击开始播放视频面板播放视频广告标记一次
             srcLoop: false,
-            classId: this.guid()
+            classId: this.guid(),
+            hls: null,
+            adHls: null,
         }
     },
     mounted() {
@@ -475,15 +475,15 @@ export default {
             }
             const video = val ? 'videoInfo' : 'adVideoInfo';
             if (/(\.m3u8)$/.test(this[url]) && Hls.isSupported()) {
-                let hls = new Hls(); // 实例化 Hls 对象
-                hls.loadSource(this[url]); // 传入路径
-                hls.attachMedia(this[video]);
+                let hls = val ? 'hls' : 'adHls';
+                this[hls] = new Hls(); // 实例化 Hls 对象
+                this[hls].loadSource(this[url]); // 传入路径
+                this[hls].attachMedia(this[video]);
+                // console.log('hls', hls);
             }else {
                 this[video].src = this[url];
             }
-            this.$nextTick(() => {
-                this[video].load();
-            })
+            this[video].load();
         },
 
         // 获取当前设备信息
@@ -654,7 +654,7 @@ export default {
         // 全屏 / 退出全屏
         controlFullScreen () {
             const {ios, iPhone, iPad, webKit} = this.versions();
-            let ELE = document.querySelector('.videoControl' + _this.classId);
+            let ELE = document.querySelector('.videoControl' + this.classId);
 
             if (!this.windowFullscreen) {
                 // this.windowFullscreen = true;
