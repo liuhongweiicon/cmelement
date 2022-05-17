@@ -486,10 +486,10 @@ const cmFormatSeconds = (value, val) => {
     result = val ? `00:${s}` : `${s}秒`;
   } else if (Number(d) <= 0 && Number(h) <= 0 && Number(m) > 0) {
     result = val ? `${m}:${s}` : `${m}分${s}秒`;
-  } else if (Number(d) <= 0 && Number(h) > 0  && !val) {
-    result = `${h}时${m}分${s}秒`
-  } else if (!val) {
-    result = `${d}天${h}时${m}分${s}秒`
+  } else if (Number(d) <= 0 && Number(h) > 0) {
+    result = val ? `${h}:${m}:${s}` : `${h}时${m}分${s}秒`
+  } else if (Number(d) > 0) {
+    result = val ? `${d}:${h}:${m}:${s}` : `${d}天${h}时${m}分${s}秒`
   }
   
   return result

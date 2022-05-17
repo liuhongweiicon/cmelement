@@ -180,8 +180,12 @@
 
             <!-- <slot name="pausePlay"> -->
                 <div class="videoControl_pausePlay"  v-show="!isPlayAd" :class="playStop ? 'videoControl_playstate' : 'videoControl_pausestate'">
-                    <div class="videoControl_pausePlay_strip">
-                    </div>
+                    <!-- <div class="videoControl_pausePlay_strip">
+                    </div> -->
+                    
+                    <svg class="iconfont" aria-hidden="true" @click="controlFullScreen">     
+                        <use xlink:href="#iconbofang1"></use> 
+                    </svg>
                 </div>
             <!-- </slot> -->
         <!-- </div> -->
@@ -711,7 +715,7 @@ export default {
          */
         loadstart(e) {
             // console.log(e, 'loadstart')
-            this.$emit('loadstart', e);
+            this.emitParent('loadstart', e);
             
             this.videoInfo = document.querySelector('.video_cell'+ this.classId);
             
@@ -722,7 +726,7 @@ export default {
          */
         progress(e) {
             // console.log(e, 'progress')
-            this.$emit('progress', e);
+            this.emitParent('progress', e);
             // 更新视频缓存进度
             this.bufferProgressChange();
         },
@@ -735,7 +739,7 @@ export default {
             this.duration =  this.cmFormatSeconds(this.videoInfo.duration, true);
             this.maxValue = this.videoInfo.duration || 0;
             // console.log('this.maxValue', this.maxValue);
-            this.$emit('durationchange', e);
+            this.emitParent('durationchange', e);
         },
         
         /**
@@ -743,7 +747,7 @@ export default {
          */
         loadedmetadata(e) {
             // console.log(e, 'loadedmetadata')
-            this.$emit('loadedmetadata', e);
+            this.emitParent('loadedmetadata', e);
         },
 
         /**
@@ -751,8 +755,8 @@ export default {
          */
         loadeddata(e) {
             this.videoLoadeddata = true;
-            console.log(e, 'loadeddata')
-            this.$emit('loadeddata', e)
+            // console.log(e, 'loadeddata')
+            this.emitParent('loadeddata', e)
         },
 
 
@@ -763,7 +767,7 @@ export default {
             this.videoLoadeddata = false;
             // this.videoInfo.load()
             // console.log(e, 'canplay')
-            this.$emit('canplay', e)
+            this.emitParent('canplay', e)
         },
 
         /**
@@ -771,7 +775,7 @@ export default {
          */
         canplaythrough(e) {
             // console.log(e, 'canplaythrough')
-            this.$emit('canplaythrough', e)
+            this.emitParent('canplaythrough', e)
         },
 
         /**
@@ -779,7 +783,7 @@ export default {
          */
         play(e) {
             // console.log(e, 'play')
-            this.$emit('play', e)
+            this.emitParent('play', e)
         },
 
         /**
@@ -787,7 +791,7 @@ export default {
          */
         pause(e) {
             // console.log(e, 'pause')
-            this.$emit('pause', e)
+            this.emitParent('pause', e)
         },
 
         /**
@@ -795,7 +799,7 @@ export default {
          */
         seeking(e) {
             // console.log(e, 'seeking')
-            this.$emit('seeking', e)
+            this.emitParent('seeking', e)
         },
 
         /**
@@ -803,7 +807,7 @@ export default {
          */
         seeked(e) {
             // console.log(e, 'seeked')
-            this.$emit('seeked', e)
+            this.emitParent('seeked', e)
         },
 
         /**
@@ -812,7 +816,7 @@ export default {
         waiting(e) {
             this.videoLoadeddata = true;
             // console.log(e, 'waiting')
-            this.$emit('waiting', e)
+            this.emitParent('waiting', e)
         },
 
         /**
@@ -820,7 +824,7 @@ export default {
          */
         playing(e) {
             // console.log(e, 'playing')
-            this.$emit('playing', e)
+            this.emitParent('playing', e)
         },
 
         /**
@@ -850,7 +854,7 @@ export default {
                 }
             }
             this.currentTime = this.cmFormatSeconds(this.videoInfo.currentTime, true);
-            this.$emit('timeupdate', e)
+            this.emitParent('timeupdate', e)
         },
         /**   
          * 广告播放完毕
@@ -868,7 +872,7 @@ export default {
             // console.log(e, 'ended')
             // 播放结束改变按钮状态
             this.playStop = false;
-            this.$emit('ended', e)
+            this.emitParent('ended', e)
         },
 
         /**
@@ -876,7 +880,7 @@ export default {
          */
         error(e) {
             // console.log(e, 'error')
-            this.$emit('error', e)
+            this.emitParent('error', e)
         },
 
         /**
@@ -884,7 +888,7 @@ export default {
          */
         volumechange(e) {
             // console.log(e, 'volumechange')
-            this.$emit('volumechange', e)
+            this.emitParent('volumechange', e)
         },
 
         /**
@@ -892,7 +896,7 @@ export default {
          */
         stalled(e) {
             // console.log(e, 'stalled')
-            this.$emit('stalled', e)
+            this.emitParent('stalled', e)
         },
 
         /**
@@ -900,7 +904,7 @@ export default {
          */
         ratechange(e) {
             // console.log(e, 'ratechange')
-            this.$emit('ratechange', e)
+            this.emitParent('ratechange', e)
         },
         /**
          * 20、事件在视频/音频（audio/video）终止加载时触发。	
@@ -908,14 +912,20 @@ export default {
         abort(e) {
 
             // console.log(e, 'abort')
-            this.$emit('abort', e)
+            this.emitParent('abort', e)
         },
         
         suspend(e) {
 
             // console.log(e, 'suspend')
-            this.$emit('suspend', e)
+            this.emitParent('suspend', e)
 
+        },
+        /**
+         * 抛出视频各种事件 
+        */
+        emitParent(name, e){
+            this.$emit(name, {e: e, videoInfo: this.videoInfo})
         }
 
     },
@@ -1335,10 +1345,18 @@ export default {
         height: 4em;
         width: 4em;
         border-radius: 50%;
-        background: rgba(0,0,0,.5);
-        border: 1px solid #9191916e;
+        background: rgba(0,0,0,0.5);
         transition: all .5s;
         cursor: pointer;
+        .iconfont {
+            position: absolute;
+            left: 55%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 1.5em;
+            width: 1.5em;
+            fill: #fff!important;
+        }
 
         .videoControl_pausePlay_strip {
             background-color: rgba(255, 255, 255, 1);

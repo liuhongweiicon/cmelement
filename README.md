@@ -2,7 +2,7 @@
 试题（PCor Mobile）封装
 
 # 视频组件使用
-#### <cm-video :src="src" :adTime="5" :adSrc="adVideoUrl" ></cm-video>
+* <cm-video :src="src" :adTime="5" :adSrc="adVideoUrl" ></cm-video>
 
 ## 视频组件传参
 
@@ -116,15 +116,20 @@
          * 视频填充类型
          */
         objectFit: {
-            type: Boolean,
+            type: String,
             default: 'contain'
         },
         /**  
          * 广告视频填充类型
          */
         adObjectFit: {
-            type: Boolean,
+            type: String,
             default: 'contain'
         },
-
-    },
+        /***  
+         * 当前视频要播放的时刻
+         */
+        curTime: { 
+            type: String | Number,
+            default: 0
+        },
