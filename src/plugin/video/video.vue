@@ -1348,6 +1348,7 @@ export default {
         background: rgba(0,0,0,0.5);
         transition: all .5s;
         cursor: pointer;
+        z-index: 12;
         .iconfont {
             position: absolute;
             left: 55%;

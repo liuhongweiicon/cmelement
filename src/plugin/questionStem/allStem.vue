@@ -913,10 +913,7 @@ export default {
   flex-direction: column;
   user-select: none;
   .swiper-container {
-    width: 1200px;
-    background: #ffffff;
     flex: 1;
-    padding-top: 20px;
     .swiper-slide {
       .swiper-slideAnswer {
         .big-name {
@@ -965,11 +962,8 @@ export default {
 /*作答试题样式*/
 .paper {
   .swiper-container {
-    // width: 100%;
-    width: 1200px;
+    width: 100%;
     height: 100%;
-    margin: auto;
-    background: #ffffff;
     .swiper-wrapper {
       width: 100%;
     }
@@ -979,7 +973,6 @@ export default {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding-top: 20px;
         .swiper-slide_content {
           flex: 1;
           height: 0;
@@ -1044,7 +1037,7 @@ export default {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      width: 1200px;
+      width: 100%;
       .cm-allStem-footer-item {
         width: 100px;
         height: 28px;
@@ -1072,15 +1065,15 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-    //   border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid #e8e8e8;
       height: 56px;
       margin: auto;
       position: relative;
-      width: 1200px;
+      width:100%;
       font-size: 14px;
       font-weight: 400;
       color: #5e5e5e;
-    //   margin-bottom: 20px;
+      margin-bottom: 20px;
       .head-time-icon {
         height: 100%;
         display: flex;
@@ -2019,5 +2012,36 @@ export default {
             }
         }
   }
+}
+@media screen and (min-width: 1300px){
+.cm-allStem {
+    .swiper-container {
+        width: 1200px;
+        background: #ffffff;
+        padding-top: 20px;
+    }
+    .cm-allStem-footer {
+      width: 1200px;
+    }
+    .cm-allStem-head {
+     
+      border-bottom: 1px solid #e8e8e8;
+      width: 1200px;
+      margin-bottom: 20px;
+    }
+}
+.paper {
+  .swiper-container {
+    width: 1200px;
+    height: 100%;
+    margin: auto;
+    background: #ffffff;
+    .swiper-slide {
+      .swiper-slideAnswer {
+        padding-top: 20px;
+      }
+    }
+  }
+}
 }
 </style>
