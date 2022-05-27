@@ -66,6 +66,13 @@ var router =  new VueRouter({
         meta: { title: "进入直播间" }
 
       },
+      // 学生端进入直播间等待页面
+      {
+        path: '/cmimg',
+        component: resolve => require(['../pages/cmimg.vue'], resolve),
+        meta: { title: "图片" }
+
+      },
         // 首页
         {
           path: '/home',

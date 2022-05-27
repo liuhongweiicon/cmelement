@@ -27,7 +27,10 @@ import cmSingleQuestion from './questionStem/singleQuestion.vue'; // 移动端�
 
 // import screenCap from './js/room/screencap/index' // 直播间方法
 
-import cmVideo from './video/video.vue'
+import cmVideo from './video/video.vue'; // 视频组件
+
+
+import cmImg from './cmImg/index.vue'
 
 let cmelement = {};
 
@@ -65,6 +68,7 @@ cmelement.install = (Vue, options) => {
     Vue.component(allDoubleStem.name, allDoubleStem);
     Vue.component(cmSingleQuestion.name, cmSingleQuestion);
     Vue.component(cmVideo.name, cmVideo);
+    Vue.component(cmImg.name, cmImg);
     // Vue.component(cmLiveRoom.name, cmLiveRoom);
 };
 

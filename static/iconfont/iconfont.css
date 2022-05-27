@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2300810 */
-  src: url('iconfont.woff2?t=1652252611022') format('woff2'),
-       url('iconfont.woff?t=1652252611022') format('woff'),
-       url('iconfont.ttf?t=1652252611022') format('truetype');
+  src: url('iconfont.woff2?t=1653555914419') format('woff2'),
+       url('iconfont.woff?t=1653555914419') format('woff'),
+       url('iconfont.ttf?t=1653555914419') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,58 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconchangyongicon-2:before {
+  content: "\e611";
+}
+
+.iconchangyongicon-1:before {
+  content: "\e614";
+}
+
+.iconzhongzhi:before {
+  content: "\e61c";
+}
+
+.iconfangda1:before {
+  content: "\e97b";
+}
+
+.iconsuoxiao1:before {
+  content: "\e82e";
+}
+
+.iconzuozhuan:before {
+  content: "\e644";
+}
+
+.iconyouzhuan:before {
+  content: "\e647";
+}
+
+.iconright:before {
+  content: "\e606";
+}
+
+.iconarrow-left:before {
+  content: "\e601";
+}
+
+.iconduihao:before {
+  content: "\e604";
+}
+
+.iconcuohao:before {
+  content: "\e65a";
+}
+
+.iconbofang1:before {
+  content: "\e653";
+}
+
+.iconbofang:before {
+  content: "\e620";
 }
 
 .iconhanhan-01:before {
@@ -23,6 +75,14 @@
 
 .icona-iconxunhuankai:before {
   content: "\e646";
+}
+
+.icona-iconxunhuankai-copy:before {
+  content: "\ec14";
+}
+
+.icona-iconxunhuanguan-copy:before {
+  content: "\ec15";
 }
 
 .icona-iconxunhuanguan:before {
