@@ -1,7 +1,19 @@
 # cmelement
 试题（PCor Mobile）封装
 
-# 视频组件使用
+# 图片组件标签形式使用
+* <cm-img class="cmImg_content" :dataSet="dataSet"></cm-img>
+## 图片组件传参
+    {
+        urlList: [],
+        wheel: true, // 是否允许滚轮缩放大小
+        automatic: null, // 是否允许自动切换, 自动切换时间
+        preNext: true, // 是否展示上一张和下一张按钮
+        operate: true, // 是否展示放大缩小旋转重置按钮
+        move: true, // 是否允许拖动
+    }
+
+# 视频组件标签形式使用
 * <cm-video :src="src" :adTime="5" :adSrc="adVideoUrl" ></cm-video>
 
 ## 视频组件传参

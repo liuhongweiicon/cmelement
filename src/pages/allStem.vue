@@ -7,6 +7,7 @@
             :paperDetails="paperDetails" 
             :showKnowledgePoint="true" 
             :paperState.sync="paperState"  
+            @imgBtn="imgBtn"
             :showType="true"
             @slideChangeEnd="slideChangeEndHnadler" 
             @submit="submitHandler"
@@ -38,6 +39,9 @@ export default {
         this.gerPaper();
     },
     methods: {
+    imgBtn (val) {
+        console.log('val111111111111111111', val)
+    },
         /**
          * 获取试题
          */

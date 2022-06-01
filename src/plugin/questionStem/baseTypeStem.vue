@@ -1,10 +1,10 @@
 <template>
 	<!--简单题型组件-->
-	<div class="baseTypeStem" :class="{baseTypeStem_voice: questionDetailsInfo.type == 5}" :style="{paddingBottom:  paperState != 1 ? '36px' : '0'}">
+	<div class="baseTypeStem" :class="{baseTypeStem_voice: questionDetailsInfo.type == 5}" :style="{paddingBottom:  (paperState != 1&&paperState != 3) ? '36px' : '0'}">
     <!-- 题干 -->
-    <topic-drt :topicSmall="topicSmall" :orderNum="orderNum" :stem="questionDetailsInfo.stem" :showLowerType="showLowerType" :showType="showType" :type="questionDetailsInfo.type" v-if="isShowBlock('1')"></topic-drt>
+    <topic-drt v-on="$listeners" :paperState="paperState" :topicSmall="topicSmall" :orderNum="orderNum" :stem="questionDetailsInfo.stem" :showLowerType="showLowerType" :showType="showType" :type="questionDetailsInfo.type" v-if="isShowBlock('1')"></topic-drt>
   
-    <div v-if="isShowBlock('2')" class="baseTypeStem_key" :class="{baseTypeStem_key_written: questionDetailsInfo.type == 5 || paperState != 1}">
+    <div v-if="isShowBlock('2')" class="baseTypeStem_key" :class="{baseTypeStem_key_written: questionDetailsInfo.type == 5 || (paperState != 1&&paperState != 3)}">
       <!-- 选择题 -->
       <div v-if="questionDetailsInfo.type == 1 || questionDetailsInfo.type == 2">
         <div class="options">
@@ -15,11 +15,10 @@
               :key="index"
               class="op"
               >
-              
               <div 
                   class="op-item" 
                   :class="setClass(optionitem)"
-                  @click="paperState == 1 ? onceChoice(questionDetailsInfo, index) : null">
+                  @click="paperState == 1||paperState == 3 ? onceChoice(questionDetailsInfo, index) : null">
                 
                 <span class="key">{{ optionitem.optionKey }}</span>
                 <span class="line"></span>
@@ -47,6 +46,30 @@
 
         <!-- 作答状态 -->
         <div v-if="paperState == 1">
+          <div
+            
+            class="blanks"
+            v-for="(answertem, index) in questionDetailsInfo.answer"
+            :key="index"
+          >
+            <div class="blank" :class="{'compound-blank': !questionDetailsInfo.componentId}">
+              <span class="index">{{ `空${index + 1}` }}</span>
+              <span class="line"></span>
+              <div class="cont">
+                <textarea
+                type="textarea"
+                placeholder="请输入答案"
+                @input="changeHandler"
+                v-model="answertem.userValue"
+                @blur="onceChoice(questionDetailsInfo, answertem)"
+                >
+                </textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div v-if="paperState == 3">
           <div
             
             class="blanks"
@@ -123,7 +146,20 @@
             ✘
           </div>
         </div>
-        
+        <div class="judge" v-if="paperState == 3">
+          <div
+            @click="paperState == 3 ? onceChoice(questionDetailsInfo, '1') : null"
+            :class="{ active: questionDetailsInfo.userAnswer == 1 }"
+            >
+            ✔
+          </div>
+          <div
+            @click="onceChoice(questionDetailsInfo, '0')"
+            :class="{ active: (questionDetailsInfo.userAnswer + '') === '0' }"
+            >
+            ✘
+          </div>
+        </div>
         <!-- 作答完毕 -->
         <div class="judge" v-if="paperState == 2">
             <div
@@ -159,6 +195,15 @@
           
         <slot name="answerSheet" :scope="questionDetailsInfo">
           <div v-if="paperState == 1">
+            <answer-sheet
+              :questionType="5"
+              :paperState="paperState"
+              :questionDetails="questionDetailsInfo"
+              @onceChoice="onceChoice"
+            ></answer-sheet>
+
+          </div>
+          <div v-if="paperState == 3">
             <answer-sheet
               :questionType="5"
               :paperState="paperState"
@@ -402,7 +447,11 @@ export default {
           case 2:
             return item.ok
             break;
-          
+          case 3:
+            return {
+              active: item.active == true,
+            }
+            break;
         };
       };
     },
@@ -411,6 +460,7 @@ export default {
   data() {
     return {
       analysis: "", //解析
+        errorNum: 3,
       judgeActive: null, //判断是否正确
       questionDetailsInfo: {}, // 试题数据
     };
@@ -432,20 +482,64 @@ export default {
      * 监听转台改变
      */
     paperState() {
-      this.dataHandler(this.questionDetailsInfo);
+      this.questionDetailsInfo = JSON.parse(JSON.stringify(this.questionDetails));
+      this.dataHandler();
     }
   },
   mounted() {
     // this.dataHandler(this.questionDetailsInfo);
+    // window.errorImg = this.errorImg
   },
   methods: {
+    // 图片加载失败回调
+    errorImg (err) {
+        console.log('2222222222', err.src)
+        if (this.errorNum<0) {
+            // document.removeEventListener('error',this.handel)
+            return
+        } else {
+            err.src = err.src
+            this.errorNum--
+        }
+    },
     onceChoice: function(optionitem, index) {
-        console.log(optionitem, emitoption)
+        // console.log(optionitem, emitoption)
       //要传的选中值
       var emitoption = null;
 
       //作答状态
       if (this.paperState == 1) {
+        if (this.questionDetailsInfo.type == 1) { //单选
+          for (var i = 0; i < this.questionDetailsInfo.quesOption.length; i++) {
+            this.questionDetailsInfo.quesOption[i].active = false;
+          }
+          this.questionDetailsInfo.quesOption[index].active = true;
+          this.questionDetailsInfo.quesOption.splice(index, 1, this.questionDetailsInfo.quesOption[index])
+
+          emitoption = this.questionDetailsInfo.quesOption[index];
+        } else if (this.questionDetailsInfo.type == 2) { //多选
+         
+          //若当前选中状态，点击取消选中
+          if (this.questionDetailsInfo.quesOption[index].active == true) {
+            this.questionDetailsInfo.quesOption[index].active = false;
+          } else {
+            this.questionDetailsInfo.quesOption[index].active = true;
+          }
+          this.questionDetailsInfo.quesOption.splice(index, 1, this.questionDetailsInfo.quesOption[index])
+          emitoption = this.questionDetailsInfo.quesOption;
+        } else if (this.questionDetailsInfo.type == 4) { //填空
+          emitoption = this.questionDetailsInfo.answer;
+        } else if (this.questionDetailsInfo.type == 3) { //判断
+          
+          // this.judgeActive = index;
+          this.$set(optionitem, "userAnswer", index);
+          emitoption = index;
+        } else if (this.questionDetailsInfo.type == 5) { //主观题
+          
+          emitoption = index;
+        }
+        this.$emit("onceChoice", optionitem, emitoption);
+      } else if (this.paperState == 3) {
         if (this.questionDetailsInfo.type == 1) { //单选
           for (var i = 0; i < this.questionDetailsInfo.quesOption.length; i++) {
             this.questionDetailsInfo.quesOption[i].active = false;
@@ -493,7 +587,49 @@ export default {
     dataHandler(item) {
 
       var _this = this;
-      if (
+      if (_this.paperState == 3) {
+          if (
+        this.questionDetailsInfo.type == "1" ||
+        this.questionDetailsInfo.type == "2"
+      ) {
+        if (typeof this.questionDetailsInfo.quesOption != "object") {
+          var obj = JSON.parse(this.questionDetailsInfo.quesOption);
+          for (var i = 0; i < obj.length; i++) {
+            if (!obj[i].active) {
+                obj[i].active = false;
+            }
+          }
+          this.questionDetailsInfo.quesOption = obj;
+        }
+      } else if (this.questionDetailsInfo.type == "4") {
+        // console.log(typeof this.questionDetailsInfo.answerKeys != "object");\
+        if (!this.questionDetailsInfo.answerKeys && this.questionDetailsInfo.rightAnswer) {
+          this.questionDetailsInfo.answerKeys = this.questionDetailsInfo.rightAnswer
+        }
+        
+        if (this.questionDetailsInfo.answerKeys && typeof this.questionDetailsInfo.answerKeys != "object") {
+            var obj = JSON.parse(this.questionDetailsInfo.answerKeys);
+            for (var i = 0; i < obj.length; i++) {
+                if (!obj[i].userValue) {
+                    obj[i].userValue = '';
+                }
+            }
+            this.$set(this.questionDetailsInfo, "answer", obj);
+        }else {
+          const answer = this.questionDetailsInfo.answer;
+          if(answer && typeof answer != "object"){
+            const obj = JSON.parse(answer)
+            if(obj.length > 0){
+              for(let o of obj){
+                o['answerKeys'] = [o.answerValue]
+              }
+            }
+            this.$set(this.questionDetailsInfo, "answer", obj);
+          }
+        }
+      }
+      } else {
+          if (
         this.questionDetailsInfo.type == "1" ||
         this.questionDetailsInfo.type == "2"
       ) {
@@ -569,6 +705,7 @@ export default {
             this.$set(this.questionDetailsInfo, "answer", obj);
           }
         }
+      }
       }
     }
   },

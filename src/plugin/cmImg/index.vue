@@ -24,15 +24,16 @@
                 
             </div>
         </div>
-        <svg class="icon icon_yj" aria-hidden="true"  @click.prevent.stop="imgPreNext(true)" v-if="newAetDate.preNext">
+
+        <svg class="icon icon_yj" aria-hidden="true"  @click.prevent.stop="imgPreNext(true)" v-show="newAetDate.preNext">
             <use xlink:href="#iconchangyongicon-1"></use>
         </svg>
-        <svg class="icon icon_yj icon_right" aria-hidden="true"  @click.prevent.stop="imgPreNext(false)" v-if="newAetDate.preNext">
+        <svg class="icon icon_yj icon_right" aria-hidden="true"  @click.prevent.stop="imgPreNext(false)" v-show="newAetDate.preNext">
             <use xlink:href="#iconchangyongicon-2"></use>
         </svg>
         <transition name="fade" @click.stop>
-            <!--  v-if="is0perateShow && newAetDate.operate" -->
-            <div class="ed_img_operate">
+            <!--   -->
+            <div class="ed_img_operate" v-if="is0perateShow && newAetDate.operate">
                 <span class="ed_img_operate_cell" @click.stop="setScale(true)">
                     <svg class="icon operate_size" aria-hidden="true">
                         <use xlink:href="#iconfangda1"></use>
@@ -66,7 +67,12 @@
 export default {
     name: 'cm-img',
     props: {
-        dataSet: Object,
+        dataSet: {
+            type: Object,
+            default: () => {
+                return {}
+            }
+        }
     },
     data() {
         return {
@@ -184,6 +190,8 @@ export default {
 
         // 拖拽图片
         imgMove(e) {
+            // 图片不允许拖动
+            if (!this.newAetDate.move) return; 
             // 图片缩小转台不能拖动
             if (this.scale < 1) return;
             let imgGroupDom = e.target;        //获取目标元素
@@ -240,6 +248,8 @@ export default {
          * 移动端,手指按下时
          */
         touchstartHandler(event) {
+            // 图片不允许拖动
+            if (!this.newAetDate.move) return; 
             const touches = event.touches;
             const events = touches[0];
             const events2 = touches[1];
@@ -247,10 +257,24 @@ export default {
             if (!events) {
                 return;
             }
-            this.is0perateShow = !this.is0perateShow
+
+            // 底部操作面板显示条件
+            this.is0perateShow = !this.is0perateShow;
+            // 切换图片icon展示条件
+            const icon = document.querySelectorAll('.icon_yj');
+            if (icon && this.newAetDate.preNext) {
+                if (this.is0perateShow) {
+                    icon[0].style.cssText = "animation: fade-in .5s infinite;animation-iteration-count: 1;animation-fill-mode:forwards;fill: #fff;"
+                    icon[1].style.cssText = "animation: fade-in .5s infinite;animation-iteration-count: 1;animation-fill-mode:forwards;fill: #fff;"
+                } else {
+                    icon[0].style.cssText = "fill: transparent;"
+                    icon[1].style.cssText = "fill: transparent;"
+                }
+                
+            }
             
-            const imgDom = document.querySelector('.active_img')
             // 记录图片元素
+            const imgDom = document.querySelector('.active_img');
             this.store.imgDom = imgDom;
             
             //记录触点相对元素的位置
@@ -276,7 +300,19 @@ export default {
          * 手指移动时
          */
         touchmoveHandler(event) {
+            // 图片不允许拖动
+            if (!this.newAetDate.move) return; 
             this.is0perateShow = false;
+
+            
+            // 切换图片icon展示条件
+            const icon = document.querySelectorAll('.icon_yj');
+            if (icon && this.newAetDate.preNext) {
+                icon[0].style.cssText = "fill: transparent;"
+                icon[1].style.cssText = "fill: transparent;"
+                
+            }
+
             const touches = event.touches;
             const events = touches[0];
             const events2 = touches[1];
@@ -324,6 +360,7 @@ export default {
                 let left = events.clientX - this.store.disX;    
                 let top = events.clientY - this.store.disY;
                 //移动当前元素
+                if (!this.store.imgDom) return
                 this.store.imgDom.style.left = left + 'px';
                 this.store.imgDom.style.top = top + 'px';
             }
@@ -333,6 +370,8 @@ export default {
          * 手指离开时
          */
         touchendHandler() {
+            // 图片不允许拖动
+            if (!this.newAetDate.move) return; 
             delete this.store.pageX2;
             delete this.store.pageY2;
             delete this.store.double;
@@ -353,6 +392,7 @@ export default {
             this.scale = 1;
             this.rotateDeg = 0;
             const imgDom = document.querySelector('.active_img')
+            if (!imgDom) return
             imgDom.style.left = 0 + 'px';
             imgDom.style.top = '50%';
             
@@ -381,7 +421,7 @@ export default {
     },
     beforeDestroy() {
         const imgDom = document.querySelector('.ed_img_group');
-        imgDom.removeEventListener("DOMMouseScroll", this.scrollFunc)
+        imgDom&&imgDom.removeEventListener("DOMMouseScroll", this.scrollFunc)
     }
     
 }

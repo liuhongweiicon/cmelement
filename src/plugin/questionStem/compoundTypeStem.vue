@@ -1,6 +1,6 @@
 <template>
     <!--复合题组件-->
-    <div class="compoundTypeStem" :class="paperState != 1 ? 'compound_viewall' : ''">
+    <div class="compoundTypeStem" :class="paperState != 1&&paperState != 3 ? 'compound_viewall' : ''">
         
         <!-- 题干 -->
         <topic-drt :orderNum="orderNum" :stem="compoundDetails.stem" v-if="showBlock != 7" :showType="showType" :type="compoundDetails.type"></topic-drt>
@@ -16,6 +16,7 @@
                     :paperState="paperState"
                     :orderNum="(index4 + 1)"
                     :topicSmall="true"
+                    v-on="$listeners"
                     :showBlock="showBlock"
                     :knowledgeString="knowledgeString"
                     :showType="showType"
@@ -34,6 +35,22 @@
         
         <slot name="answerSheet" :scope="compoundDetails">
             <div v-if="paperState == 1 && compoundDetails.type > 5 || isSwider" class="compoundTypeStem-answerSheet">
+                <answer-sheet
+                    :showType="showType"
+                    :showLowerType="showLowerType"
+                    :questionType="compoundDetails.type"
+                    :orderNum="orderNum"
+                    :gainBtnShow="gainBtnShow"
+                    @beginGestalt="beginGestalt"
+                    @getnowIndex="getnowIndex" 
+                    @twoChoice="twoChoice"
+                    :getSmallBtn="getSmallBtn"
+                    :componentQuestion="compoundDetails.componentQuestionModels" 
+                    :paperState="paperState">
+                </answer-sheet>
+
+            </div>
+            <div v-if="paperState == 3 && compoundDetails.type > 5 || isSwider" class="compoundTypeStem-answerSheet">
                 <answer-sheet
                     :showType="showType"
                     :showLowerType="showLowerType"

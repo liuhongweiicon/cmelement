@@ -186,8 +186,25 @@ function StorageSet(storageString) {
     clear,
   };
 }
+// 图片加载失败之后再加载次数
+let errorNum = 4
 
+// 图片加载失败事件
+// let errorImg = (className) => {
+//     // setTimeout(() => {
+        
+//     // const dom = window.document.querySelector('.' + className)
+//     // console.log('2222222222', dom)
+//     // },5000)
+//     if (errorNum<0) {
+//         return
+//     } else {
+//         err.target.src = err.target.src
+//         errorNum--
+//     }
+// }
 /*图片*/
+
 var strToUrlCmelement = (str) => {
   if (!str || typeof str != "string") return "";
   str = str.toString();
@@ -206,7 +223,7 @@ var strToUrlCmelement = (str) => {
         return "<audio src=" + w + " controls />";
       } else {
         return (
-          `<img style='max-width:100%;vertical-align:middle; max-width: 100%;min-height: ${fontSizes};' src=${w} />`
+            `<img onerror="errorImg(this)" style='max-width:100%;vertical-align:middle; max-width: 100%;min-height: ${fontSizes};' src=${w} />`
         );
       }
     }
@@ -225,7 +242,6 @@ var strUrlChangeCmelement = (str) => {
   string = string.replace(/[\r\n]*$/g, "");
   string = string.replace(/[\r\n]/g, "<br>");
   string = string.replace(/http:\/\//g, "https:\/\/");
-
   return string.replace(
     /(http:\/\/|https:\/\/).*?\.(mp3|jpg|jpeg|png|gif)/gi,
     function(w) {
@@ -233,7 +249,7 @@ var strUrlChangeCmelement = (str) => {
         return '<audio src="' + w + '" controls/>';
       } else {
         return (
-          `<img class="media-middle" style="vertical-align: middle; max-width: 100%;min-height: ${fontSizes};" src=${w} />`
+            `<img class="media-middle" onerror="errorImg(this)" style="vertical-align: middle; max-width: 100%;min-height: ${fontSizes};" src=${w} />`
         );
       }
     }
@@ -633,6 +649,8 @@ export {
   cmFormatSeconds,
   getDiagnosisStatus,
   gradeToStage,
+//   errorImg,
+  errorNum,
   touchstart,
   touchmove,
   searchSubjectList,

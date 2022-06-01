@@ -1,7 +1,7 @@
 <template>
   <div
     class="cm-allStem"
-    :class="{ paper: paperState == 1, preview: paperState != 1 }"
+    :class="{ paper: paperState == 1 || paperState == 3, preview: paperState != 1&&paperState != 3 }"
   >
     <!-- 作答时head -->
     <slot name="head" v-if="headerShow">
@@ -10,10 +10,15 @@
         
         <div class="head-time-icon" @click="goBack" v-if="isGoBack">
           <img class="iconfont" src="../static/img/back.png" alt="">
-          <span>{{paperState != 1 ? '返回' : '结束作答'}}</span>
+          <span>{{paperState != 1 &&paperState != 3 ? '返回' : '结束作答'}}</span>
         </div>
         <div class="cm-allStem-head-title">{{ paperDetails.productName || paperDetails.paperName }}</div>
-
+        <div class="leftIcon" @click="backPad" v-if="$route.query.isIpad">
+        <!-- <div class="leftIcon" @click="backPad"> -->
+            <svg class="iconfont" aria-hidden="true">     
+                <use xlink:href="#iconfanhui"></use> 
+            </svg>
+        </div>
         <div class="cm-allStem-head-r">
           <div class="cm-allStem-head-time" v-if="isTimeHtml && getSmallBtn">
             <img class="iconfont" src="../static/img/time.png" alt="">
@@ -34,13 +39,31 @@
               @submit="submitConHandler"
             ></answer-card>
           </div>
+          <div
+            class="cm-allStem-head-card"
+            @click.stop="answerCardHandler"
+            v-if="paperState == 3"
+          >
+            {{ `答题卡【${answerCardOpen ? '返回' : '提交'}】(${nowquesIndex}/${totalTopic})` }}
+
+            <!-- 答题卡组件 -->
+            <answer-card
+              v-if="answerCardOpen"
+              :paperDetails="answerPaperDetails.bigQuestions"
+              @switch="switchHandler"
+              @submit="submitConHandler"
+            ></answer-card>
+          </div>
 
           
 
           <div class="cm-allStem-head-start cm-allStem-head-card" v-if="paperState == 0 && showStart" @click="startHandler">
             开始作答
           </div>
-
+            <!-- <div class="rightIcon" @click="reload" v-if="$route.query.isIpad">
+                <i class="iconfont" >&#xe6a5;</i>
+                <span>刷新</span>
+            </div> -->
         </div>
       </div>
 
@@ -61,6 +84,13 @@
           >
             {{ answerCardOpen ? "答题卡[返回]" : "答题卡[提交]" }}
           </div>
+          <div
+            class="mhead-top-btn"
+            v-if="paperState == 3"
+            @click.stop="answerCardHandler"
+          >
+            {{ answerCardOpen ? "答题卡[返回]" : "答题卡[提交]" }}
+          </div>
         </div>
 
         <div class="allStem-mhead-bot">
@@ -70,6 +100,13 @@
           <div class="mhead-bot-order">
             {{
               paperState == 1
+                ? `${nowquesIndex}/${totalTopic}`
+                : `总分：${paperDetails.totalScore}分`
+            }}
+          </div>
+          <div class="mhead-bot-order">
+            {{
+              paperState == 3
                 ? `${nowquesIndex}/${totalTopic}`
                 : `总分：${paperDetails.totalScore}分`
             }}
@@ -85,7 +122,6 @@
         ></answer-card>
       </div>
     </slot>
-
     <div
 	  @click.stop="answerCardOpen = false"
       class="swiper-container small answerpaperList"
@@ -101,7 +137,7 @@
             :key="item2.questionCode"
           >
             <div class="swiper-slideAnswer">
-              <div class="big-name" v-if="!index2 || paperState == 1">
+              <div class="big-name" v-if="!index2 || (paperState == 1||paperState == 3)">
                 {{ ArabelToCN(inx + 1) }}、{{ item.bigTitle }}（共{{
                   item.smallQuestions.length
                 }}题；共{{ item.bigScore }}分）
@@ -116,6 +152,7 @@
                   :questionDetails="paperDataHandler(item2)"
                   :paperState="paperState"
                   :orderNum="index2 + 1"
+                  v-on="$listeners"
                   :knowledgeString="knowledgeString"
                   :showBlock="showBlock"
                   :showType="showType"
@@ -125,6 +162,7 @@
                 <compound-type-stem
                   @getnowIndex="getnowIndex"
                   @beginGestalt="beginGestalt"
+                  v-on="$listeners"
                   v-else
                   :gainBtnShow="gainBtnShow"
                   @twoChoice="twoChoice"
@@ -149,6 +187,18 @@
     <!-- 作答时footer -->
     <slot name="footer">
       <div class="cm-allStem-footer" v-if="paperState == 1" @click.stop="answerCardOpen = false">
+        <div
+          class="cm-allStem-footer-item"
+          v-if="nowquesIndex - 1"
+          @click="slidePrevHandler"
+        >
+          上一题
+        </div>
+        <div class="cm-allStem-footer-item" @click="slideNextHandler">
+          {{ isEnd || totalTopic == 1 ? "提交" : "下一题" }}
+        </div>
+      </div>
+      <div class="cm-allStem-footer" v-if="paperState == 3" @click.stop="answerCardOpen = false">
         <div
           class="cm-allStem-footer-item"
           v-if="nowquesIndex - 1"
@@ -199,13 +249,20 @@ export default {
     answerCard,
   },
   props: {
-    // 试卷状态，0 预览  1 做答中 2 作答完成
+    // 试卷状态，0 预览  1 做答中 2 作答完成 3 缓存作答
     paperState: {
       type: Number | String,
       default: 0,
     },
     // 试题信息
     paperDetails: {
+      type: Object,
+      default: function() {
+        return {};
+      },
+    },
+    // 缓存数据
+    submitLocastorage: {
       type: Object,
       default: function() {
         return {};
@@ -302,7 +359,7 @@ export default {
 				// 设置sweiper对象
         this.setSweiper();
 
-			} else if (val != 1 && this.mySwiper) {
+			} else if (val != 1&&val != 3 && this.mySwiper) {
 				// this.nowquesIndex = 1
                 // this.totalTopic = 0
 			    clearInterval(this.timeInfo);
@@ -311,6 +368,15 @@ export default {
 			} else if (val == 0) {
 				// 开始预览时间
 				this.enterTime = new Date().getTime();
+			} else if (val == 3 && !this.mySwiper) {
+				//开始做题 时间开始
+				this.nowTime = new Date().getTime();
+				this.countDown();
+                console.log('缓存----开始作答',this.submitCon)
+                console.log('缓存----作答数据',this.paperDetails)
+				// 设置sweiper对象
+                this.setSweiper();
+
 			}
 		},
 		immediate: true,
@@ -323,15 +389,32 @@ export default {
      */
     paperDetails: {
       handler(val) {
+        console.log('valvalval---插件', val)
         if (val.bigQuestions) {
+            console.log('this.submitLocastorage------------插件',this.submitLocastorage)
+        //   if (this.submitLocastorage&&Object.keys(this.submitLocastorage).length) {
+          if (this.submitLocastorage&&Object.prototype.toString.call(this.submitLocastorage)=='[object Object]'&&Object.keys(this.submitLocastorage).length) {
+            this.submitCon = this.submitLocastorage;
           
-          if (!this.oldSubmitCon.paperId) {
-            this.topicname = this.paperDetails.standardTime * 60;
+            
+            //做题时间
+            this.timeHtml = this.paperDetails.standardTime + "分钟";
+            this.topicname = isNaN(this.submitLocastorage.topicname) ? 0 : this.submitLocastorage.topicname;
+            console.log('this.submitCon------------插件', this.submitCon)
+            console.log('.topicname------------插件', this.submitLocastorage.topicname)
+            console.log('topicname-----typeof------------插件',typeof this.submitLocastorage.topicname)
+            // console.log('this.submitLocastoragesubmitLocastoragesubmitLocastorage', this.submitLocastorage)
+            this.localStorageCon(val)
+          } else {
+          
+            if (!this.oldSubmitCon.paperId) {
+                this.topicname = this.paperDetails.standardTime * 60;
+            }
+            
+            //做题时间
+            this.timeHtml = this.paperDetails.standardTime + "分钟";
+            this.setsubmitCon(val);
           }
-          
-          //做题时间
-          this.timeHtml = this.paperDetails.standardTime + "分钟";
-          this.setsubmitCon(val);
         }
       },
       immediate: true,
@@ -380,8 +463,67 @@ export default {
 	clearInterval(this.timeInfo);
   },
   mounted() {
+      console.log('this.$listeners', this.$listeners)
   },
   methods: {
+    // 返回
+    backPad () {
+        let newSubmitCon = this.submitCon;
+        if(this.paperState == 3) {
+            console.log('newSubmitCon------------插件', newSubmitCon)
+            console.log('his.paperState------------插件', this.paperState)
+            console.log('his.topicname------------插件', this.topicname)
+            this.$set(newSubmitCon,'topicname', this.topicname)
+            
+            console.log('newSubmitCon1------------插件', newSubmitCon)
+            console.log('his.paperState1------------插件', this.paperState)
+            console.log('his.topicname1------------插件', this.topicname)
+            // newSubmitCon['topicname'] = this.topicname
+        } else {
+            delete newSubmitCon.topicname
+        }
+        console.log('backPad------------插件', newSubmitCon)
+        this.$emit("backPad", newSubmitCon);
+    },
+    // 刷新
+    reload () {
+        alert(111)
+        const obj= {
+            type: 2,
+            paperCode:this.paperDetails.paperId || '',
+            paperInfo:'\"'+JSON.stringify({
+                submitCon:this.submitCon||'',
+                paperDetails:this.paperDetails||'',
+            })+'\"',
+        };
+        console.log('插件=============cacheData', obj)
+        const obj1= {
+            type: 30,
+        };
+        if(window.webkit&&window.webkit.messageHandlers){ // ISO
+            window.webkit.messageHandlers.startAndorid.postMessage(JSON.stringify(obj));
+        }else if(window.android&&window.android.startAndorid){// 安卓
+            window.android.startAndorid(JSON.stringify(obj));
+        }
+        if(window.webkit&&window.webkit.messageHandlers){ // ISO
+            window.webkit.messageHandlers.startAndorid.postMessage(JSON.stringify(obj1));
+            return
+        }else if(window.android&&window.android.startAndorid){// 安卓
+            window.android.startAndorid(JSON.stringify(obj1));
+            return
+        }
+    },
+    // 缓存处理
+    localStorageCon (data) {
+        this.totalTopic = 0;
+        data.bigQuestions.forEach((item) => {
+		    item.type = item.type || item.bigType;
+
+        this.totalTopic += item.smallQuestions.length;
+      });
+        // 设置sweiper对象
+        this.setSweiper();
+    },
     // 设置sweiper对象
     setSweiper() {
       const _this = this;
@@ -412,6 +554,34 @@ export default {
             },
           });
         }, 500);
+      } else if (this.paperState == 3) {
+        setTimeout(() => {
+          this.mySwiper = new Swiper(".answerpaperList", {
+            speed: 100,
+            touchRatio : 0.8,
+            loop: false,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true, //修改swiper的父元素时，自动初始化swiper
+            onSlideChangeEnd: function(swiper) {
+              let index = _this.nowquesIndex - 1;
+              _this.isEnd = swiper.isEnd; // 是否是最后一题
+              _this.nextTime = new Date().getTime();
+              if (_this.submitCon.questionList[index].isComplexQuestion == 0) {
+                _this.submitCon.questionList[
+                  index
+                ].answerQuestionsTime += parseInt(
+                  (_this.nextTime - _this.nowTime) / 1000
+                );
+              }
+
+              _this.nowTime = new Date().getTime();
+
+              _this.nowquesIndex = swiper.activeIndex + 1;
+              _this.$emit("slideChangeEnd", swiper);
+            },
+          });
+        }, 500);
+
       }
     },
 	
@@ -419,6 +589,8 @@ export default {
      * 倒计时
      */
     countDown() {
+      console.log('倒计时---topicname', this.topicname)
+      console.log('倒计时---timeHtml', this.timeHtml)
       this.timeInfo = setInterval(() => {
         this.topicname -= 1;
         this.timeHtml = this.cmFormatSeconds(this.topicname);
@@ -554,6 +726,7 @@ export default {
      * 预处理提交内容
      */
     setsubmitCon(data) {
+        console.log('非平板缓存进入', data)
       const _this = this;
 	  _this.submitCon = {
 		  paperId: data.paperId, //试卷code 
@@ -852,7 +1025,6 @@ export default {
      */
     tipsDefine() {
       this.isPopupTips = false;
-
       if (this.judgeSelf) {
         
         this.judgeSelf = false;
@@ -894,6 +1066,19 @@ export default {
           newSubmitCon = this.oldSubmitCon;
         } else {
           newSubmitCon = this.submitCon;
+        }
+        if(this.paperState == 3) {
+            console.log('newSubmitCon------------插件', newSubmitCon)
+            console.log('his.paperState------------插件', this.paperState)
+            console.log('his.topicname------------插件', this.topicname)
+            this.$set(newSubmitCon,'topicname', this.topicname)
+            
+            console.log('newSubmitCon1------------插件', newSubmitCon)
+            console.log('his.paperState1------------插件', this.paperState)
+            console.log('his.topicname1------------插件', this.topicname)
+            // newSubmitCon['topicname'] = this.topicname
+        } else {
+            delete newSubmitCon.topicname
         }
         this.$emit("submit", newSubmitCon);
       }
@@ -1610,6 +1795,16 @@ export default {
                 white-space: nowrap !important;
                 font-size: 24px !important;
             }
+            .leftIcon {
+                position: fixed;
+                left: 20px;
+                z-index: 11;
+                top: 40px;
+                .iconfont {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
             .cm-allStem-head-r {
                 .cm-allStem-head-start {
                     margin-right: 30px !important;
@@ -1719,17 +1914,28 @@ export default {
                 }
                 .cm-allStem-head-card {
                     height: 36px;
-                    padding: 0 20px;
+                    padding: 0 10px;
                     line-height: 36px;
                     text-align: center;
                     border-radius: 18px;
                     font-size: 19px !important;
                     font-weight: 400;
-                    margin-left: 30px;
+                    margin-left: 0px;
                     user-select: none;
                     position: relative;
                     background: linear-gradient(to left, #eb3f35, #ff6158);
                     color: #ffffff;
+                }
+                .rightIcon {
+                    position: fixed;
+                    right: 60px;
+                    z-index: 11;
+                    top: 36px;
+                    color: #1A7CEF;
+                    font-size: 20px !important;
+                    .iconfont {
+                        font-size: 20px !important;
+                    }
                 }
             }
         }
@@ -1755,12 +1961,25 @@ export default {
 
         .cm-allStem-head {
             padding: 32px 0 12px 0;
+            margin-bottom: 0px !important;
             .cm-allStem-head-r {
                 .cm-allStem-head-time {
                     font-size: 19px !important;
                 }
                 .cm-allStem-head-card {
                     font-size: 19px !important;
+                }
+                
+                .rightIcon {
+                    position: fixed;
+                    right: 60px;
+                    z-index: 11;
+                    top: 36px;
+                    color: #1A7CEF;
+                    font-size: 20px !important;
+                    .iconfont {
+                        font-size: 20px !important;
+                    }
                 }
             }
         }
@@ -1786,6 +2005,17 @@ export default {
                 .cm-allStem-head-title {
                     padding-left: 30px !important;
                     font-size: 20px !important;
+                }
+                
+                .leftIcon {
+                    position: fixed;
+                    left: 20px;
+                    z-index: 11;
+                    top: 40px;
+                    .iconfont {
+                        width: 20px;
+                        height: 20px;
+                    }
                 }
                 .cm-allStem-head-r {
                     .cm-allStem-head-start {

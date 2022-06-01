@@ -1,7 +1,6 @@
 <template>
     <div class="topicDrt">
-        
-        <div class="topicDrt-content" :class="{'topicDrt-compound': type > 5}">
+        <div  @click="topicBtn" class="topicDrt-content" :class="{'topicDrt-compound': type > 5}">
             <span v-if="orderNum">{{ topicSmall ? `（${orderNum}）` : `${orderNum}.&nbsp;&nbsp;` }}</span>
             <div class="content_body">
 
@@ -13,6 +12,20 @@
             <audio controls src="horse.mp3"></audio>
 
             <video src="movie.ogg" controls="controls">您的浏览器不支持 video 标签。</video>
+        </div> -->
+        <!-- <div class="edImg" @click="close" @touchstart.prevent.stop=""
+            @touchmove.prevent.stop=""
+            @touchend.prevent.stop=""
+            @touchcancel.prevent.stop="" v-if="targetimgdata&&$route.query.isIpad">
+            <div class="close" >
+                <span data-close="close">关闭</span>
+            </div>
+            <div class="imgInfo" @touchstart.prevent.stop=""
+            @touchmove.prevent.stop=""
+            @touchend.prevent.stop=""
+            @touchcancel.prevent.stop="">
+                <cm-img class="cmImg_content" :dataSet="dataSet"></cm-img>
+            </div>
         </div> -->
     </div>
 </template>
@@ -56,6 +69,12 @@ export default {
             type: Boolean,
             default: false
         },
+        
+        // 试卷状态，0 预览  1 做答中 2 作答完成 3 缓存作答
+        paperState: {
+            type: Number | String,
+            default: 0,
+        },
         /**
          * 是否展示复合小题题型
          */
@@ -66,11 +85,74 @@ export default {
     },
     data() {
         return {
+            url: null,
+            errorNum: 3,
+            targetimgdata: false,
+            dataSet: {
+                width: '100%', // 图片容器高
+                height: '100%', // 图片容器宽
+                urlList: [
+                    { // 图片路径
+                        url: null,
+                    }
+                ],
+                wheel: true, // 是否允许滚轮缩放大小
+                automatic: null, // 是否允许自动切换, 自动切换时间
+                preNext: false, // 是否展示上一张和下一张按钮
+                operate: false, // 是否展示放大缩小旋转重置按钮
+                move: true, // 是否允许拖动
+            }
         }
     },
     watch: {
         stem(val) {
         }
+    },
+    mounted() {
+        // window.errorImg = this.errorImg
+    },
+	methods: {
+        // 关闭弹框
+        close (event) {
+            let target = event.target.dataset
+                console.dir('event',target)
+            if (target.close == "close") {
+                // event.stopPropagation()
+                this.targetimgdata = false;
+                this.dataSet.urlList[0].url = null
+            }
+        },
+        // 点击题干打开图片
+        topicBtn (event) {
+            console.log('topicBtn打开图片方法', this.paperState)
+            if (this.paperState == 3){
+                this.$emit('imgBtn', event.target.src)
+            };
+            // let targetimg = event.target.src,
+            //     targetdata = event.target.nodeName
+            //     // this.targetimgdata = true
+            //     // this.dataSet.urlList[0].url = 'http://iwrong-static.xinguoren.cn/resources_v3/csb20456_csb20555.files/image102.png'
+            // if (targetdata.toLowerCase() == 'img') {
+            //     this.targetimgdata = true;
+            //     this.dataSet.urlList[0].url = targetimg
+
+            // }
+        },
+        // 图片加载失败回调
+        errorImg (err) {
+            console.log('2222222222', err.src)
+            if (this.errorNum<0) {
+                // document.removeEventListener('error',this.handel)
+                return
+            } else {
+                err.src = err.src
+                this.errorNum--
+            }
+        },
+        // 图片加载失败回调
+        handel (err) {
+            this.errorImg(err)
+        },
     }
 }
 </script>
@@ -87,6 +169,45 @@ export default {
     color: #3C3C3C;
     display: flex;
     flex-direction: column;
+    .edImg {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: #b3b3b3;
+        z-index: 11;
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            border: 1px solid #FFFFFF;
+            border-radius: 16px;
+            width: 76px;
+            text-align: center;
+            height: 32px;
+            line-height: 32px;
+            span {
+                color: #FFFFFF;
+                font-size: 20px;
+            }
+        }
+        .imgInfo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 800px;
+            height: 800px;
+            transform: translate(-50%, -50%);
+            /deep/ .ed_img {
+                background: none !important;
+                img {
+                    width: auto !important;
+                    height: auto !important;
+                }
+            }
+        }
+    }
     .topicDrt-content {
         display: flex;
         .content_body {
@@ -235,6 +356,44 @@ export default {
                     }
                 }
             }
+        }
+    }
+}
+</style>
+<style lang="less">
+.imgDiv {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: #000000;
+    padding: 70px;
+    z-index: 99;
+    .imgInfo {
+        width: 100%;
+        height: 100%;
+        border-radius: 33px;
+        position: relative;
+        background: white;
+        img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); 
+        }
+    }
+    .close {
+        position: fixed;
+        right: 0px;
+        top: 152px;
+        font-size: 20px;
+        z-index: 6666;
+        .closeText {
+            border: 1px solid #FFFFFF;
+            border-radius: 16px;
+            color: #FFFFFF;
+            padding: 4px 15px;
         }
     }
 }
