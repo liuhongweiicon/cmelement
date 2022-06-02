@@ -463,7 +463,7 @@ export default {
 	clearInterval(this.timeInfo);
   },
   mounted() {
-      console.log('this.$listeners', this.$listeners)
+      window.onBack = this.onBack
   },
   methods: {
     // 返回
@@ -484,6 +484,10 @@ export default {
         }
         console.log('backPad------------插件', newSubmitCon)
         this.$emit("backPad", newSubmitCon);
+    },
+    // 安卓原生返回
+    onBack () {
+        this.backPad()
     },
     // 刷新
     reload () {
