@@ -11,7 +11,7 @@
         <div class="videoControl_gradient_bottom">
         </div>
         <!-- 视频块 -->
-        <div class="videoControl_video" @click="playStopHandler(true)">
+        <div class="videoControl_video" @click.stop="playVideoMasker">
             <!-- 1、loadstart：视频查找。当浏览器开始寻找指定的音频/视频时触发，也就是当加载过程开始时 -->
             <!-- 2、durationchange：时长变化。当指定的音频/视频的时长数据发生变化时触发，加载后，时长由 NaN 变为音频/视频的实际时长 -->
             <!-- 3、loadedmetadata ：元数据加载。当指定的音频/视频的元数据已加载时触发，元数据包括：时长、尺寸（仅视频）以及文本轨道 -->
@@ -34,6 +34,7 @@
             <!-- 20、事件在视频/音频（audio/video）终止加载时触发。 -->
             <!-- 21、当浏览器刻意不获取媒体数据时触发。 -->
             <video 
+                
                 @touchstart="touchstart"
                 @touchmove="touchmove"
                 @touchend="touchend"
@@ -411,6 +412,8 @@ export default {
             classId: this.guid(),
             hls: null,
             adHls: null,
+            clickVideoFlag: false, // 双击标记  300ms以内点击两次算是双击
+			doubleClickTimer: null, // 双击视频定时器
         }
     },
     mounted() {
@@ -449,6 +452,35 @@ export default {
                 width: '0%' // 宽度
             }];
             _this.setTimer();
+        },
+        playVideoMasker(){
+			if(this.clickVideoFlag){
+                if (this.timer) {
+                    clearTimeout(this.timer)
+                    this.timer = null;
+                }
+				clearTimeout(this.doubleClickTimer);
+				this.doubleClickTimer = null;
+				this.clickVideoFlag = false;
+				this.playStopHandler(true);
+				return;
+			}
+			this.clickVideoFlag = true;
+			this.doubleClickTimer = setTimeout(() => {
+				this.clickVideoFlag = false;
+				if(this.inside){
+                    if (this.timer) {
+                        clearTimeout(this.timer)
+                        this.timer = null;
+                    }
+					this.inside = false;
+				}else {
+					this.setTimer();
+				}
+				// this.isShowSpeed = false;
+				clearTimeout(this.doubleClickTimer);
+				this.doubleClickTimer = null;
+			},300)
         },
         /**
          * 设置自定义控件隐藏
@@ -633,7 +665,7 @@ export default {
             if(this.isPlayAd)return;
             this.speedPopup = false;
             this.soundPopup = false;
-            this.setTimer();
+            !val && this.setTimer();
             if (this.playStop) {
                 this.videoInfo.pause();
             } else {

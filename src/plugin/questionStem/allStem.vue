@@ -1071,6 +1071,7 @@ export default {
         } else {
           newSubmitCon = this.submitCon;
         }
+        newSubmitCon.useTime = this.paperDetails.standardTime * 60 - this.topicname;
         if(this.paperState == 3) {
             console.log('newSubmitCon------------插件', newSubmitCon)
             console.log('his.paperState------------插件', this.paperState)
@@ -1788,7 +1789,7 @@ export default {
     .preview {
         .cm-allStem-head {
             background: #FFFBF8;
-                padding: 32px 0 12px 0;
+                padding: 6px 0 6px 0;
                 height: auto !important;
                 width: 100% !important;
             .cm-allStem-head-title {
@@ -1803,7 +1804,7 @@ export default {
                 position: fixed;
                 left: 20px;
                 z-index: 11;
-                top: 40px;
+                top: 16px;
                 .iconfont {
                     width: 20px;
                     height: 20px;
@@ -1964,7 +1965,7 @@ export default {
         box-sizing: border-box; 
 
         .cm-allStem-head {
-            padding: 32px 0 12px 0;
+            padding: 6px 0 6px 0;
             margin-bottom: 0px !important;
             .cm-allStem-head-r {
                 .cm-allStem-head-time {
@@ -1991,16 +1992,17 @@ export default {
             display: none !important;
         }
         .cm-allStem-footer {
-            .cm-allStem-footer-item:first-child {
-                background: #ffffff !important;
-                border: 1px solid #e8e8e8 !important;
-                color: #5e5e5e !important;
-            }
-            .cm-allStem-footer-item:last-child {
-                background: #f2f8ff !important;
-                border: 1px solid var(--color1) !important;
-                color: var(--color1) !important;
-            }
+            display: none;
+            // .cm-allStem-footer-item:first-child {
+            //     background: #ffffff !important;
+            //     border: 1px solid #e8e8e8 !important;
+            //     color: #5e5e5e !important;
+            // }
+            // .cm-allStem-footer-item:last-child {
+            //     background: #f2f8ff !important;
+            //     border: 1px solid var(--color1) !important;
+            //     color: var(--color1) !important;
+            // }
         }
         .cm-allStem-head {
                 background: #FFFBF8;
@@ -2015,7 +2017,7 @@ export default {
                     position: fixed;
                     left: 20px;
                     z-index: 11;
-                    top: 40px;
+                    top: 16px;
                     .iconfont {
                         width: 20px;
                         height: 20px;

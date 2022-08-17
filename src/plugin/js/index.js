@@ -16,11 +16,6 @@ const sleep = (time) =>
       
     }, time);
   });
-let clientWidth = document.body.clientWidth,
-fontSizes = '30px'
-if (clientWidth>=850&&clientWidth <= 1280) {
-    fontSizes = '25px'
-}
 // 对get求情进行编码
 const encodeSearchParams = (obj) => {
   const params = [];
@@ -223,7 +218,7 @@ var strToUrlCmelement = (str) => {
         return "<audio src=" + w + " controls />";
       } else {
         return (
-            `<img onerror="errorImg(this)" style='max-width:100%;vertical-align:middle; max-width: 100%;min-height: ${fontSizes};' src=${w} />`
+            `<img onerror="errorImg(this)" style='max-width:100%;vertical-align:middle; max-width: 100%;' src=${w} />`
         );
       }
     }
@@ -249,7 +244,7 @@ var strUrlChangeCmelement = (str) => {
         return '<audio src="' + w + '" controls/>';
       } else {
         return (
-            `<img class="media-middle" onerror="errorImg(this)" style="vertical-align: middle; max-width: 100%;min-height: ${fontSizes};" src=${w} />`
+            `<img class="media-middle" onerror="errorImg(this)" style="vertical-align: middle; max-width: 100%;" src=${w} />`
         );
       }
     }

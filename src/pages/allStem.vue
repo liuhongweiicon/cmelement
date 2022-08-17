@@ -48,10 +48,10 @@ export default {
         async gerPaper() {
             const params = {
                 // appKey: "string",
-                // paperId: "62e8a8303add4555b401ac2c1af9dfcb",
+                paperId: "0db694dfe68441ec8fcc78a1350aa527",
                 
                 // evaluationRecordCode: "f1be0504af314e29a96dee65fc86c24d"
-                paperId: "b47de561713347d9be4ce5a63d707cd4"
+                // paperId: "b47de561713347d9be4ce5a63d707cd4"
                 // paperId: "2aa445c21ceb473fb0830c04c33ead7a",
                 // token: "string"
                 // paperId: "b47de561713347d9be4ce5a63d707cd4",
