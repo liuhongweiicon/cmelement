@@ -754,11 +754,11 @@ export default {
           .value {
             color: #5E5E5E;
           }
-        //   .value_img {
-        //     /deep/ img {
-        //         min-height: 30px !important;
-        //     }
-        //   }
+          .value_img {
+            /deep/ img {
+              vertical-align: middle;
+            }
+          }
           .key {
             color: #3C3C3C;
           }
@@ -1033,11 +1033,6 @@ export default {
               font-family: "微软雅黑";
               color: #808080 ;
             }
-            // .analyzeValue-img {
-            //     /deep/ img {
-            //         min-height: 30px !important;
-            //     }
-            // }
             span:first-child {
               margin-right: 10px;
             }
@@ -1064,9 +1059,6 @@ export default {
             .value-child {
               display: flex;
               color: #7ac858;
-                // .value-child-img {
-                //     min-height: 30px !important;
-                // }
             }
           }
         }
@@ -1379,11 +1371,6 @@ export default {
               font-size: 19px !important;
               line-height: 40px !important;
             }
-            // .value_img {
-            //     /deep/ img {
-            //     min-height: 25px !important;
-            // }
-            // }
           }
           .key {
             font-size: 19px !important;
@@ -1429,11 +1416,6 @@ export default {
             /deep/ .analyzeKey,.analyzeValue {
               font-size: 19px !important;
             }
-            // .analyzeValue-img {
-            //     /deep/ img {
-            //         min-height: 25px !important;
-            //     }
-            // }
           }
         }
       }
@@ -1458,13 +1440,6 @@ export default {
         }
         .value-4 {
             margin-bottom: 10px;
-            // .value-child {
-            //     .value-child-img {
-            //         /deep/ img {
-            //             min-height: 25px !important;
-            //         }
-            //     }
-            // }
         }
         .analysis_info {
                 margin-left: -10px !important;

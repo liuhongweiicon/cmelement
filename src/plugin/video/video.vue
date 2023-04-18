@@ -179,17 +179,12 @@
                 </div>
             <!-- </slot> -->
 
-            <!-- <slot name="pausePlay"> -->
-                <div class="videoControl_pausePlay"  v-show="!isPlayAd" :class="playStop ? 'videoControl_playstate' : 'videoControl_pausestate'">
-                    <!-- <div class="videoControl_pausePlay_strip">
-                    </div> -->
-                    
-                    <svg class="iconfont" aria-hidden="true" @click="controlFullScreen">     
+                <div class="videoControl_pausePlay" :style="{'pointer-events': isPC ? 'auto' : 'none'}"  @click="pcClickPlayOrPause" v-show="!isPlayAd" :class="playStop ? 'videoControl_playstate' : 'videoControl_pausestate'">
+                    <svg class="iconfont" aria-hidden="true">     
                         <use xlink:href="#iconbofang1"></use> 
                     </svg>
                 </div>
-            <!-- </slot> -->
-        <!-- </div> -->
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                
         <!-- 水印 -->
         <div class="videoControl_watermark">
@@ -418,7 +413,8 @@ export default {
     },
     mounted() {
         window.document.addEventListener('keydown', this.escapeHandler());
-        this.isPC = parseInt(document.body.offsetWidth) < 1024 ? false : true;
+        // this.isPC = parseInt(document.body.offsetWidth) < 1024 ? false : true;
+        this.isPC = this.IsPc();
 
         this.addEventListenerScreen();
         this.init();
@@ -426,6 +422,21 @@ export default {
         this.formatTurn('adVideoUrl', false);
     },
     methods: {
+         IsPc(){
+            let userAgentInfo = navigator.userAgent;
+            let Agents = ['Android','iPhone','SymbianOS','Windows Phone','iPod'];
+            let flag = true;
+            for(let i = 0;i < Agents.length;i++){
+                if(userAgentInfo.indexOf(Agents[i])>0){
+                    flag = false;
+                    break;
+                }
+            }
+            if(window.screen.width>=768){
+                flag = true;
+            }
+            return flag;
+        },
         /**
          * 初始化数据
          */
@@ -453,7 +464,25 @@ export default {
             }];
             _this.setTimer();
         },
+        pcClickPlayOrPause(){
+            if(this.isPC){
+                this.playStopHandler(false);
+            }
+        },
         playVideoMasker(){
+            if(this.isPC){
+                // this.setTimer();
+                if(this.inside){
+                    if (this.timer) {
+                        clearTimeout(this.timer)
+                        this.timer = null;
+                    }
+					this.inside = false;
+				}else {
+					this.setTimer();
+				}
+                return
+            }
 			if(this.clickVideoFlag){
                 if (this.timer) {
                     clearTimeout(this.timer)
@@ -1368,8 +1397,8 @@ export default {
             }
         }
     }
-    .videoControl_pausePlay {
-        pointer-events: none;
+    .videoControl_pausePlay  {
+        // pointer-events: none;
         position: absolute;
         top: calc(50% - 2em);
         left: calc(50% - 2em);
@@ -1391,7 +1420,7 @@ export default {
             fill: #fff!important;
         }
 
-        .videoControl_pausePlay_strip {
+        .videoControl_pausePlay_ strip {
             background-color: rgba(255, 255, 255, 1);
             width:  .8em;
             height: 2em;

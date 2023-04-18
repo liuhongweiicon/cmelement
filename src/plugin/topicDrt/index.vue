@@ -229,11 +229,11 @@ export default {
             .topicDrt_html {
                 text-indent: 50px;
             }
-            // .topicDrt_img {
-            //     /deep/ img {
-            //         min-height: 30px !important;
-            //     }
-            // }
+            .topicDrt_img {
+                /deep/ img {
+                    vertical-align: middle;
+                }
+            }
         }
         span {
             font-size: 15px ;
@@ -350,11 +350,6 @@ export default {
                     font-size: 19px !important;
                     line-height: 40px  !important;
                 }
-                // .topicDrt_img {
-                //     /deep/ img {
-                //         min-height: 25px !important;
-                //     }
-                // }
             }
         }
     }
