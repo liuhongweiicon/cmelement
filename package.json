@@ -1,6 +1,6 @@
 {
   "name": "cmelement",
-  "version": "2.3.9",
+  "version": "2.3.13",
   "description": "cmelement vue plugin",
   "private": false,
   "main": "dist/cmelement.js",
@@ -71,7 +71,7 @@
     "zego-express-whiteboard-web": "^1.19.1"
   },
   "files": [
-    "cmelement.js",
+    "dist",
     "README.md",
     "package.json"
   ]

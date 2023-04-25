@@ -13,6 +13,9 @@ const utils = require('./utils');
 const isDev = process.env.NODE_ENV === 'development';
 
 
+const miniCssExtractPlugin=require("mini-css-extract-plugin"); // css单独提取打包
+
+
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
@@ -66,13 +69,6 @@ const config = {
                 loader: 'babel-loader'
             },
             {
-                test: /\.css$/,
-                use: [
-                    'style-loader', //将css以js形式插入HTML中
-                    'css-loader', //专门处理css文件
-                ]
-            },
-            {
                 test: /\.(png|jpe?g|gif)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
@@ -97,26 +93,35 @@ const config = {
                 }
             },
             {
-                test: /\.less$/,
+                test: /\.css$/,
                 use: [
-                    'style-loader',
+                    miniCssExtractPlugin.loader,
+                    // 'style-loader', //将css以js形式插入HTML中
+                    'css-loader', //专门处理css文件
+                ]
+            },
+            {
+                test: /\.less$/,
+                
+                use: [
+                    miniCssExtractPlugin.loader,
+                    // 'style-loader',
                     'css-loader',
                     'less-loader',
-                    // {
-                    //   loader:"sass-resources-loader", // 设置全局样式
-                    //   options:{
-                    //     resources: path.resolve(__dirname, '../src/assets/css/global.less'),
-                    //     sourceMap:true
-                    //   }
-                    // }
-
 
                 ]
                 // loader: "style-loader!css-loader!less-loader",
             },
             {
                 test: /\.scss$/,
-                loader: "style-loader!css-loader!sass-loader",
+                
+                use: [
+                    miniCssExtractPlugin.loader,
+                    // 'style-loader',
+                    'css-loader',
+                    'sass-loader',
+
+                ]
             },
             {
                 test: /\.svg$/,
