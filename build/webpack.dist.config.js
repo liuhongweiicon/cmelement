@@ -40,26 +40,26 @@ const webpackConfig = merge(baseWebpackConfig,{
   },
   module: {
     rules: [
-      {
-        test: /\.scss | \.less/, //css预处理器 后缀名.scss
-        use: [
-          {
-            loader: miniCssExtractPlugin.loader,
-            options:{
-              publicPath: '../'
-            }
-          },
-          'css-loader', //专门处理css文件
-          {
-            loader: "postcss-loader",
-            options: {
-              sourceMap: true, //直接使用前面生成的sourceMap，编译的效率会快点
-            }
-          },
-          'sass-loader', //专门处理sass文件，转为css文件，不处理css
-          'less-loader', //专门处理less文件，转为css文件，不处理css
-        ]
-      },
+      // {
+      //   test: /\.scss | \.less/, //css预处理器 后缀名.scss
+      //   use: [
+      //     {
+      //       loader: miniCssExtractPlugin.loader,
+      //       options:{
+      //         publicPath: '../'
+      //       }
+      //     },
+      //     'css-loader', //专门处理css文件
+      //     {
+      //       loader: "postcss-loader",
+      //       options: {
+      //         sourceMap: true, //直接使用前面生成的sourceMap，编译的效率会快点
+      //       }
+      //     },
+      //     'sass-loader', //专门处理sass文件，转为css文件，不处理css
+      //     'less-loader', //专门处理less文件，转为css文件，不处理css
+      //   ]
+      // },
     ]
   },
 
