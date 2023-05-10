@@ -95,8 +95,7 @@ const config = {
             {
                 test: /\.css$/,
                 use: [
-                    miniCssExtractPlugin.loader,
-                    // 'style-loader', //将css以js形式插入HTML中
+                    `${isDev ? 'style-loader' :  miniCssExtractPlugin.loader}`,
                     'css-loader', //专门处理css文件
                 ]
             },
@@ -104,8 +103,7 @@ const config = {
                 test: /\.less$/,
                 
                 use: [
-                    miniCssExtractPlugin.loader,
-                    // 'style-loader',
+                    `${isDev ? 'style-loader' :  miniCssExtractPlugin.loader}`,
                     'css-loader',
                     'less-loader',
 
@@ -116,8 +114,7 @@ const config = {
                 test: /\.scss$/,
                 
                 use: [
-                    miniCssExtractPlugin.loader,
-                    // 'style-loader',
+                    `${isDev ? 'style-loader' :  miniCssExtractPlugin.loader}`,
                     'css-loader',
                     'sass-loader',
 
